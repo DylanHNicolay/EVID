@@ -4,10 +4,6 @@
     "react-app/jest",
     "prettier"
   ],
-  "plugins": [
-    "@typescript-eslint"
-  ],
-  "parser": "@typescript-eslint/parser",
   "rules": {
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/explicit-function-return-type": [
@@ -26,13 +22,6 @@
     ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
-  },
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
   },
   "overrides": [
     {
