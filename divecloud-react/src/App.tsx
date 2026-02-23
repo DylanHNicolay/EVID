@@ -1,6 +1,6 @@
 import ProfileCard from './components/profile/ProfileCard';
 
-function App() {
+function App(): React.ReactElement {
   return (
     <div className="App">
       <ProfileCard
@@ -8,7 +8,7 @@ function App() {
         lastName="Sinclair"
         location="Las Vegas, NV"
         team="California Polytechnic State University"
-        avatarUrl="https://i.pravatar.cc/150" 
+        avatarUrl="https://i.pravatar.cc/150"
       />
     </div>
   );

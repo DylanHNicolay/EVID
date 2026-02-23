@@ -8,10 +8,13 @@ interface ProfileTabsProps {
 
 const tabs = ['Home', 'Meets', 'Times', 'Rankings'];
 
-export default function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps) {
+export default function ProfileTabs({
+  activeTab,
+  onTabChange,
+}: ProfileTabsProps): React.ReactElement {
   return (
     <div className="profile-tabs">
-      {tabs.map(tab => (
+      {tabs.map((tab) => (
         <button
           key={tab}
           className={`profile-tab ${activeTab === tab ? 'active' : ''}`}
