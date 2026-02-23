@@ -8,7 +8,7 @@ function App(): React.ReactElement {
         lastName="Sinclair"
         location="Las Vegas, NV"
         team="California Polytechnic State University"
-        avatarUrl="https://i.pravatar.cc/150" 
+        avatarUrl="https://i.pravatar.cc/150"
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './ProfileCard.css';
 import ProfileTabs from './ProfileTabs';
 
@@ -18,10 +18,9 @@ const ProfileCard = ({
   team,
   bannerUrl,
   avatarUrl,
-}: ProfileCardProps) => {
+}: ProfileCardProps): React.ReactElement => {
   const [activeTab, setActiveTab] = useState('Home');
   const initials = `${firstName[0]}${lastName[0]}`;
-  const tabs = ['Home', 'Meets', 'Times', 'Rankings'];
 
   return (
     <div className="profile-card">
@@ -35,7 +34,11 @@ const ProfileCard = ({
       <div className="profile-avatar-wrapper">
         <div className="profile-avatar-initials">
           {avatarUrl ? (
-            <img src={avatarUrl} alt={`${firstName} ${lastName}`} className="profile-avatar-img" />
+            <img
+              src={avatarUrl}
+              alt={`${firstName} ${lastName}`}
+              className="profile-avatar-img"
+            />
           ) : (
             initials
           )}
@@ -44,7 +47,9 @@ const ProfileCard = ({
 
       {/* Info */}
       <div className="profile-info">
-        <h2 className="profile-name">{firstName} {lastName}</h2>
+        <h2 className="profile-name">
+          {firstName} {lastName}
+        </h2>
         <p className="profile-meta">
           {location} · <span className="profile-team">{team}</span>
         </p>
