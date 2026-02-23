@@ -1,8 +1,10 @@
+import Header from './components/header/Header';
 import ProfileCard from './components/profile/ProfileCard';
 
 function App(): React.ReactElement {
   return (
     <div className="App">
+      <Header />
       <ProfileCard
         firstName="Ian"
         lastName="Sinclair"
