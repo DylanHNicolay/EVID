@@ -1,4 +1,6 @@
-import ProfileCard from './components/profile/ProfileCard';
+import * as React from "react";
+import ProfileCard from "./components/profile/ProfileCard";
+import RankingCard from "./components/profile/RankingCard";
 
 function App(): React.ReactElement {
   return (
@@ -10,6 +12,7 @@ function App(): React.ReactElement {
         team="California Polytechnic State University"
         avatarUrl="https://i.pravatar.cc/150"
       />
+      <RankingCard />
     </div>
   );
 }
