@@ -1,12 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
-import "./RankingCard.css";
+import "./TeamCard.css";
 
 interface RankingEntry {
   id: number;
   name: string;
-  rank: number;
-  type: "country" | "national" | "regional";
+  location: string;
   abbr: string;
   accentColor: string;
 }
@@ -14,25 +13,22 @@ interface RankingEntry {
 const rankingsData: RankingEntry[] = [
   {
     id: 1,
-    name: "United States",
-    rank: 7,
-    type: "country",
+    name: "Longhorn Aquatics",
+    location: "Austin, TX",
     abbr: "US",
     accentColor: "#c0392b",
   },
   {
     id: 2,
     name: "USA Diving",
-    rank: 4,
-    type: "national",
+    location: "Colorado Springs, CO",
     abbr: "USA",
     accentColor: "#1a3a6b",
   },
   {
     id: 3,
-    name: "South Texas Diving",
-    rank: 2,
-    type: "regional",
+    name: "University of Texas",
+    location: "Austin, TX",
     abbr: "STX",
     accentColor: "#0e6e45",
   },
@@ -51,11 +47,10 @@ interface RankingCardProps {
   onSeeAll?: () => void;
 }
 
-const RankingCard: React.FC<RankingCardProps> = ({
+const TeamCard: React.FC<RankingCardProps> = ({
   season = "2025-2026",
-  title = "Rankings",
+  title = "Team",
   entries = rankingsData,
-  onSeeAll,
 }) => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
@@ -64,9 +59,6 @@ const RankingCard: React.FC<RankingCardProps> = ({
       {/* Header */}
       <div className="rc-header">
         <span className="rc-title">{title}</span>
-        <button className="rc-see-all" onClick={onSeeAll}>
-          See all
-        </button>
       </div>
 
       {/* Horizontal rule */}
@@ -91,10 +83,13 @@ const RankingCard: React.FC<RankingCardProps> = ({
             >
               <span className="rc-badge-abbr">{entry.abbr}</span>
             </div>
-            <span className="rc-name">{entry.name}</span>
-            <span className="rc-rank">
-              {ordinal(entry.rank)}
-            </span>
+            <div
+              className="rc-team"
+            >
+              <span className="rc-name">{entry.name}</span>
+            <span className="rc-location">{entry.location}</span>
+            </div>
+            
           </li>
         ))}
       </ul>
@@ -102,4 +97,4 @@ const RankingCard: React.FC<RankingCardProps> = ({
   );
 };
 
-export default RankingCard;
+export default TeamCard;
