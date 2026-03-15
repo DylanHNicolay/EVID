@@ -1,0 +1,138 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 52px;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Left: menu + logo */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.header-menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.header-logo {
+  display: flex;
+  align-items: baseline;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  line-height: 1;
+}
+
+.header-logo-swim {
+  color: #222;
+}
+
+.header-logo-cloud {
+  color: #1a7c8f;
+  position: relative;
+}
+
+.header-logo-cloud-icon {
+  position: absolute;
+  top: -11px;
+  right: -6px;
+}
+
+/* Center: search */
+.header-search {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 480px;
+  margin: 0 24px;
+  position: relative;
+}
+
+.header-search-input {
+  width: 100%;
+  height: 34px;
+  padding: 0 40px 0 14px;
+  border: none;
+  border-radius: 4px;
+  background: #f0f0f0;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  font-family: inherit;
+}
+
+.header-search-input::placeholder {
+  color: #999;
+}
+
+.header-search-input:focus {
+  background: #e8e8e8;
+}
+
+.header-search-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+/* Right: auth links */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.header-auth-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  letter-spacing: 0.5px;
+  padding: 0;
+  font-family: inherit;
+}
+
+.header-auth-btn:hover {
+  color: #1a7c8f;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .header-search {
+    margin: 0 12px;
+  }
+
+  .header-right {
+    gap: 10px;
+  }
+
+  .header-auth-btn {
+    font-size: 12px;
+  }
+}
