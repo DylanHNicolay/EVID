@@ -38,6 +38,7 @@ services:
       - ./divecloud-react/src:/app/src
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true 
       - REACT_APP_API_URL=http://localhost:5000
     networks:
       - app_network

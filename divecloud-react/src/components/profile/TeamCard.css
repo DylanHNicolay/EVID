@@ -1,0 +1,167 @@
+.rc-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 420px;
+  padding: 20px 24px 16px 24px;
+  box-sizing: border-box;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  margin-left: 20rem;
+}
+
+/* ── Header ── */
+.rc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.rc-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.rc-see-all {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #8b0000;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.rc-see-all:hover {
+  text-decoration: underline;
+}
+
+/* ── Divider ── */
+.rc-divider {
+  height: 0.5px;
+  background: #e2e8f0;
+  margin: 10px 0 12px 0;
+}
+
+/* ── Season label ── */
+.rc-season {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+/* ── List ── */
+.rc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Row ── */
+.rc-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  opacity: 0;
+  animation: rcFadeIn 0.3s ease forwards;
+}
+
+.rc-item--hovered {
+  background: #fafafa;
+}
+
+@keyframes rcFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Badge ── */
+.rc-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rc-badge-abbr {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.rc-team {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Name ── */
+.rc-name {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #980000;
+}
+
+/* ── location ── */
+.rc-location {
+  flex: 1;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: grey;
+}
+
+/* ── Rank ── */
+.rc-rank {
+  font-size: 0.95rem;
+  font-weight: 600;
+  min-width: 36px;
+  text-align: right;
+  color: #8b0000;
+}
+
+/* ── Footer ── */
+.rc-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.rc-footer-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8b0000;
+  flex-shrink: 0;
+}
+
+.rc-footer-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #8b0000;
+}

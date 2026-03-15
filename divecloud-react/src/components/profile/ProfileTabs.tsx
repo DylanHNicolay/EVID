@@ -6,7 +6,7 @@ interface ProfileTabsProps {
   onTabChange: (tab: string) => void;
 }
 
-const tabs = ['Home', 'Meets', 'Times', 'Rankings'];
+const tabs = ['Home', 'Meets', 'Scores'];
 
 export default function ProfileTabs({
   activeTab,
