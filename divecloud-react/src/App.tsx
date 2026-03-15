@@ -1,6 +1,6 @@
-import * as React from "react";
-import ProfileCard from "./components/profile/ProfileCard";
-import TeamCard from "./components/profile/TeamCard";
+import * as React from 'react';
+import ProfileCard from './components/profile/ProfileCard';
+import TeamCard from './components/profile/TeamCard';
 
 function App(): React.ReactElement {
   return (
