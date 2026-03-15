@@ -17,9 +17,68 @@ interface Meet {
   results: ResultRow[];
 }
 
-interface LatestResultsProps {
-  meets: Meet[];
-}
+const sampleMeets: Meet[] = [
+  {
+    name: 'TYR Pro Swim Series - Westmont',
+    date: 'Mar 4–7, 2026',
+    results: [
+      {
+        event: '50 L Free',
+        round: 'Finals',
+        time: '21.43',
+        badge: 'PB',
+        improvement: -0.14,
+        place: 1,
+      },
+      {
+        event: '50 L Free',
+        round: 'Prelims',
+        time: '21.86',
+        improvement: 0.29,
+        place: 2,
+      },
+      {
+        event: '100 L Free',
+        round: 'Finals',
+        time: '47.84',
+        improvement: 0.21,
+        place: 1,
+      },
+      {
+        event: '100 L Free',
+        round: 'Semifinals',
+        time: '47.54',
+        badge: 'SB',
+        improvement: -0.09,
+        place: 1,
+      },
+      {
+        event: '100 L Free',
+        round: 'Prelims',
+        time: '47.38',
+        badge: 'SB',
+        improvement: -0.25,
+        place: 1,
+      },
+      {
+        event: '200 L Free',
+        round: 'Finals',
+        time: '1:45.53',
+        badge: 'SB',
+        improvement: -0.14,
+        place: 1,
+      },
+      {
+        event: '200 L Free',
+        round: 'Prelims',
+        time: '1:45.38',
+        badge: 'SB',
+        improvement: -0.29,
+        place: 1,
+      },
+    ],
+  },
+];
 
 const formatImprovement = (value: number): string => {
   if (value < 0) return value.toFixed(2);
@@ -33,9 +92,8 @@ const formatPlace = (place: number): string => {
   return `${place}th`;
 };
 
-export default function LatestResults({
-  meets,
-}: LatestResultsProps): React.ReactElement {
+export default function LatestResults(): React.ReactElement {
+  const meets = sampleMeets;
   const [selectedMeetIndex, setSelectedMeetIndex] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
