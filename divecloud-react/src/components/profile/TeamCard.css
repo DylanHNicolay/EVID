@@ -2,14 +2,13 @@
   background: white;
   border-radius: 12px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-  width: 100%;
-  max-width: 420px;
   padding: 20px 24px 16px 24px;
   box-sizing: border-box;
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
     sans-serif;
-  margin-left: 20rem;
+  flex: 1;
+  max-height: 300px;
 }
 
 /* ── Header ── */
