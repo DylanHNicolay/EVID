@@ -1,0 +1,74 @@
+.scores-section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  margin: 20px 0;
+}
+
+.scores-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.score-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid #e0e0e0;
+  margin: 0;
+}
+
+.score-tab {
+  background: none;
+  border: none;
+  padding: 16px;
+  font-size: 0.95rem;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.score-tab:hover {
+  color: #1a1a1a;
+}
+
+.score-tab.active {
+  color: #8b0000;
+  border-bottom: 2px solid #8b0000;
+}
+
+.scores-content {
+  padding: 24px;
+  min-height: 200px;
+}
+
+.scores-content h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  color: #1a1a1a;
+}
+
+.scores-content p {
+  color: #666;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .score-tabs {
+    padding: 0 12px;
+  }
+
+  .score-tab {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+
+  .scores-content {
+    padding: 16px 12px;
+  }
+}

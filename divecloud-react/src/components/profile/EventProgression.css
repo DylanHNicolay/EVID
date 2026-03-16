@@ -1,0 +1,84 @@
+.event-progression {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  padding: 20px 24px;
+  width: 100%;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.event-progression-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.event-progression-divider {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 12px 0 20px 0;
+}
+
+.event-progression-chart {
+  width: 100%;
+  height: auto;
+  max-height: 350px;
+}
+
+.event-progression-grid {
+  stroke: #f0f0f0;
+  stroke-width: 1;
+}
+
+.event-progression-axis {
+  stroke: #333;
+  stroke-width: 2;
+}
+
+.event-progression-line {
+  stroke: #1a7c8f;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.event-progression-dot {
+  fill: #1a7c8f;
+  stroke: white;
+  stroke-width: 2;
+  transition: r 0.2s ease;
+  cursor: pointer;
+}
+
+.event-progression-dot:hover {
+  r: 7;
+}
+
+.event-progression-label {
+  font-size: 12px;
+  fill: #666;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .event-progression {
+    padding: 16px 12px;
+  }
+
+  .event-progression-title {
+    font-size: 1rem;
+  }
+
+  .event-progression-chart {
+    max-height: 250px;
+  }
+
+  .event-progression-label {
+    font-size: 10px;
+  }
+}
