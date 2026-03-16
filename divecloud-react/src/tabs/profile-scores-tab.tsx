@@ -1,3 +1,5 @@
-export default function ProfileScoresTab(){
-    return <div> PROFILE Scores</div>;
+import React from 'react';
+
+export default function ProfileScoresTab(): React.ReactElement {
+  return <div> PROFILE Scores</div>;
 }
