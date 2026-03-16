@@ -1,8 +1,8 @@
-.teamAndResults{
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    width: 70%;
-    justify-content: center;
-    margin: auto;
+.teamAndResults {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 70%;
+  justify-content: center;
+  margin: auto;
 }
