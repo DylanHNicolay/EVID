@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ProfileCard.css';
 import ProfileTabs from './ProfileTabs';
 
@@ -9,6 +9,8 @@ interface ProfileCardProps {
   team: string;
   bannerUrl?: string;
   avatarUrl?: string;
+  activeTab?: string;
+  onTabChange?: (tab: string) => void;
 }
 
 const ProfileCard = ({
@@ -18,8 +20,9 @@ const ProfileCard = ({
   team,
   bannerUrl,
   avatarUrl,
+  activeTab = 'Home',
+  onTabChange,
 }: ProfileCardProps): React.ReactElement => {
-  const [activeTab, setActiveTab] = useState('Home');
   const initials = `${firstName[0]}${lastName[0]}`;
 
   return (
@@ -56,7 +59,10 @@ const ProfileCard = ({
       </div>
 
       {/* Tabs */}
-      <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
+      <ProfileTabs
+        activeTab={activeTab}
+        onTabChange={onTabChange || (() => {})}
+      />
     </div>
   );
 };
