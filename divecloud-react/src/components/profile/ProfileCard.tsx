@@ -9,8 +9,8 @@ interface ProfileCardProps {
   team: string;
   bannerUrl?: string;
   avatarUrl?: string;
-  activeTab?: string;
-  onTabChange?: (tab: string) => void;
+  activeTab: string;
+  onTabChange: (tab: string) => void;
 }
 
 const ProfileCard = ({
@@ -20,7 +20,7 @@ const ProfileCard = ({
   team,
   bannerUrl,
   avatarUrl,
-  activeTab = 'Home',
+  activeTab,
   onTabChange,
 }: ProfileCardProps): React.ReactElement => {
   const initials = `${firstName[0]}${lastName[0]}`;
@@ -59,10 +59,7 @@ const ProfileCard = ({
       </div>
 
       {/* Tabs */}
-      <ProfileTabs
-        activeTab={activeTab}
-        onTabChange={onTabChange || (() => {})}
-      />
+      <ProfileTabs activeTab={activeTab} onTabChange={onTabChange} />
     </div>
   );
 };
