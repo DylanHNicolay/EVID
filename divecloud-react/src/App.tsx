@@ -12,7 +12,7 @@ function App(): React.ReactElement {
     <div className="App">
       <Header />
       <ProfileCard
-        firstName="Chris"
+        firstName="Chri"
         lastName="Guiliano"
         location="Douglassville, PA"
         team="Longhorn Aquatics"
