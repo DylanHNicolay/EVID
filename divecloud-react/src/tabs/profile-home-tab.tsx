@@ -7,11 +7,11 @@ import './profile-home-tab.css';
 export default function ProfileHomeTab(): React.ReactElement {
   return (
     <div className="teamAndResults">
-        <div className="teamAndProgression">
-            <TeamCard />
-            <Progression/>
-        </div>
-      
+      <div className="teamAndProgression">
+        <TeamCard />
+        <Progression />
+      </div>
+
       <LatestResults />
     </div>
   );
