@@ -1,12 +1,12 @@
 import React from 'react';
-import './EventProgression.css';
+import './Progression.css';
 
 interface ProgressionDataPoint {
   date: string;
   score: number;
 }
 
-interface EventProgressionProps {
+interface ProgressionProps {
   data?: ProgressionDataPoint[];
   title?: string;
 }
@@ -22,7 +22,7 @@ const mockData: ProgressionDataPoint[] = [
   { date: '2025', score: 950 },
 ];
 
-const EventProgression: React.FC<EventProgressionProps> = ({
+const Progression: React.FC<ProgressionProps> = ({
   data = mockData,
   title = 'Progression',
 }): React.ReactElement => {
@@ -147,4 +147,4 @@ const EventProgression: React.FC<EventProgressionProps> = ({
   );
 };
 
-export default EventProgression;
+export default Progression;

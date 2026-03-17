@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './ScoresSection.css';
-import EventProgression from './EventProgression';
 
 interface ScoreTabsProps {
   activeTab: string;
@@ -45,7 +44,12 @@ const ScoresSection: React.FC = (): React.ReactElement => {
           </div>
         );
       case 'Event Progression':
-        return <EventProgression />;
+        return (
+          <div className="scores-content">
+            <h3>Event Progression</h3>
+            <p>Event progression content goes here</p>
+          </div>
+        );
       default:
         return <div className="scores-content">Personal Bests</div>;
     }
