@@ -1,8 +1,14 @@
+.teamAndProgression {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .teamAndResults {
   display: flex;
   flex-direction: row;
-  gap: 16px;
   width: 70%;
   justify-content: center;
   margin: auto;
+  gap: 16px;
 }
