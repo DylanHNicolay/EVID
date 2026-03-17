@@ -1,7 +1,7 @@
 import React from 'react';
 import './profile-scores-eventProgression-tab.css';
 
-const ProfileScoresEventProgressionTab = (): JSX.Element => {
+const ProfileScoresEventProgressionTab = (): React.ReactElement => {
   return <div>profile-scores-eventProgression-tab</div>;
 };
 
