@@ -78,7 +78,7 @@ const PersonalBestScores: React.FC = () => {
     filtered = filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }
 
-  const toggleRow = (idx: number) => {
+  const toggleRow = (idx: number): void => {
     setExpandedRows(rows =>
       rows.includes(idx) ? rows.filter(i => i !== idx) : [...rows, idx]
     );
