@@ -12,7 +12,7 @@ const ScoreResultRow = ({
   result,
   expanded,
   onToggle,
-}: ScoreResultRowProps) => {
+}: ScoreResultRowProps): React.ReactElement => {
   return (
     <tr className="result-row">
       <td onClick={onToggle}>{expanded ? '▼' : '▶'}</td>

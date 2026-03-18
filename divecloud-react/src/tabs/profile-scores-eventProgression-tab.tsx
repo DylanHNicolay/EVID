@@ -10,7 +10,7 @@ interface eventProgressionProps {
 
 const ProfileScoresEventProgressionTab = ({
   result,
-}: eventProgressionProps) => {
+}: eventProgressionProps): React.ReactElement => {
   const [expanded, setExpanded] = useState(false);
   return (
     <React.Fragment>

@@ -6,7 +6,7 @@ interface DiveChartProps {
   dives: DiveScore[];
 }
 
-const DiveChart = ({ dives }: DiveChartProps) => {
+const DiveChart = ({ dives }: DiveChartProps): React.ReactElement => {
   return (
     <div>
       <table className="dive-chart">
