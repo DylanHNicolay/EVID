@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './profile-scores-eventProgression-tab.css';
 import ScoreResultRow from '../components/profile/scores/ScoreResultRow';
 import DiveChart from '../components/profile/scores/DiveChart';
 import type { Result } from '../types';
