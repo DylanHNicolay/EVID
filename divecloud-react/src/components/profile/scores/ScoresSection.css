@@ -58,6 +58,21 @@
   margin: 0;
 }
 
+.scores-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.scores-table th {
+  text-align: left;
+  color: #888;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 10px 16px;
+  border-bottom: 2px solid #eee;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .score-tabs {
