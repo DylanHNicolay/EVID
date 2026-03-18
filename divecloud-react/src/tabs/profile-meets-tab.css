@@ -1,0 +1,105 @@
+.meets-tab-container {
+  background-color: #ffffff;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 70%;
+  margin: 0 auto 20px auto;
+}
+
+.meets-filters {
+  display: flex;
+  gap: 16px;
+  padding: 20px 40px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-select,
+.filter-input {
+  padding: 8px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #333;
+  min-width: 140px;
+}
+
+.filter-input {
+  font-size: 14px;
+  color: #999;
+}
+
+.filter-input::placeholder {
+  color: #ccc;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  outline: none;
+  border-color: #8b0000;
+  box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.1);
+}
+
+.meets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px 40px;
+}
+
+@media (max-width: 768px) {
+  .meets-tab-container {
+    max-width: 90%;
+  }
+
+  .meets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .meets-tab-container {
+    max-width: 100%;
+    border-radius: 0;
+  }
+
+  .meets-filters {
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .meets-grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .filter-select,
+  .filter-input {
+    min-width: auto;
+  }
+}
+
+.no-meets-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 16px;
+}
