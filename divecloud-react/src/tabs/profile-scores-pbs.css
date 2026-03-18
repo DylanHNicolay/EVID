@@ -30,7 +30,9 @@
   border-radius: 20px;
   font-size: 15px;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 .pbs-filter-group button.active {
   background: #b71c1c;
@@ -41,7 +43,8 @@
   border-collapse: collapse;
   margin-top: 8px;
 }
-.pbs-table th, .pbs-table td {
+.pbs-table th,
+.pbs-table td {
   padding: 12px 8px;
   text-align: left;
 }
@@ -69,7 +72,8 @@
   color: #1a1a1a;
   font-weight: 600;
 }
-.pbs-meet, .pbs-date {
+.pbs-meet,
+.pbs-date {
   color: #1a1a1a;
 }
 .pbs-detail-row td {
@@ -79,7 +83,8 @@
 .pbs-detail-table {
   width: 100%;
 }
-.pbs-detail-header, .pbs-detail-scores {
+.pbs-detail-header,
+.pbs-detail-scores {
   display: flex;
   gap: 24px;
   margin-bottom: 4px;

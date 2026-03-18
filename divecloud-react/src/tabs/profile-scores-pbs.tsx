@@ -66,21 +66,24 @@ const PersonalBestScores: React.FC = () => {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
 
   // Filtering and sorting logic
-  let filtered = samplePersonalBests.filter(pb =>
-    (selectedCourse === 'All' || pb.course === selectedCourse) &&
-    (selectedSeason === 'All' || pb.season === selectedSeason)
+  let filtered = samplePersonalBests.filter(
+    (pb) =>
+      (selectedCourse === 'All' || pb.course === selectedCourse) &&
+      (selectedSeason === 'All' || pb.season === selectedSeason)
   );
   if (sortBy === 'Event') {
     filtered = filtered.sort((a, b) => a.event.localeCompare(b.event));
   } else if (sortBy === 'Score') {
     filtered = filtered.sort((a, b) => b.totalScore - a.totalScore);
   } else if (sortBy === 'Date') {
-    filtered = filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    filtered = filtered.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
   }
 
   const toggleRow = (idx: number): void => {
-    setExpandedRows(rows =>
-      rows.includes(idx) ? rows.filter(i => i !== idx) : [...rows, idx]
+    setExpandedRows((rows) =>
+      rows.includes(idx) ? rows.filter((i) => i !== idx) : [...rows, idx]
     );
   };
 
@@ -92,10 +95,12 @@ const PersonalBestScores: React.FC = () => {
           <select
             id="pbs-course-select"
             value={selectedCourse}
-            onChange={e => setSelectedCourse(e.target.value)}
+            onChange={(e) => setSelectedCourse(e.target.value)}
           >
-            {courses.map(course => (
-              <option key={course} value={course}>{course}</option>
+            {courses.map((course) => (
+              <option key={course} value={course}>
+                {course}
+              </option>
             ))}
           </select>
         </div>
@@ -104,10 +109,12 @@ const PersonalBestScores: React.FC = () => {
           <select
             id="pbs-season-select"
             value={selectedSeason}
-            onChange={e => setSelectedSeason(e.target.value)}
+            onChange={(e) => setSelectedSeason(e.target.value)}
           >
-            {seasons.map(season => (
-              <option key={season} value={season}>{season}</option>
+            {seasons.map((season) => (
+              <option key={season} value={season}>
+                {season}
+              </option>
             ))}
           </select>
         </div>
@@ -116,10 +123,12 @@ const PersonalBestScores: React.FC = () => {
           <select
             id="pbs-sortby-select"
             value={sortBy}
-            onChange={e => setSortBy(e.target.value)}
+            onChange={(e) => setSortBy(e.target.value)}
           >
-            {sortOptions.map(option => (
-              <option key={option} value={option}>{option}</option>
+            {sortOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         </div>
@@ -138,7 +147,10 @@ const PersonalBestScores: React.FC = () => {
             <React.Fragment key={idx}>
               <tr className="pbs-main-row">
                 <td>
-                  <button className="pbs-expand-btn" onClick={() => toggleRow(idx)}>
+                  <button
+                    className="pbs-expand-btn"
+                    onClick={() => toggleRow(idx)}
+                  >
                     {expandedRows.includes(idx) ? '▼' : '▶'}
                   </button>
                   <span className="pbs-event-name">{pb.event}</span>
@@ -153,18 +165,23 @@ const PersonalBestScores: React.FC = () => {
                     <div className="pbs-detail-table">
                       <div className="pbs-detail-header">
                         {pb.diveScores.map((d, i) => (
-                          <span key={i} className="pbs-detail-category">{d.category}</span>
+                          <span key={i} className="pbs-detail-category">
+                            {d.category}
+                          </span>
                         ))}
                       </div>
                       <div className="pbs-detail-scores">
                         {pb.diveScores.map((d, i) => (
                           <span key={i} className="pbs-detail-score">
-                            {d.score} {d.isPB && <span className="pbs-badge">PB</span>}
+                            {d.score}{' '}
+                            {d.isPB && <span className="pbs-badge">PB</span>}
                           </span>
                         ))}
                       </div>
                       <div className="pbs-detail-footer">
-                        <button className="pbs-fullsheet-btn">Show Full Sheet</button>
+                        <button className="pbs-fullsheet-btn">
+                          Show Full Sheet
+                        </button>
                       </div>
                     </div>
                   </td>
