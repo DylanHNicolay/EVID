@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './ScoresSection.css';
 import ProfileScoresEventProgressionTab from '../../tabs/profile-scores-eventProgression-tab';
 import ProfileScoresPBs from '../../tabs/profile-scores-pbs';
+import type { Result } from '../../types';
 
 interface ScoreTabsProps {
   activeTab: string;
@@ -28,6 +29,25 @@ const ScoreTabs: React.FC<ScoreTabsProps> = ({ activeTab, onTabChange }) => {
 
 const ScoresSection: React.FC = (): React.ReactElement => {
   const [activeScoresTab, setActiveScoresTab] = useState('Personal Bests');
+  const mockEventProgressionResult: Result = {
+    id: 1,
+    event: '1 Meter 6 Dive',
+    score: 156.3,
+    meet: 'RPI vs Union',
+    date: 'January 3, 2025',
+    dives: [
+      {
+        dive: '101C',
+        award: 30,
+        dd: 1.1,
+        j1: 5.5,
+        j2: 6.0,
+        j3: 6.5,
+        j4: 7.0,
+        j5: 7.5,
+      },
+    ],
+  };
 
   const renderScoresContent = (): React.ReactElement => {
     switch (activeScoresTab) {
@@ -46,7 +66,11 @@ const ScoresSection: React.FC = (): React.ReactElement => {
           </div>
         );
       case 'Event Progression':
-        return <ProfileScoresEventProgressionTab />;
+        return (
+          <ProfileScoresEventProgressionTab
+            result={mockEventProgressionResult}
+          />
+        );
       default:
         return <div className="scores-content">Personal Bests</div>;
     }
