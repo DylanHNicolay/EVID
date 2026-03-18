@@ -1,0 +1,118 @@
+/* PersonalBestScores.css */
+.pbs-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 24px;
+  margin-top: 32px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pbs-filters {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+.pbs-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pbs-filter-group span {
+  font-weight: 500;
+  margin-right: 8px;
+}
+.pbs-filter-group button {
+  border: none;
+  background: #f5f5f5;
+  color: #333;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.pbs-filter-group button.active {
+  background: #b71c1c;
+  color: #fff;
+}
+.pbs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.pbs-table th, .pbs-table td {
+  padding: 12px 8px;
+  text-align: left;
+}
+.pbs-table th {
+  color: #888;
+  font-weight: 600;
+  border-bottom: 2px solid #eee;
+}
+.pbs-main-row {
+  border-bottom: 1px solid #eee;
+}
+.pbs-expand-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+  color: #b71c1c;
+}
+.pbs-event-name {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+.pbs-score {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+.pbs-meet, .pbs-date {
+  color: #1a1a1a;
+}
+.pbs-detail-row td {
+  background: #fafafa;
+  padding: 16px 8px;
+}
+.pbs-detail-table {
+  width: 100%;
+}
+.pbs-detail-header, .pbs-detail-scores {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 4px;
+}
+.pbs-detail-header {
+  font-size: 14px;
+  color: #888;
+  font-weight: 500;
+}
+.pbs-detail-score {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pbs-badge {
+  background: #b71c1c;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-left: 4px;
+  font-weight: 600;
+}
+.pbs-fullsheet-btn {
+  background: none;
+  border: none;
+  color: #b71c1c;
+  font-weight: 600;
+  cursor: pointer;
+  float: right;
+  margin-top: 8px;
+  font-size: 15px;
+}
