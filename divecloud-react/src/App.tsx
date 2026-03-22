@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Header from './components/header/Header';
-import ProfilePage from './pages/profilePage';
+import TeamPage from './pages/TeamPage';
 
 function App(): React.ReactElement {
   // const [activeMainTab, setActiveMainTab] = React.useState('Home');
@@ -8,7 +8,7 @@ function App(): React.ReactElement {
   return (
     <div className="App">
       <Header />
-      <ProfilePage />
+      <TeamPage />
     </div>
   );
 }

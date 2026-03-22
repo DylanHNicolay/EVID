@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './ScoresSection.css';
-import ProfileScoresEventProgressionTab from '../../../tabs/profile-scores-eventProgression-tab';
+import ProfileScoresEventProgressionTab from '../../../tabs/profile/profile-scores-eventProgression-tab';
 import type { Result } from '../../../types';
 
 interface ScoreTabsProps {

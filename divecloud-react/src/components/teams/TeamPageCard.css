@@ -1,0 +1,54 @@
+.team-page-card {
+  background: white;
+  border-radius: 12px;
+  overflow: visible;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 70%;
+  margin: 20px auto;
+  position: relative;
+}
+
+.team-banner {
+  border-radius: 12px 12px 0 0;
+  width: 100%;
+  height: 220px;
+  background-color: #4a90d9;
+  background-size: cover;
+  background-position: center;
+}
+
+.team-info-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+}
+
+.team-logo-wrapper {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.team-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.team-info {
+  flex: 1;
+}
+
+.team-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.team-meta {
+  color: #4a90d9;
+  font-size: 14px;
+  margin: 0;
+}
