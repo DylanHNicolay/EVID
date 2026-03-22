@@ -1,0 +1,53 @@
+.meet-list {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.meet-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.meet-item:last-child {
+  border-bottom: none;
+}
+
+.meet-logo-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: #ddd;
+  flex-shrink: 0;
+}
+
+.meet-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meet-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.meet-meta {
+  font-size: 13px;
+  color: #888;
+}
+
+.meet-status.upcoming {
+  color: #c0392b;
+  font-weight: 500;
+}
+
+.meet-status.completed {
+  color: #27ae60;
+  font-weight: 500;
+}

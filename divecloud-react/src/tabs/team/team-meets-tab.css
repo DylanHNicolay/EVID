@@ -1,0 +1,38 @@
+.meets-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  width: 70%;
+  margin: auto;
+}
+
+.meets-main {
+  flex: 3;
+}
+
+.meets-sidebar {
+  flex: 1;
+}
+
+.meets-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.meets-filters label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+}
+
+.meets-filters input,
+.meets-filters select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
