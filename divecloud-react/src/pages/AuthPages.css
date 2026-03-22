@@ -1,0 +1,139 @@
+.auth-page {
+  min-height: calc(100vh - 52px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f7f9fb;
+}
+
+.auth-card {
+  width: min(100%, 420px);
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  padding: 26px;
+  text-align: left;
+}
+
+.auth-card h1 {
+  margin: 0 0 18px;
+  font-size: 26px;
+  color: #222;
+}
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-form label {
+  font-size: 14px;
+  color: #444;
+  font-weight: 500;
+}
+
+.auth-form input {
+  height: 44px;
+  border: 1px solid #d7d7d6;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333;
+  background: #fff;
+  outline: none;
+}
+
+.auth-form input:focus {
+  border-color: #1a7c8f;
+  box-shadow: 0 0 0 2px rgba(26, 124, 143, 0.15);
+}
+
+.auth-submit-btn {
+  margin-top: 8px;
+  width: 100%;
+  background-color: #ba0e0e;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  height: 44px;
+  cursor: pointer;
+}
+
+.auth-submit-btn:hover {
+  background-color: #a30c0c;
+}
+
+.auth-switch-text {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #555;
+}
+
+.auth-switch-link {
+  border: none;
+  background: none;
+  color: #ba0e0e;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.auth-subtitle {
+  margin: 0 0 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+.role-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.role-card {
+  border: 1px solid #d7d7d6;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: left;
+  background: #fff;
+  cursor: pointer;
+}
+
+.role-card:hover {
+  border-color: #ba0e0e;
+  box-shadow: 0 4px 10px rgba(186, 14, 14, 0.15);
+}
+
+.role-card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.role-card span {
+  font-size: 13px;
+  color: #555;
+}
+
+.auth-secondary-btn {
+  margin-top: 12px;
+  width: 100%;
+  border: 1px solid #a3a3a3;
+  background: #fff;
+  color: #333;
+  border-radius: 8px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.auth-secondary-btn:hover {
+  background: #f4f4f4;
+}
+
+.auth-switch-link:hover {
+  color: #8f0a0a;
+}
