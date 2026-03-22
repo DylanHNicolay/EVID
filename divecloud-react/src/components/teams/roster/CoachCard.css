@@ -1,0 +1,42 @@
+.coach-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.coach-photo-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.coach-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.coach-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #ddd;
+}
+
+.coach-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.coach-title {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}

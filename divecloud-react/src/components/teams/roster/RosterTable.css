@@ -1,0 +1,75 @@
+.roster-table-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  padding: 20px;
+}
+
+.roster-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.roster-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.gender-toggle {
+  display: flex;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.gender-toggle button {
+  padding: 6px 16px;
+  border: none;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+}
+
+.gender-toggle button.active {
+  background: #c0392b;
+  color: white;
+}
+
+.roster-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.roster-table th {
+  text-align: left;
+  color: #888;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.roster-table td {
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
+
+.roster-table tr:last-child td {
+  border-bottom: none;
+}
+
+.athlete-name {
+  color: #c0392b;
+  cursor: pointer;
+}
+
+.athlete-points {
+  color: #c0392b;
+  text-align: right;
+}
