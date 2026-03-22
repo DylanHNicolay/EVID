@@ -1,0 +1,27 @@
+.team-page-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 24px;
+  border-top: 1px solid #eee;
+}
+
+.team-page-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 14px 12px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.team-page-tab:hover {
+  color: #333;
+}
+
+.team-page-tab.active {
+  color: #c0392b;
+  border-bottom: 2px solid #c0392b;
+  font-weight: 500;
+}

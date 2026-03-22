@@ -1,8 +1,8 @@
 import ProfileCard from '../components/profile/ProfileCard';
 import React, { useState } from 'react';
-import ProfileHomeTab from '../tabs/profile-home-tab';
-import ProfileScoresTab from '../tabs/profile-scores-tab';
-import ProfileMeetsTab from '../tabs/profile-meets-tab';
+import ProfileHomeTab from '../tabs/profile/profile-home-tab';
+import ProfileScoresTab from '../tabs/profile/profile-scores-tab';
+import ProfileMeetsTab from '../tabs/profile/profile-meets-tab';
 
 export default function ProfilePage(): React.ReactElement {
   const [activeTab, setActiveTab] = useState('Home');

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import ScoreResultRow from '../components/profile/scores/ScoreResultRow';
-import DiveChart from '../components/profile/scores/DiveChart';
-import type { Result } from '../types';
+import ScoreResultRow from '../../components/profile/scores/ScoreResultRow';
+import DiveChart from '../../components/profile/scores/DiveChart';
+import type { Result } from '../../types';
 
 interface eventProgressionProps {
   result: Result;
