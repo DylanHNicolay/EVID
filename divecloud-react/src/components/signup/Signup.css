@@ -1,0 +1,51 @@
+.auth-subtitle {
+  margin: 0 0 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+.role-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.role-card {
+  border: 1px solid #d7d7d6;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: left;
+  background: #fff;
+  cursor: pointer;
+}
+
+.role-card:hover {
+  border-color: #ba0e0e;
+  box-shadow: 0 4px 10px rgba(186, 14, 14, 0.15);
+}
+
+.role-card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.role-card span {
+  font-size: 13px;
+  color: #555;
+}
+
+.auth-secondary-btn {
+  margin-top: 12px;
+  width: 100%;
+  border: 1px solid #a3a3a3;
+  background: #fff;
+  color: #333;
+  border-radius: 8px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.auth-secondary-btn:hover {
+  background: #f4f4f4;
+}

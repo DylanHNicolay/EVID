@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
 interface HeaderProps {
   onMenuClick?: () => void;
   onSearch?: (query: string) => void;
-  onLoginClick?: () => void;
-  onRegisterClick?: () => void;
 }
 
-const Header = ({
-  onMenuClick,
-  onSearch,
-  onLoginClick,
-  onRegisterClick,
-}: HeaderProps): React.ReactElement => {
+const Header = ({ onMenuClick, onSearch }: HeaderProps): React.ReactElement => {
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const handleSearchSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
@@ -91,14 +86,14 @@ const Header = ({
       <nav className="header-right">
         <button
           className="header-auth-btn"
-          onClick={onLoginClick}
+          onClick={() => navigate('/login')}
           type="button"
         >
           LOGIN
         </button>
         <button
           className="header-auth-btn"
-          onClick={onRegisterClick}
+          onClick={() => navigate('/register')}
           type="button"
         >
           REGISTER
