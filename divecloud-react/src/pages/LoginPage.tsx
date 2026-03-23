@@ -5,7 +5,9 @@ interface LoginPageProps {
   onRegister?: () => void;
 }
 
-export default function LoginPage({ onRegister }: LoginPageProps): React.ReactElement {
+export default function LoginPage({
+  onRegister,
+}: LoginPageProps): React.ReactElement {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 

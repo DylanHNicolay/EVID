@@ -7,7 +7,9 @@ interface RegisterPageProps {
 
 type UserRole = 'diver' | 'coach' | null;
 
-export default function RegisterPage({ onLogin }: RegisterPageProps): React.ReactElement {
+export default function RegisterPage({
+  onLogin,
+}: RegisterPageProps): React.ReactElement {
   const [role, setRole] = useState<UserRole>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -53,7 +55,10 @@ export default function RegisterPage({ onLogin }: RegisterPageProps): React.Reac
 
         {role ? (
           <>
-            <p className="auth-subtitle">Creating a {role === 'diver' ? 'Diver' : 'Coach / Meet Director'} account</p>
+            <p className="auth-subtitle">
+              Creating a {role === 'diver' ? 'Diver' : 'Coach / Meet Director'}{' '}
+              account
+            </p>
 
             <form className="auth-form" onSubmit={handleSubmit}>
               <label htmlFor="register-email">Email</label>
@@ -93,7 +98,7 @@ export default function RegisterPage({ onLogin }: RegisterPageProps): React.Reac
           renderRoleSelection()
         )}
 
-        <p className="auth-switch-text">          
+        <p className="auth-switch-text">
           Already have an account?{' '}
           <button type="button" className="auth-switch-link" onClick={onLogin}>
             login
