@@ -36,8 +36,8 @@ const navItems: NavItem[] = [
     ),
   },
   {
-    to: '/team',
-    label: 'Teams',
+    to: '/meets',
+    label: 'Meets',
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
         <rect

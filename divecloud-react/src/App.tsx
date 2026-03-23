@@ -8,6 +8,7 @@ import ProfilePage from './pages/profilePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MeetPage from './pages/MeetPage';
+import MeetsPage from './pages/MeetsPage';
 import './App.css';
 
 function App(): React.ReactElement {
@@ -21,8 +22,8 @@ function App(): React.ReactElement {
         <main className="app-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/meets" element={<MeetsPage />} />
             <Route path="/team/:teamId" element={<TeamPage />} />
-            <Route path="/team" element={<TeamPage />} />
             <Route path="/profile/:athleteId" element={<ProfilePage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/login" element={<LoginPage />} />

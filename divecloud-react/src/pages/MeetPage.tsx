@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import MeetPageCard from '../components/meets/MeetPageCard';
-import MeetTeamsScore from '../components/meets/MeetTeamsScore';
-import MeetResultsTable from '../components/meets/MeetResultsTable';
+import MeetPageCard from '../components/meet-detail/MeetPageCard';
+import MeetTeamsScore from '../components/meet-detail/MeetTeamsScore';
+import MeetResultsTable from '../components/meet-detail/MeetResultsTable';
 import './MeetPage.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';

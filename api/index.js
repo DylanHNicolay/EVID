@@ -210,6 +210,64 @@ app.get('/api/home/commitments', async (_req, res) => {
   }
 });
 
+// ─── Meets listing ───────────────────────────────────────
+
+app.get('/api/meets', async (req, res) => {
+  try {
+    const { name, sort, date, range } = req.query;
+    const conditions = [];
+    const params = [];
+    let idx = 1;
+
+    if (name) {
+      conditions.push(`m.name ILIKE $${idx}`);
+      params.push(`%${name}%`);
+      idx++;
+    }
+
+    if (date === 'past') {
+      conditions.push(`m.status = 'completed'`);
+    } else if (date === 'upcoming') {
+      conditions.push(`m.status = 'upcoming'`);
+    }
+
+    if (range === 'week') {
+      conditions.push(`m.meet_date >= NOW() - INTERVAL '7 days'`);
+    } else if (range === 'month') {
+      conditions.push(`m.meet_date >= NOW() - INTERVAL '30 days'`);
+    } else if (range === 'year') {
+      conditions.push(`m.meet_date >= NOW() - INTERVAL '365 days'`);
+    }
+
+    const where = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : '';
+
+    let orderBy;
+    if (sort === 'top') {
+      orderBy = 'ORDER BY team_count DESC, m.meet_date DESC';
+    } else {
+      orderBy = 'ORDER BY m.meet_date DESC';
+    }
+
+    const query = `
+      SELECT m.id, m.name, m.meet_date, m.date_end, m.location,
+             m.status, m.logo_url, m.meet_type,
+             COUNT(DISTINCT mt.team_id) AS team_count
+      FROM meets m
+      LEFT JOIN meet_teams mt ON mt.meet_id = m.id
+      ${where}
+      GROUP BY m.id
+      ${orderBy}
+      LIMIT 50
+    `;
+
+    const { rows } = await pool.query(query, params);
+    res.json(rows);
+  } catch (err) {
+    console.error('meets listing error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // ─── Meet detail ─────────────────────────────────────────
 
 app.get('/api/meets/:id', async (req, res) => {
