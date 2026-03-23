@@ -1,0 +1,182 @@
+.top-events-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
+  padding: 24px 40px;
+  max-width: 1000px;
+  margin: 40px auto;
+}
+
+.top-events-country {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.top-events-flag {
+  width: 44px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.top-events-country h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0;
+  color: #222;
+}
+
+.top-events-chevron {
+  margin-left: -6px;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.top-events-meets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 28px;
+  column-gap: 0;
+  margin: 0 auto 40px;
+  padding: 0 8px;
+}
+
+.top-events-meet-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 28px;
+}
+
+.top-events-meet-item:not(:nth-child(3n + 1)) {
+  border-left: 1px solid #ddd;
+}
+
+.top-events-meet-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.top-events-meet-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-events-meet-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+  line-height: 1.3;
+}
+
+.top-events-meet-meta {
+  font-size: 12.5px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.top-events-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.top-events-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: #222;
+}
+
+.top-events-date-range {
+  font-size: 14px;
+  color: #888;
+}
+
+.top-events-tables {
+  display: flex;
+  gap: 24px;
+}
+
+.top-events-table-section {
+  flex: 1;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.top-events-table-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: #222;
+}
+
+.top-events-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.top-events-table th {
+  text-align: left;
+  color: #888;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.top-events-table th:last-child {
+  text-align: right;
+}
+
+.top-events-table td {
+  padding: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.top-events-table tr:last-child td {
+  border-bottom: none;
+}
+
+.top-events-rank {
+  color: #999;
+  width: 28px;
+}
+
+.top-events-name {
+  color: #c0392b;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.top-events-name:hover {
+  text-decoration: underline;
+}
+
+.top-events-team {
+  display: flex;
+  align-items: center;
+}
+
+.top-events-team-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.top-events-score {
+  text-align: right;
+  font-weight: 500;
+}
