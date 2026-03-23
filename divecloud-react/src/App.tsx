@@ -1,19 +1,28 @@
 import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/header/Header';
+import Sidebar from './components/sidebar/Sidebar';
 import HomePage from './pages/HomePage';
 import TeamPage from './pages/TeamPage';
 import ProfilePage from './pages/profilePage';
+import './App.css';
 
 function App(): React.ReactElement {
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+
   return (
     <div className="App">
-      <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/team" element={<TeamPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-      </Routes>
+      <Header onMenuClick={() => setSidebarOpen((prev) => !prev)} />
+      <div className="app-body">
+        <Sidebar open={sidebarOpen} />
+        <main className="app-content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
+        </main>
+      </div>
     </div>
   );
 }
