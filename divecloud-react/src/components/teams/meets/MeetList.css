@@ -1,7 +1,9 @@
 .meet-list {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
   overflow: hidden;
 }
 
@@ -11,6 +13,12 @@
   gap: 16px;
   padding: 16px 20px;
   border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.meet-item:hover {
+  background: #fafafa;
 }
 
 .meet-item:last-child {
@@ -43,7 +51,7 @@
 }
 
 .meet-status.upcoming {
-  color: #c0392b;
+  color: #8b0000;
   font-weight: 500;
 }
 

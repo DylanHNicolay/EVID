@@ -3,7 +3,7 @@
   gap: 16px;
   align-items: flex-start;
   padding: 16px;
-  width: 70%;
+  width: 80%;
   margin: auto;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .gender-toggle button.active {
-  background: #c0392b;
+  background: #8b0000;
   color: white;
 }
 

@@ -1,5 +1,5 @@
 .auth-page {
-  min-height: calc(100vh - 52px);
+  min-height: calc(100vh - 60px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,8 +10,10 @@
 .auth-card {
   width: min(100%, 420px);
   background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
   padding: 26px;
   text-align: left;
 }
@@ -52,9 +54,9 @@
 .auth-submit-btn {
   margin-top: 8px;
   width: 100%;
-  background-color: #ba0e0e;
+  background-color: #8b0000;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #fff;
   font-size: 16px;
   font-weight: 700;
@@ -63,7 +65,7 @@
 }
 
 .auth-submit-btn:hover {
-  background-color: #a30c0c;
+  background-color: #6d0000;
 }
 
 .auth-switch-text {
@@ -75,7 +77,7 @@
 .auth-switch-link {
   border: none;
   background: none;
-  color: #ba0e0e;
+  color: #8b0000;
   font-weight: 700;
   cursor: pointer;
   text-decoration: underline;
@@ -83,5 +85,15 @@
 }
 
 .auth-switch-link:hover {
-  color: #8f0a0a;
+  color: #6d0000;
+}
+
+.auth-error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  margin: 0 0 12px;
 }

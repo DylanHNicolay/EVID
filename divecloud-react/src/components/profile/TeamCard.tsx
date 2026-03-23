@@ -1,94 +1,71 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './TeamCard.css';
 
-interface RankingEntry {
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
+
+interface TeamEntry {
   id: number;
   name: string;
-  location: string;
-  abbr: string;
-  accentColor: string;
+  location: string | null;
+  abbreviation: string | null;
+  accent_color: string | null;
 }
 
-const rankingsData: RankingEntry[] = [
-  {
-    id: 1,
-    name: 'Longhorn Aquatics',
-    location: 'Austin, TX',
-    abbr: 'US',
-    accentColor: '#c0392b',
-  },
-  {
-    id: 2,
-    name: 'USA Diving',
-    location: 'Colorado Springs, CO',
-    abbr: 'USA',
-    accentColor: '#1a3a6b',
-  },
-  {
-    id: 3,
-    name: 'University of Texas',
-    location: 'Austin, TX',
-    abbr: 'STX',
-    accentColor: '#0e6e45',
-  },
-];
-
-// function ordinal(n: number): string {
-//   const s = ["th", "st", "nd", "rd"];
-//   const v = n % 100;
-//   return n + (s[(v - 20) % 10] || s[v] || s[0]);
-// }
-
-interface RankingCardProps {
-  season?: string;
-  title?: string;
-  entries?: RankingEntry[];
-  onSeeAll?: () => void;
+interface TeamCardProps {
+  athleteId: number;
 }
 
-const TeamCard: React.FC<RankingCardProps> = ({
-  season = '2025-2026',
-  title = 'Team',
-  entries = rankingsData,
-}) => {
+const TeamCard: React.FC<TeamCardProps> = ({
+  athleteId,
+}): React.ReactElement => {
+  const [entries, setEntries] = useState<TeamEntry[]>([]);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/athletes/${athleteId}/teams`)
+      .then((r) => r.json())
+      .then(setEntries)
+      .catch(console.error);
+  }, [athleteId]);
 
   return (
     <div className="rc-card">
-      {/* Header */}
       <div className="rc-header">
-        <span className="rc-title">{title}</span>
+        <span className="rc-title">Team</span>
       </div>
-
-      {/* Horizontal rule */}
       <div className="rc-divider" />
-
-      {/* Season label */}
-      <div className="rc-season">SEASON {season}</div>
-
-      {/* Ranking rows */}
       <ul className="rc-list">
         {entries.map((entry, i) => (
           <li
             key={entry.id}
             className={`rc-item${hoveredId === entry.id ? ' rc-item--hovered' : ''}`}
-            style={{ animationDelay: `${i * 70}ms` }}
-            onMouseEnter={() => setHoveredId(entry.id)}
-            onMouseLeave={() => setHoveredId(null)}
+            style={{ animationDelay: `${i * 70}ms`, cursor: 'pointer' }}
+            onMouseEnter={(): void => setHoveredId(entry.id)}
+            onMouseLeave={(): void => setHoveredId(null)}
+            onClick={() => navigate(`/team/${entry.id}`)}
           >
             <div
               className="rc-badge"
-              style={{ backgroundColor: entry.accentColor }}
+              style={{ backgroundColor: entry.accent_color || '#888' }}
             >
-              <span className="rc-badge-abbr">{entry.abbr}</span>
+              <span className="rc-badge-abbr">
+                {entry.abbreviation || entry.name.slice(0, 3).toUpperCase()}
+              </span>
             </div>
             <div className="rc-team">
               <span className="rc-name">{entry.name}</span>
-              <span className="rc-location">{entry.location}</span>
+              <span className="rc-location">{entry.location || ''}</span>
             </div>
           </li>
         ))}
+        {entries.length === 0 && (
+          <li className="rc-item">
+            <span className="rc-location">No team assigned</span>
+          </li>
+        )}
       </ul>
     </div>
   );

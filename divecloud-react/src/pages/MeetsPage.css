@@ -1,0 +1,180 @@
+.meets-page {
+  padding: 24px 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.meets-page-inner {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.meets-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.meets-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 20px 0;
+}
+
+.meets-list {
+  background: white;
+  border-radius: 12px;
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.meets-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.meets-item:hover {
+  background: #fafafa;
+}
+
+.meets-item:last-child {
+  border-bottom: none;
+}
+
+.meets-item-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.meets-item-logo-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: #ddd;
+  flex-shrink: 0;
+}
+
+.meets-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meets-item-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.meets-item-meta {
+  font-size: 13px;
+  color: #888;
+}
+
+.meets-item-status.completed {
+  color: #27ae60;
+  font-weight: 500;
+}
+
+.meets-item-status.upcoming {
+  color: #8b0000;
+  font-weight: 500;
+}
+
+.meets-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #888;
+  font-size: 0.95rem;
+}
+
+/* ─── Filters sidebar ────────────────────────────────────── */
+
+.meets-filters {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 52px;
+}
+
+.meets-filter-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: -4px;
+}
+
+.meets-filter-input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.meets-filter-input:focus {
+  border-color: #8b0000;
+}
+
+.meets-toggle-group {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.meets-toggle-btn {
+  flex: 1;
+  padding: 7px 0;
+  border: none;
+  background: #fff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.meets-toggle-btn + .meets-toggle-btn {
+  border-left: 1px solid #ccc;
+}
+
+.meets-toggle-btn.active {
+  background: #8b0000;
+  color: #fff;
+}
+
+.meets-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meets-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #444;
+  cursor: pointer;
+}
+
+.meets-radio-input {
+  accent-color: #8b0000;
+}

@@ -1,7 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ScoresSection.css';
-import ProfileScoresEventProgressionTab from '../../../tabs/profile/profile-scores-eventProgression-tab';
-import type { Result } from '../../../types';
+import DiveChart from './DiveChart';
+import type { DiveScore } from '../../../types';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
+
+interface PersonalBest {
+  height: string;
+  event_name: string;
+  dives_required: number;
+  total_score: number;
+  meet_name: string;
+  meet_date: string;
+  course: string | null;
+  season: string | null;
+  dives: {
+    dive_code: string;
+    dd: number;
+    award: number;
+    score: number;
+    j1: number;
+    j2: number;
+    j3: number;
+    j4: number;
+    j5: number;
+    is_personal_best: boolean;
+  }[];
+}
+
+interface ResultEntry {
+  entry_id: number;
+  event_name: string;
+  height: string;
+  total_score: number;
+  meet_name: string;
+  meet_date: string;
+  dives: {
+    dive_code: string;
+    dd: number;
+    award: number;
+    j1: number;
+    j2: number;
+    j3: number;
+    j4: number;
+    j5: number;
+  }[];
+}
+
+interface ScoresSectionProps {
+  athleteId: number;
+}
 
 interface ScoreTabsProps {
   activeTab: string;
@@ -9,15 +57,14 @@ interface ScoreTabsProps {
 }
 
 const ScoreTabs: React.FC<ScoreTabsProps> = ({ activeTab, onTabChange }) => {
-  const tabs = ['Personal Bests', 'Event History', 'Event Progression'];
-
+  const tabs = ['Personal Bests', 'Event Progression'];
   return (
     <div className="score-tabs">
       {tabs.map((tab) => (
         <button
           key={tab}
           className={`score-tab ${activeTab === tab ? 'active' : ''}`}
-          onClick={() => onTabChange(tab)}
+          onClick={(): void => onTabChange(tab)}
         >
           {tab}
         </button>
@@ -26,184 +73,193 @@ const ScoreTabs: React.FC<ScoreTabsProps> = ({ activeTab, onTabChange }) => {
   );
 };
 
-const ScoresSection: React.FC = (): React.ReactElement => {
-  const [activeScoresTab, setActiveScoresTab] = useState('Personal Bests');
-  const mockResults: Result[] = [
-    {
-      id: 1,
-      event: '1 Meter 6 Dive',
-      score: 156.3,
-      meet: 'RPI vs Union',
-      date: 'January 3, 2025',
-      dives: [
-        {
-          dive: '101C',
-          award: 30,
-          dd: 1.1,
-          j1: 5.5,
-          j2: 6.0,
-          j3: 6.5,
-          j4: 7.0,
-          j5: 7.5,
-          pr: true,
-        },
-        {
-          dive: '201C',
-          award: 30,
-          dd: 1.1,
-          j1: 5.5,
-          j2: 6.0,
-          j3: 6.5,
-          j4: 7.0,
-          j5: 7.5,
-        },
-        {
-          dive: '301C',
-          award: 30,
-          dd: 1.1,
-          j1: 5.5,
-          j2: 6.0,
-          j3: 6.5,
-          j4: 7.0,
-          j5: 7.5,
-        },
-      ],
-    },
-    {
-      id: 2,
-      event: '3 Meter 6 Dive',
-      score: 178.5,
-      meet: 'Yale Invitational',
-      date: 'February 10, 2025',
-      dives: [
-        {
-          dive: '101C',
-          award: 33,
-          dd: 1.2,
-          j1: 6.0,
-          j2: 6.5,
-          j3: 7.0,
-          j4: 7.5,
-          j5: 8.0,
-          pr: true,
-        },
-        {
-          dive: '201C',
-          award: 33,
-          dd: 1.2,
-          j1: 6.0,
-          j2: 6.5,
-          j3: 7.0,
-          j4: 7.5,
-          j5: 8.0,
-        },
-        {
-          dive: '301C',
-          award: 33,
-          dd: 1.2,
-          j1: 6.0,
-          j2: 6.5,
-          j3: 7.0,
-          j4: 7.5,
-          j5: 8.0,
-        },
-      ],
-    },
-    {
-      id: 3,
-      event: 'Platform 6 Dive',
-      score: 201.0,
-      meet: 'NCAA Regionals',
-      date: 'March 1, 2025',
-      dives: [
-        {
-          dive: '101C',
-          award: 36,
-          dd: 1.3,
-          j1: 6.5,
-          j2: 7.0,
-          j3: 7.5,
-          j4: 8.0,
-          j5: 8.5,
-        },
-        {
-          dive: '201C',
-          award: 36,
-          dd: 1.3,
-          j1: 6.5,
-          j2: 7.0,
-          j3: 7.5,
-          j4: 8.0,
-          j5: 8.5,
-        },
-        {
-          dive: '301C',
-          award: 36,
-          dd: 1.3,
-          j1: 6.5,
-          j2: 7.0,
-          j3: 7.5,
-          j4: 8.0,
-          j5: 8.5,
-        },
-      ],
-    },
-  ];
+function formatDate(raw: string): string {
+  const iso = raw.includes('T') ? raw.split('T')[0] : raw;
+  const [y, m, d] = iso.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  return dt.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
 
-  const renderScoresContent = (): React.ReactElement => {
-    switch (activeScoresTab) {
-      case 'Personal Bests':
-        return (
-          <div className="scores-content">
-            <h3>Personal Bests</h3>
-            <p>Personal bests content goes here</p>
-          </div>
-        );
-      case 'Event History':
-        return (
-          <div className="scores-content">
-            <h3>Event History</h3>
-            <p>Event history content goes here</p>
-          </div>
-        );
-      case 'Event Progression':
-        return (
-          <table
-            style={{ width: '100%', borderCollapse: 'collapse' }}
-            className="scores-table"
-          >
-            <thead>
-              <tr>
-                <th></th>
-                <th>Event</th>
-                <th>Score</th>
-                <th>Meet</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mockResults.map((result) => (
-                <ProfileScoresEventProgressionTab
-                  key={result.id}
-                  result={result}
-                />
-              ))}
-            </tbody>
-          </table>
-        );
-      default:
-        return <div className="scores-content">Personal Bests</div>;
-    }
+const ScoresSection: React.FC<ScoresSectionProps> = ({
+  athleteId,
+}): React.ReactElement => {
+  const [activeTab, setActiveTab] = useState('Personal Bests');
+  const [pbs, setPbs] = useState<PersonalBest[]>([]);
+  const [results, setResults] = useState<ResultEntry[]>([]);
+  const [expandedPb, setExpandedPb] = useState<number[]>([]);
+  const [expandedResult, setExpandedResult] = useState<number[]>([]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/athletes/${athleteId}/personal-bests`)
+      .then((r) => r.json())
+      .then(setPbs)
+      .catch(console.error);
+
+    fetch(`${API_URL}/api/athletes/${athleteId}/results`)
+      .then((r) => r.json())
+      .then(setResults)
+      .catch(console.error);
+  }, [athleteId]);
+
+  const togglePb = (idx: number): void => {
+    setExpandedPb((prev) =>
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+    );
   };
+
+  const toggleResult = (idx: number): void => {
+    setExpandedResult((prev) =>
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+    );
+  };
+
+  const renderPBs = (): React.ReactElement => (
+    <table
+      style={{ width: '100%', borderCollapse: 'collapse' }}
+      className="scores-table"
+    >
+      <thead>
+        <tr>
+          <th></th>
+          <th>Event</th>
+          <th>Score</th>
+          <th>Meet</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {pbs.map((pb, idx) => (
+          <React.Fragment key={idx}>
+            <tr
+              className="result-row"
+              onClick={(): void => togglePb(idx)}
+              style={{ cursor: 'pointer' }}
+            >
+              <td>{expandedPb.includes(idx) ? '\u25BC' : '\u25B6'}</td>
+              <td>
+                {pb.height} {pb.dives_required} dive
+              </td>
+              <td style={{ fontWeight: 600 }}>
+                {Number(pb.total_score).toFixed(1)}
+              </td>
+              <td>{pb.meet_name}</td>
+              <td>{formatDate(pb.meet_date)}</td>
+            </tr>
+            {expandedPb.includes(idx) && pb.dives.length > 0 && (
+              <tr>
+                <td colSpan={5}>
+                  <DiveChart
+                    dives={pb.dives.map(
+                      (d): DiveScore => ({
+                        dive: d.dive_code || '',
+                        award: Number(d.award),
+                        dd: Number(d.dd),
+                        j1: Number(d.j1),
+                        j2: Number(d.j2),
+                        j3: Number(d.j3),
+                        j4: Number(d.j4),
+                        j5: Number(d.j5),
+                        pr: d.is_personal_best,
+                      })
+                    )}
+                  />
+                </td>
+              </tr>
+            )}
+          </React.Fragment>
+        ))}
+        {pbs.length === 0 && (
+          <tr>
+            <td
+              colSpan={5}
+              style={{ textAlign: 'center', padding: 20, color: '#888' }}
+            >
+              No personal bests
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
+
+  const renderProgression = (): React.ReactElement => (
+    <table
+      style={{ width: '100%', borderCollapse: 'collapse' }}
+      className="scores-table"
+    >
+      <thead>
+        <tr>
+          <th></th>
+          <th>Event</th>
+          <th>Score</th>
+          <th>Meet</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {results.map((r, idx) => (
+          <React.Fragment key={idx}>
+            <tr
+              className="result-row"
+              onClick={(): void => toggleResult(idx)}
+              style={{ cursor: 'pointer' }}
+            >
+              <td>{expandedResult.includes(idx) ? '\u25BC' : '\u25B6'}</td>
+              <td>
+                {r.height} {r.event_name}
+              </td>
+              <td style={{ fontWeight: 600 }}>
+                {Number(r.total_score).toFixed(1)}
+              </td>
+              <td>{r.meet_name}</td>
+              <td>{formatDate(r.meet_date)}</td>
+            </tr>
+            {expandedResult.includes(idx) && r.dives.length > 0 && (
+              <tr>
+                <td colSpan={5}>
+                  <DiveChart
+                    dives={r.dives.map(
+                      (d): DiveScore => ({
+                        dive: d.dive_code || '',
+                        award: Number(d.award),
+                        dd: Number(d.dd),
+                        j1: Number(d.j1),
+                        j2: Number(d.j2),
+                        j3: Number(d.j3),
+                        j4: Number(d.j4),
+                        j5: Number(d.j5),
+                      })
+                    )}
+                  />
+                </td>
+              </tr>
+            )}
+          </React.Fragment>
+        ))}
+        {results.length === 0 && (
+          <tr>
+            <td
+              colSpan={5}
+              style={{ textAlign: 'center', padding: 20, color: '#888' }}
+            >
+              No results
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
 
   return (
     <div className="scores-section">
       <div className="scores-card">
-        <ScoreTabs
-          activeTab={activeScoresTab}
-          onTabChange={setActiveScoresTab}
-        />
-        {renderScoresContent()}
+        <ScoreTabs activeTab={activeTab} onTabChange={setActiveTab} />
+        {activeTab === 'Personal Bests' && renderPBs()}
+        {activeTab === 'Event Progression' && renderProgression()}
       </div>
     </div>
   );

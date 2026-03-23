@@ -1,0 +1,72 @@
+.meet-page-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 80%;
+  margin: 20px auto 0;
+  box-sizing: border-box;
+}
+
+.meet-page-avatar {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+
+.meet-page-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.meet-page-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #e0e0e0;
+}
+
+.meet-page-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meet-page-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.meet-page-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0;
+}
+
+.meet-page-status.completed {
+  color: #8b0000;
+  font-weight: 500;
+}
+
+.meet-page-status.upcoming {
+  color: #8b0000;
+  font-weight: 500;
+}
+
+.meet-page-date,
+.meet-page-location {
+  color: #888;
+}

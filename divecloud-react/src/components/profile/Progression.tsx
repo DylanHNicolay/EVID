@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Progression.css';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
 
 interface ProgressionDataPoint {
   date: string;
@@ -7,70 +9,79 @@ interface ProgressionDataPoint {
 }
 
 interface ProgressionProps {
-  data?: ProgressionDataPoint[];
-  title?: string;
+  athleteId: number;
 }
 
-const mockData: ProgressionDataPoint[] = [
-  { date: '2018', score: 450 },
-  { date: '2019', score: 600 },
-  { date: '2020', score: 650 },
-  { date: '2021', score: 750 },
-  { date: '2022', score: 800 },
-  { date: '2023', score: 850 },
-  { date: '2024', score: 920 },
-  { date: '2025', score: 950 },
-];
+function formatDate(raw: string): string {
+  const iso = raw.includes('T') ? raw.split('T')[0] : raw;
+  const [y, m] = iso.split('-');
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  return `${months[parseInt(m, 10) - 1]} ${y}`;
+}
 
 const Progression: React.FC<ProgressionProps> = ({
-  data = mockData,
-  title = 'Progression',
+  athleteId,
 }): React.ReactElement => {
-  // Calculate chart dimensions
+  const [data, setData] = useState<ProgressionDataPoint[]>([]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/athletes/${athleteId}/progression`)
+      .then((r) => r.json())
+      .then((rows: { date: string; score: string }[]) =>
+        setData(rows.map((r) => ({ date: r.date, score: Number(r.score) })))
+      )
+      .catch(console.error);
+  }, [athleteId]);
+
   const padding = 40;
   const chartWidth = 500;
   const chartHeight = 300;
   const width = chartWidth + 2 * padding;
   const height = chartHeight + 2 * padding;
 
-  if (!data || data.length === 0) {
-    return <div className="event-progression">No data available</div>;
+  if (data.length === 0) {
+    return (
+      <div className="event-progression">No progression data available</div>
+    );
   }
 
-  // Find min and max scores
   const scores = data.map((d) => d.score);
   const minScore = Math.min(...scores);
   const maxScore = Math.max(...scores);
   const scoreRange = maxScore - minScore || 1;
 
-  // Scale functions
-  const scaleX = (index: number): number => {
-    return padding + (index / (data.length - 1)) * chartWidth;
-  };
+  const scaleX = (index: number): number =>
+    padding + (index / (data.length - 1 || 1)) * chartWidth;
 
-  const scaleY = (score: number): number => {
-    return height - padding - ((score - minScore) / scoreRange) * chartHeight;
-  };
+  const scaleY = (score: number): number =>
+    height - padding - ((score - minScore) / scoreRange) * chartHeight;
 
-  // Generate line path
   const pathD = data
-    .map((d, i) => {
-      const x = scaleX(i);
-      const y = scaleY(d.score);
-      return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
-    })
+    .map((d, i) => `${i === 0 ? 'M' : 'L'} ${scaleX(i)} ${scaleY(d.score)}`)
     .join(' ');
 
   return (
     <div className="event-progression">
-      <h3 className="event-progression-title">{title}</h3>
+      <h3 className="event-progression-title">Progression</h3>
       <div className="event-progression-divider" />
       <svg
         className="event-progression-chart"
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* Grid lines */}
         {[0, 1, 2, 3, 4].map((i) => (
           <line
             key={`grid-${i}`}
@@ -81,8 +92,6 @@ const Progression: React.FC<ProgressionProps> = ({
             className="event-progression-grid"
           />
         ))}
-
-        {/* Y-axis */}
         <line
           x1={padding}
           y1={padding}
@@ -90,8 +99,6 @@ const Progression: React.FC<ProgressionProps> = ({
           y2={height - padding}
           className="event-progression-axis"
         />
-
-        {/* X-axis */}
         <line
           x1={padding}
           y1={height - padding}
@@ -99,24 +106,17 @@ const Progression: React.FC<ProgressionProps> = ({
           y2={height - padding}
           className="event-progression-axis"
         />
-
-        {/* Y-axis labels */}
-        {[0, 1, 2, 3, 4].map((i) => {
-          const value = Math.round(minScore + (i / 4) * scoreRange);
-          return (
-            <text
-              key={`y-label-${i}`}
-              x={padding - 10}
-              y={height - padding - (i / 4) * chartHeight + 5}
-              className="event-progression-label"
-              textAnchor="end"
-            >
-              {value}
-            </text>
-          );
-        })}
-
-        {/* X-axis labels */}
+        {[0, 1, 2, 3, 4].map((i) => (
+          <text
+            key={`y-label-${i}`}
+            x={padding - 10}
+            y={height - padding - (i / 4) * chartHeight + 5}
+            className="event-progression-label"
+            textAnchor="end"
+          >
+            {Math.round(minScore + (i / 4) * scoreRange)}
+          </text>
+        ))}
         {data.map((d, i) => (
           <text
             key={`x-label-${i}`}
@@ -125,14 +125,10 @@ const Progression: React.FC<ProgressionProps> = ({
             className="event-progression-label"
             textAnchor="middle"
           >
-            {d.date}
+            {formatDate(d.date)}
           </text>
         ))}
-
-        {/* Line */}
         <path d={pathD} className="event-progression-line" fill="none" />
-
-        {/* Dots */}
         {data.map((d, i) => (
           <circle
             key={`dot-${i}`}

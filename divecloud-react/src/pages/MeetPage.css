@@ -1,0 +1,41 @@
+.meet-page {
+  padding-bottom: 40px;
+}
+
+.meet-page-body {
+  width: 100%;
+  max-width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 20px;
+}
+
+.meet-gender-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.meet-gender-toggle button {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #888;
+  cursor: pointer;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.meet-gender-toggle button.active {
+  color: #1a1a1a;
+  border-bottom-color: #1a1a1a;
+}
+
+.meet-gender-toggle button:hover:not(.active) {
+  color: #555;
+}

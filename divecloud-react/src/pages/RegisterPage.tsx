@@ -1,23 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoleSelector from '../components/signup/RoleSelector';
 import RegisterForm from '../components/signup/RegisterForm';
 import type { UserRole } from '../components/signup/RoleSelector';
+import type { RegisterPayload } from '../components/signup/RegisterForm';
+import { useAuth } from '../context/AuthContext';
 import '../components/login/LoginForm.css';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
 
 export default function RegisterPage(): React.ReactElement {
   const [role, setRole] = useState<UserRole | null>(null);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { isAuthenticated, login } = useAuth();
 
-  const handleSubmit = (data: {
-    role: UserRole;
-    email: string;
-    password: string;
-  }): void => {
-    // TODO: replace with real register action
-    // eslint-disable-next-line no-console
-    console.log('Register submit', data);
-    alert(`Register submitted as ${data.role} (demo)`);
+  useEffect(() => {
+    if (isAuthenticated) navigate('/', { replace: true });
+  }, [isAuthenticated, navigate]);
+
+  const handleSubmit = async (data: RegisterPayload): Promise<void> => {
+    setError('');
+    try {
+      const res = await fetch(`${API_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.error || 'Registration failed');
+        return;
+      }
+      login(json.token, json.user);
+      navigate('/');
+    } catch {
+      setError('Network error');
+    }
   };
 
   return (
@@ -29,7 +48,8 @@ export default function RegisterPage(): React.ReactElement {
           <RegisterForm
             role={role}
             onSubmit={handleSubmit}
-            onBack={() => setRole(null)}
+            onBack={(): void => setRole(null)}
+            error={error}
           />
         ) : (
           <RoleSelector onRoleSelect={setRole} />

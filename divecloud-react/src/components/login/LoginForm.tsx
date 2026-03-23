@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import './LoginForm.css';
 
 interface LoginFormProps {
-  onSubmit: (credentials: { email: string; password: string }) => void;
+  onSubmit: (credentials: {
+    email: string;
+    password: string;
+  }) => void | Promise<void>;
 }
 
 export default function LoginForm({

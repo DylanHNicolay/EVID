@@ -1,8 +1,10 @@
 .commitments-section {
-  max-width: 1000px;
-  margin: 48px auto;
+  width: 100%;
+  max-width: 80%;
+  margin: 20px auto;
   text-align: center;
   padding: 0 40px;
+  box-sizing: border-box;
 }
 
 .commitments-title {
