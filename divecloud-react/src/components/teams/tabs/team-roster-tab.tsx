@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './TeamRosterTab.css';
-import RosterTable from '../../components/teams/roster/RosterTable';
-import CoachCard from '../../components/teams/roster/CoachCard';
+import RosterTable from '../roster/RosterTable';
+import CoachCard from '../roster/CoachCard';
 
 export default function TeamRosterTab(): React.ReactElement {
   const [gender, setGender] = useState<'Men' | 'Women'>('Men');

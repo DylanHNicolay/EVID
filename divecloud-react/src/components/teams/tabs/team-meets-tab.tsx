@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './team-meets-tab.css';
-import MeetList from '../../components/teams/meets/MeetList';
+import MeetList from '../meets/MeetList';
 
 export default function TeamMeetsTab(): React.ReactElement {
   const [nameFilter, setNameFilter] = useState('');

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MeetCard from '../../components/profile/MeetCard';
+import MeetCard from '../MeetCard';
 import './profile-meets-tab.css';
 
 interface Meet {

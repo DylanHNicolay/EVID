@@ -1,7 +1,7 @@
 import React from 'react';
-import TeamCard from '../../components/profile/TeamCard';
-import LatestResults from '../../components/profile/LatestResults';
-import Progression from '../../components/profile/Progression';
+import TeamCard from '../TeamCard';
+import LatestResults from '../LatestResults';
+import Progression from '../Progression';
 import './profile-home-tab.css';
 
 export default function ProfileHomeTab(): React.ReactElement {

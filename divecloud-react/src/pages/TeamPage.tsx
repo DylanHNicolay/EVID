@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import TeamPageCard from '../components/teams/TeamPageCard';
-import TeamHomeTab from '../tabs/team/team-home-tab';
-import TeamMeetsTab from '../tabs/team/team-meets-tab';
-import TeamRosterTab from '../tabs/team/team-roster-tab';
+import TeamHomeTab from '../components/teams/tabs/team-home-tab';
+import TeamMeetsTab from '../components/teams/tabs/team-meets-tab';
+import TeamRosterTab from '../components/teams/tabs/team-roster-tab';
 
 export default function TeamPage(): React.ReactElement {
   const [activeTab, setActiveTab] = useState('Home');
