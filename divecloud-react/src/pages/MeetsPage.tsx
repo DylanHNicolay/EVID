@@ -37,7 +37,7 @@ export default function MeetsPage(): React.ReactElement {
   const [nameFilter, setNameFilter] = useState('');
   const [sort, setSort] = useState<SortMode>('latest');
   const [dateMode, setDateMode] = useState<DateMode>('past');
-  const [range, setRange] = useState<RangeMode>('week');
+  const [range, setRange] = useState<RangeMode>('month');
 
   const fetchMeets = useCallback(() => {
     const params = new URLSearchParams();
