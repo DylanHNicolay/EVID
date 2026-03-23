@@ -105,6 +105,72 @@ app.get('/api/home/commitments', async (_req, res) => {
   }
 });
 
+// ─── Meet detail ────────────────────────────────────────
+
+// Meet header info
+app.get('/api/meets/:id', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT id, name, meet_date, date_end, location, course,
+              meet_type, season, status, logo_url
+       FROM meets WHERE id = $1`,
+      [req.params.id]
+    );
+    if (rows.length === 0) return res.status(404).json({ error: 'Meet not found' });
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('meet detail error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Team scores for a meet, by gender
+app.get('/api/meets/:id/teams', async (req, res) => {
+  try {
+    const gender = req.query.gender || 'men';
+    const { rows } = await pool.query(
+      `SELECT mt.team_id, t.name, t.logo_url, t.accent_color, mt.team_score
+       FROM meet_teams mt
+       JOIN teams t ON t.id = mt.team_id
+       WHERE mt.meet_id = $1 AND mt.gender = $2
+       ORDER BY mt.team_score DESC`,
+      [req.params.id, gender]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('meet teams error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Results for a meet, by gender — entries ranked by total_score
+app.get('/api/meets/:id/results', async (req, res) => {
+  try {
+    const gender = req.query.gender || 'men';
+    const { rows } = await pool.query(
+      `SELECT
+         me.id,
+         a.first_name || ' ' || a.last_name AS name,
+         t.name        AS team,
+         e.height      AS event,
+         me.total_score AS score,
+         me.points,
+         me.final_rank
+       FROM meet_entries me
+       JOIN events e   ON e.id  = me.event_id
+       JOIN athletes a ON a.id  = me.athlete_id
+       LEFT JOIN teams t ON t.id = me.team_id
+       WHERE e.meet_id = $1 AND e.category = $2
+       ORDER BY e.height, me.total_score DESC`,
+      [req.params.id, gender]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('meet results error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`API listening on port ${PORT}`);
