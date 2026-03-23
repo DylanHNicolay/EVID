@@ -2,11 +2,83 @@
   background: white;
   border-radius: 12px;
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.15),
-    0 1px 4px rgba(0, 0, 0, 0.1);
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
   padding: 24px 40px;
-  max-width: 1100px;
-  margin: 20px auto;
+  max-width: 1300px;
+  margin: 40px auto;
+}
+
+.top-events-country {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.top-events-flag {
+  width: 44px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.top-events-country h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0;
+  color: #222;
+}
+
+.top-events-chevron {
+  margin-left: -6px;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.top-events-meets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 28px;
+  column-gap: 0;
+  margin: 0 auto 40px;
+  padding: 0 8px;
+}
+
+.top-events-meet-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 28px;
+}
+
+.top-events-meet-item:not(:nth-child(3n + 1)) {
+  border-left: 1px solid #ddd;
+}
+
+.top-events-meet-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.top-events-meet-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-events-meet-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+  line-height: 1.3;
+}
+
+.top-events-meet-meta {
+  font-size: 12.5px;
+  color: #888;
+  margin-top: 4px;
 }
 
 .top-events-header {

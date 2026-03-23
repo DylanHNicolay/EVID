@@ -1,0 +1,47 @@
+.features-card {
+  background: linear-gradient(135deg, #3a9a8e 0%, #2a7a8a 40%, #1e6070 100%);
+  border-radius: 16px;
+  padding: 48px 40px;
+  max-width: 1300px;
+  margin: 48px auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 48px;
+}
+
+.feature-item {
+  padding: 4px 0;
+}
+
+.feature-icon {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 12px;
+}
+
+.feature-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 10px;
+}
+
+.feature-description {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+
+.feature-learn-more {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+}
+
+.feature-learn-more:hover {
+  text-decoration: underline;
+}
