@@ -4,8 +4,8 @@
   box-shadow:
     0 6px 24px rgba(0, 0, 0, 0.2),
     0 2px 8px rgba(0, 0, 0, 0.12);
-  padding: 24px 40px;
-  max-width: 1000px;
+  padding: 32px 48px;
+  max-width: 1200px;
   margin: 40px auto;
 }
 
@@ -38,17 +38,18 @@
 .top-events-meets-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  row-gap: 28px;
-  column-gap: 0;
-  margin: 0 auto 40px;
-  padding: 0 8px;
+  row-gap: 32px;
+  column-gap: 24px;
+  margin: 0 auto 48px;
+  padding: 0;
 }
 
 .top-events-meet-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 28px;
+  gap: 14px;
+  padding: 0 20px;
+  min-width: 0;
 }
 
 .top-events-meet-item:not(:nth-child(3n + 1)) {
@@ -66,6 +67,7 @@
 .top-events-meet-info {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .top-events-meet-name {
@@ -73,6 +75,9 @@
   font-weight: 600;
   color: #222;
   line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .top-events-meet-meta {

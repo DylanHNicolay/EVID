@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MeetCard from '../MeetCard';
 import './profile-meets-tab.css';
 
@@ -14,6 +15,7 @@ interface Meet {
 }
 
 export default function ProfileMeetsTab(): React.ReactElement {
+  const navigate = useNavigate();
   const [yearFilter, setYearFilter] = useState('All');
   const [nameFilter, setNameFilter] = useState('');
   const [sortBy, setSortBy] = useState('None');
@@ -50,9 +52,7 @@ export default function ProfileMeetsTab(): React.ReactElement {
   ]);
 
   const handleMeetClick = (meetId: string): void => {
-    // Navigate to meet details view
-    console.log(`Navigating to meet details for meet ID: ${meetId}`);
-    // TODO: Implement navigation to meet detail view
+    navigate(`/meet/${meetId}`);
   };
 
   const filteredMeets = meets

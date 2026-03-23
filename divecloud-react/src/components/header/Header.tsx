@@ -47,7 +47,7 @@ const Header = ({ onMenuClick, onSearch }: HeaderProps): React.ReactElement => {
             >
               <path
                 d="M6 14c-2.8 0-5-2-5-4.5S3.2 5 6 5c.3 0 .6 0 .9.1C8.1 2.6 10.8 1 14 1c4 0 7.3 2.9 7.9 6.6.3 0 .7-.1 1.1-.1 2.5 0 4.5 1.8 4.5 4s-2 4-4.5 4H6z"
-                stroke="#1a7c8f"
+                stroke="#c0392b"
                 strokeWidth="1.5"
                 fill="none"
                 strokeLinejoin="round"

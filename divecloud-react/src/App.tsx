@@ -7,6 +7,7 @@ import TeamPage from './pages/TeamPage';
 import ProfilePage from './pages/profilePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import MeetPage from './pages/MeetPage';
 import './App.css';
 
 function App(): React.ReactElement {
@@ -24,6 +25,7 @@ function App(): React.ReactElement {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/meet/:meetId" element={<MeetPage />} />
           </Routes>
         </main>
       </div>

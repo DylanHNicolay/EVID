@@ -11,6 +11,12 @@
   gap: 16px;
   padding: 16px 20px;
   border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.meet-item:hover {
+  background: #fafafa;
 }
 
 .meet-item:last-child {

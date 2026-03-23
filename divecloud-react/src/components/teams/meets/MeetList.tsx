@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './MeetList.css';
 
 interface Meet {
@@ -80,6 +81,8 @@ const MeetList = ({
   typeFilter,
   seasonFilter,
 }: MeetListProps): React.ReactElement => {
+  const navigate = useNavigate();
+
   const filtered = mockMeets.filter((meet) => {
     const matchesName = meet.name
       .toLowerCase()
@@ -92,7 +95,11 @@ const MeetList = ({
   return (
     <div className="meet-list">
       {filtered.map((meet) => (
-        <div key={meet.id} className="meet-item">
+        <div
+          key={meet.id}
+          className="meet-item"
+          onClick={() => navigate(`/meet/${meet.id}`)}
+        >
           <div className="meet-logo-placeholder" />
           <div className="meet-info">
             <span className="meet-name">{meet.name}</span>
