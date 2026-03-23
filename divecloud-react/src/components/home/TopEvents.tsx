@@ -182,12 +182,7 @@ export default function TopEvents(): React.ReactElement {
   return (
     <div className="top-events-card">
       <div className="top-events-country">
-        <img
-          className="top-events-flag"
-          src="https://flagcdn.com/w80/us.png"
-          alt="United States"
-        />
-        <h2>United States</h2>
+        <h2>Recent Events</h2>
       </div>
 
       <div className="top-events-meets-grid">

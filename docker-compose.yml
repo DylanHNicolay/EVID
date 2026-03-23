@@ -9,22 +9,25 @@ services:
       POSTGRES_DB: mydb
     ports:
       - "5432:5432"
+    volumes:
+      - ./INIT.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./SEED.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
     networks:
       - app_network
 
-  pgadmin:
-    image: dpage/pgadmin4:9.12
-    container_name: pgadmin
-    restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
-    ports:
-      - "5050:80"
-    networks:
-      - app_network
-    depends_on:
-      - postgres
+  # pgadmin:
+  #   image: dpage/pgadmin4:9.12
+  #   container_name: pgadmin
+  #   restart: unless-stopped
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
+  #     PGADMIN_DEFAULT_PASSWORD: admin123
+  #   ports:
+  #     - "5050:80"
+  #   networks:
+  #     - app_network
+  #   depends_on:
+  #     - postgres
 
   react_app:
     build:
