@@ -4,15 +4,21 @@ import LatestResults from '../LatestResults';
 import Progression from '../Progression';
 import './profile-home-tab.css';
 
-export default function ProfileHomeTab(): React.ReactElement {
+interface ProfileHomeTabProps {
+  athleteId: number;
+}
+
+export default function ProfileHomeTab({
+  athleteId,
+}: ProfileHomeTabProps): React.ReactElement {
   return (
     <div className="teamAndResults">
       <div className="teamAndProgression">
-        <TeamCard />
-        <Progression />
+        <TeamCard athleteId={athleteId} />
+        <Progression athleteId={athleteId} />
       </div>
 
-      <LatestResults />
+      <LatestResults athleteId={athleteId} />
     </div>
   );
 }

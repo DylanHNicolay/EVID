@@ -21,7 +21,9 @@ function App(): React.ReactElement {
         <main className="app-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/team/:teamId" element={<TeamPage />} />
             <Route path="/team" element={<TeamPage />} />
+            <Route path="/profile/:athleteId" element={<ProfilePage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

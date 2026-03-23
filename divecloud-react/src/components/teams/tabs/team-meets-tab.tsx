@@ -2,24 +2,22 @@ import React, { useState } from 'react';
 import './team-meets-tab.css';
 import MeetList from '../meets/MeetList';
 
-export default function TeamMeetsTab(): React.ReactElement {
+interface TeamMeetsTabProps {
+  teamId: number;
+}
+
+export default function TeamMeetsTab({
+  teamId,
+}: TeamMeetsTabProps): React.ReactElement {
   const [nameFilter, setNameFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('All');
-  const [seasonFilter, setSeasonFilter] = useState('2025-2026');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
-      console.log('Selected:', e.target.files[0].name);
-    }
-  };
+  const [seasonFilter, setSeasonFilter] = useState('');
 
   return (
     <div className="meets-layout">
       <div className="meets-main">
         <MeetList
+          teamId={teamId}
           nameFilter={nameFilter}
           typeFilter={typeFilter}
           seasonFilter={seasonFilter}
@@ -27,53 +25,32 @@ export default function TeamMeetsTab(): React.ReactElement {
       </div>
 
       <div className="meets-sidebar">
-        <button
-          className="submit-meet-btn"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          Submit meet
-        </button>
-
-        <input
-          type="file"
-          accept=".csv"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          onChange={handleFileChange}
-        />
-
-        {selectedFile && (
-          <p className="selected-file">📄 {selectedFile.name}</p>
-        )}
-
         <div className="meets-filters">
           <label>Name</label>
           <input
             type="text"
             value={nameFilter}
-            onChange={(e) => setNameFilter(e.target.value)}
+            onChange={(e): void => setNameFilter(e.target.value)}
           />
 
           <label>Meet Type</label>
           <select
             value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
+            onChange={(e): void => setTypeFilter(e.target.value)}
           >
             <option>All</option>
-            <option>Championship</option>
-            <option>Invitational</option>
-            <option>Dual</option>
+            <option>championship</option>
+            <option>invitational</option>
+            <option>dual</option>
           </select>
 
           <label>Season</label>
-          <select
+          <input
+            type="text"
+            placeholder="e.g. 2025-2026"
             value={seasonFilter}
-            onChange={(e) => setSeasonFilter(e.target.value)}
-          >
-            <option>2025-2026</option>
-            <option>2024-2025</option>
-            <option>2023-2024</option>
-          </select>
+            onChange={(e): void => setSeasonFilter(e.target.value)}
+          />
         </div>
       </div>
     </div>

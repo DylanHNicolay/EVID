@@ -1,12 +1,20 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
 
 interface SidebarProps {
   open: boolean;
 }
 
-const navItems = [
+interface NavItem {
+  to: string;
+  label: string;
+  icon: React.ReactElement;
+  authOnly?: boolean;
+}
+
+const navItems: NavItem[] = [
   {
     to: '/',
     label: 'Home',
@@ -57,6 +65,7 @@ const navItems = [
   {
     to: '/profile',
     label: 'Profile',
+    authOnly: true,
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
         <circle cx="11" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
@@ -72,14 +81,20 @@ const navItems = [
 ];
 
 export default function Sidebar({ open }: SidebarProps): React.ReactElement {
+  const { isAuthenticated } = useAuth();
+
+  const visibleItems = navItems.filter(
+    (item) => !item.authOnly || isAuthenticated
+  );
+
   return (
     <nav className={`sidebar ${open ? 'sidebar--open' : ''}`}>
       <ul className="sidebar-nav">
-        {navItems.map((item) => (
+        {visibleItems.map((item) => (
           <li key={item.to}>
             <NavLink
               to={item.to}
-              className={({ isActive }) =>
+              className={({ isActive }): string =>
                 `sidebar-link ${isActive ? 'sidebar-link--active' : ''}`
               }
               end={item.to === '/'}

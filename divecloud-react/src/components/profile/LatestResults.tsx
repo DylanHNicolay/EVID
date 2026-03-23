@@ -1,183 +1,122 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './LatestResults.css';
 
-interface ResultRow {
-  event: string;
-  round: string;
-  time: string;
-  badge?: 'PB' | 'SB';
-  improvement: number;
-  place: number;
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
+
+interface DiveDetail {
+  dive_number: number;
+  dive_code: string;
+  dd: number;
+  j1: number;
+  j2: number;
+  j3: number;
+  j4: number;
+  j5: number;
+  award: number;
+  score: number;
+  is_personal_best: boolean;
 }
 
-interface Meet {
-  name: string;
-  date: string;
-  logoUrl?: string;
-  results: ResultRow[];
+interface ResultEntry {
+  entry_id: number;
+  event_name: string;
+  height: string;
+  dives_required: number;
+  total_score: number;
+  final_rank: number | null;
+  points: number | null;
+  meet_name: string;
+  meet_date: string;
+  dives: DiveDetail[];
 }
 
-const sampleMeets: Meet[] = [
-  {
-    name: 'TYR Pro Swim Series - Westmont',
-    date: 'Mar 4–7, 2026',
-    results: [
-      {
-        event: '50 L Free',
-        round: 'Finals',
-        time: '21.43',
-        badge: 'PB',
-        improvement: -0.14,
-        place: 1,
-      },
-      {
-        event: '50 L Free',
-        round: 'Prelims',
-        time: '21.86',
-        improvement: 0.29,
-        place: 2,
-      },
-      {
-        event: '100 L Free',
-        round: 'Finals',
-        time: '47.84',
-        improvement: 0.21,
-        place: 1,
-      },
-      {
-        event: '100 L Free',
-        round: 'Semifinals',
-        time: '47.54',
-        badge: 'SB',
-        improvement: -0.09,
-        place: 1,
-      },
-      {
-        event: '100 L Free',
-        round: 'Prelims',
-        time: '47.38',
-        badge: 'SB',
-        improvement: -0.25,
-        place: 1,
-      },
-      {
-        event: '200 L Free',
-        round: 'Finals',
-        time: '1:45.53',
-        badge: 'SB',
-        improvement: -0.14,
-        place: 1,
-      },
-      {
-        event: '200 L Free',
-        round: 'Prelims',
-        time: '1:45.38',
-        badge: 'SB',
-        improvement: -0.29,
-        place: 1,
-      },
-    ],
-  },
-];
+interface LatestResultsProps {
+  athleteId: number;
+}
 
-const formatImprovement = (value: number): string => {
-  if (value < 0) return value.toFixed(2);
-  return `+${value.toFixed(2)}`;
-};
+function formatPlace(rank: number | null): string {
+  if (!rank) return '—';
+  if (rank === 1) return '1st';
+  if (rank === 2) return '2nd';
+  if (rank === 3) return '3rd';
+  return `${rank}th`;
+}
 
-const formatPlace = (place: number): string => {
-  if (place === 1) return '1st';
-  if (place === 2) return '2nd';
-  if (place === 3) return '3rd';
-  return `${place}th`;
-};
+function formatDate(raw: string): string {
+  const iso = raw.includes('T') ? raw.split('T')[0] : raw;
+  const [y, m, d] = iso.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  return dt.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
 
-export default function LatestResults(): React.ReactElement {
-  const meets = sampleMeets;
-  const [selectedMeetIndex, setSelectedMeetIndex] = useState(0);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+export default function LatestResults({
+  athleteId,
+}: LatestResultsProps): React.ReactElement {
+  const [results, setResults] = useState<ResultEntry[]>([]);
 
-  const selectedMeet = meets[selectedMeetIndex];
+  useEffect(() => {
+    fetch(`${API_URL}/api/athletes/${athleteId}/results`)
+      .then((r) => r.json())
+      .then(setResults)
+      .catch(console.error);
+  }, [athleteId]);
+
+  if (results.length === 0) {
+    return (
+      <div className="latest-results">
+        <h3 className="latest-results-title">Latest Results</h3>
+        <p style={{ color: '#888', fontSize: 14, padding: '0 8px' }}>
+          No results yet
+        </p>
+      </div>
+    );
+  }
+
+  const meetName = results[0]?.meet_name || '';
+  const meetDate = results[0]?.meet_date
+    ? formatDate(results[0].meet_date)
+    : '';
 
   return (
     <div className="latest-results">
       <div className="latest-results-header">
         <h3 className="latest-results-title">Latest Results</h3>
-        <button className="latest-results-see-all">See all</button>
       </div>
 
-      {/* Meet selector */}
       <div className="meet-selector-wrapper">
-        <button
-          className="meet-selector"
-          onClick={() => setDropdownOpen(!dropdownOpen)}
-        >
-          {selectedMeet.logoUrl && (
-            <img
-              src={selectedMeet.logoUrl}
-              alt={selectedMeet.name}
-              className="meet-logo"
-            />
-          )}
+        <div className="meet-selector">
           <div className="meet-selector-text">
-            <span className="meet-name">{selectedMeet.name}</span>
-            <span className="meet-date">{selectedMeet.date}</span>
+            <span className="meet-name">{meetName}</span>
+            <span className="meet-date">{meetDate}</span>
           </div>
-          <span className={`meet-chevron ${dropdownOpen ? 'open' : ''}`}>
-            ▾
-          </span>
-        </button>
-
-        {dropdownOpen && meets.length > 1 && (
-          <div className="meet-dropdown">
-            {meets.map((meet, idx) => (
-              <button
-                key={idx}
-                className={`meet-dropdown-item ${idx === selectedMeetIndex ? 'active' : ''}`}
-                onClick={() => {
-                  setSelectedMeetIndex(idx);
-                  setDropdownOpen(false);
-                }}
-              >
-                <span className="meet-name">{meet.name}</span>
-                <span className="meet-date">{meet.date}</span>
-              </button>
-            ))}
-          </div>
-        )}
+        </div>
       </div>
 
-      {/* Results table */}
       <table className="results-table">
         <thead>
           <tr>
             <th className="col-event">Event</th>
-            <th className="col-time">Time</th>
-            <th className="col-imp">Imp</th>
+            <th className="col-time">Score</th>
             <th className="col-place">Place</th>
           </tr>
         </thead>
         <tbody>
-          {selectedMeet.results.map((row, idx) => (
-            <tr key={idx} className="results-row">
+          {results.map((row) => (
+            <tr key={row.entry_id} className="results-row">
               <td className="col-event">
-                <span className="event-name">{row.event}</span>{' '}
-                <span className="event-round">{row.round}</span>
+                <span className="event-name">{row.height}</span>{' '}
+                <span className="event-round">{row.dives_required} dive</span>
               </td>
               <td className="col-time">
-                <span className="time-value">{row.time}</span>
-                {row.badge && (
-                  <span className={`badge badge-${row.badge.toLowerCase()}`}>
-                    {row.badge}
-                  </span>
-                )}
+                <span className="time-value">
+                  {Number(row.total_score).toFixed(1)}
+                </span>
               </td>
-              <td
-                className={`col-imp ${row.improvement <= 0 ? 'imp-negative' : 'imp-positive'}`}
-              >
-                {formatImprovement(row.improvement)}
-              </td>
-              <td className="col-place">{formatPlace(row.place)}</td>
+              <td className="col-place">{formatPlace(row.final_rank)}</td>
             </tr>
           ))}
         </tbody>

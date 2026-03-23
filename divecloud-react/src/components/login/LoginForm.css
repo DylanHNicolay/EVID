@@ -87,3 +87,13 @@
 .auth-switch-link:hover {
   color: #6d0000;
 }
+
+.auth-error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  margin: 0 0 12px;
+}

@@ -4,6 +4,7 @@ Generates SEED.sql with ~4,500+ rows of realistic sample data for divecloud.
 Run: python generate_seed.py
 """
 
+import csv
 import random
 import sys
 from datetime import date, timedelta
@@ -11,7 +12,7 @@ from datetime import date, timedelta
 random.seed(42)
 
 # Bcrypt hash of 'password'
-PASSWORD_HASH = "$2b$12$LJ3m4ys3Lk0TSwMCkVc3JOSKaAHrYQL0lBTzSn6X9.Cv4fFvdJCaO"
+PASSWORD_HASH = "$2a$12$Eb8OhAiQC6ks0aNxmY20nOgT2FvyrMT.q1SRNeie1.2e/niPIReay"
 
 # ─────────────────────────────────────────────────────────────────────
 # DATA POOLS
@@ -769,6 +770,14 @@ def generate():
     p("COMMIT;")
     out.close()
 
+    # Generate CSV with user credentials
+    with open("users.csv", "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["email", "password", "account_type"])
+        for u in users:
+            uid, email, role, first, last, loc, avatar, banner = u
+            writer.writerow([email, "password", role])
+
     # Summary to stderr
     sys.stderr.write(f"\n=== Seed Data Summary ===\n")
     sys.stderr.write(f"  Teams:              {tid}\n")
@@ -784,7 +793,8 @@ def generate():
     sys.stderr.write(f"  Videos:             {avid}\n")
     sys.stderr.write(f"  Simulations:        {dlid}\n")
     sys.stderr.write(f"  TOTAL ROWS:         {tid+uid+cid+aid+mid+mtid+eid+meid+drid+ccid+avid+dlid}\n")
-    sys.stderr.write(f"=========================\n\n")
+    sys.stderr.write(f"=========================\n")
+    sys.stderr.write(f"Generated users.csv with {len(users)} user credentials\n\n")
 
 
 if __name__ == "__main__":
