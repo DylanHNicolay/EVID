@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generates SEED.sql with ~4,500+ rows of realistic sample data for divecloud.
-Run: python generate_seed.py > SEED.sql
+Run: python generate_seed.py
 """
 
 import random
@@ -370,7 +370,7 @@ def sql_date(d):
 # ─────────────────────────────────────────────────────────────────────
 
 def generate():
-    out = sys.stdout
+    out = open("SEED.sql", "w")
     p = lambda s="": out.write(s + "\n")
 
     # Counters for auto-increment IDs (we control them manually)
@@ -767,6 +767,7 @@ def generate():
     p()
 
     p("COMMIT;")
+    out.close()
 
     # Summary to stderr
     sys.stderr.write(f"\n=== Seed Data Summary ===\n")

@@ -1,7 +1,9 @@
 .roster-table-card {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
   padding: 20px;
 }
 
@@ -35,7 +37,7 @@
 }
 
 .gender-toggle button.active {
-  background: #c0392b;
+  background: #8b0000;
   color: white;
 }
 
@@ -65,11 +67,11 @@
 }
 
 .athlete-name {
-  color: #c0392b;
+  color: #8b0000;
   cursor: pointer;
 }
 
 .athlete-points {
-  color: #c0392b;
+  color: #8b0000;
   text-align: right;
 }

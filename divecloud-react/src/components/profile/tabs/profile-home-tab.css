@@ -7,7 +7,7 @@
 .teamAndResults {
   display: flex;
   flex-direction: row;
-  width: 70%;
+  width: 80%;
   justify-content: center;
   margin: auto;
   gap: 16px;

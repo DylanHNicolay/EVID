@@ -1,8 +1,10 @@
 .meet-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 20px;
   background-color: #ffffff;
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition: all 0.3s ease;
   height: 100%;
@@ -11,7 +13,7 @@
 }
 
 .meet-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
 }
 
@@ -19,7 +21,7 @@
   width: 100%;
   height: 150px;
   background-color: #d3d3d3;
-  border-radius: 8px;
+  border-radius: 6px;
   margin-bottom: 16px;
   display: flex;
   align-items: center;

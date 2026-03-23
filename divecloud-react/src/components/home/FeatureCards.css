@@ -1,9 +1,11 @@
 .features-card {
-  background: linear-gradient(135deg, #d94535 0%, #b71c1c 40%, #8b0000 100%);
-  border-radius: 16px;
+  background: linear-gradient(135deg, #a52020 0%, #8b0000 40%, #6d0000 100%);
+  border-radius: 12px;
   padding: 48px 40px;
-  max-width: 1200px;
-  margin: 48px auto;
+  width: 100%;
+  max-width: 80%;
+  margin: 20px auto;
+  box-sizing: border-box;
 }
 
 .features-grid {

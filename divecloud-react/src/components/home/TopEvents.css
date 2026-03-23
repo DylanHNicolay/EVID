@@ -5,8 +5,10 @@
     0 6px 24px rgba(0, 0, 0, 0.2),
     0 2px 8px rgba(0, 0, 0, 0.12);
   padding: 32px 48px;
-  max-width: 1200px;
-  margin: 40px auto;
+  width: 100%;
+  max-width: 80%;
+  margin: 20px auto;
+  box-sizing: border-box;
 }
 
 .top-events-country {
@@ -44,6 +46,8 @@
   gap: 14px;
   padding: 0 20px;
   min-width: 0;
+  text-decoration: none;
+  color: inherit;
 }
 
 .top-events-meet-item:not(:nth-child(3n + 1)) {
@@ -108,7 +112,7 @@
   flex: 1;
   background: white;
   border: 1px solid #eee;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 16px 20px;
 }
 
@@ -154,7 +158,7 @@
 }
 
 .top-events-name {
-  color: #c0392b;
+  color: #8b0000;
   font-weight: 500;
   cursor: pointer;
 }

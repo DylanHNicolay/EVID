@@ -12,7 +12,7 @@
 
 .role-card {
   border: 1px solid #d7d7d6;
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 14px;
   text-align: left;
   background: #fff;
@@ -20,8 +20,8 @@
 }
 
 .role-card:hover {
-  border-color: #ba0e0e;
-  box-shadow: 0 4px 10px rgba(186, 14, 14, 0.15);
+  border-color: #8b0000;
+  box-shadow: 0 4px 10px rgba(139, 0, 0, 0.15);
 }
 
 .role-card strong {
@@ -41,7 +41,7 @@
   border: 1px solid #a3a3a3;
   background: #fff;
   color: #333;
-  border-radius: 8px;
+  border-radius: 6px;
   height: 40px;
   cursor: pointer;
 }

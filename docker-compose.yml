@@ -29,6 +29,25 @@ services:
   #   depends_on:
   #     - postgres
 
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: divecloud_api
+    restart: unless-stopped
+    ports:
+      - "5050:5000"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=admin
+      - DB_PASSWORD=postgres
+      - DB_NAME=mydb
+    networks:
+      - app_network
+    depends_on:
+      - postgres
+
   react_app:
     build:
       context: ./divecloud-react
@@ -42,9 +61,11 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true 
-      - REACT_APP_API_URL=http://localhost:5000
+      - REACT_APP_API_URL=http://localhost:5050
     networks:
       - app_network
+    depends_on:
+      - api
     stdin_open: true
     tty: true
 

@@ -1,13 +1,15 @@
 .meet-page-card {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
   padding: 24px 32px;
   display: flex;
   align-items: center;
   gap: 20px;
   width: 100%;
-  max-width: 70%;
+  max-width: 80%;
   margin: 20px auto 0;
   box-sizing: border-box;
 }
@@ -60,7 +62,7 @@
 }
 
 .meet-page-status.upcoming {
-  color: #c0392b;
+  color: #8b0000;
   font-weight: 500;
 }
 

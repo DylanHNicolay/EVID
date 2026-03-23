@@ -44,7 +44,7 @@
 }
 
 .header-logo-cloud {
-  color: #c0392b;
+  color: #8b0000;
   position: relative;
 }
 
@@ -69,7 +69,7 @@
   height: 40px;
   padding: 0 40px 0 14px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   background: #f0f0f0;
   font-size: 14px;
   color: #333;
@@ -119,7 +119,7 @@
 }
 
 .header-auth-btn:hover {
-  color: #c0392b;
+  color: #8b0000;
 }
 
 /* Responsive */

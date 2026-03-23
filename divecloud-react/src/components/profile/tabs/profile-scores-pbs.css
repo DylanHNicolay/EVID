@@ -3,10 +3,8 @@
   background: #fff;
   border-radius: 12px;
   padding: 32px 24px;
-  margin-top: 32px;
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 80%;
+  margin: 20px auto;
 }
 .pbs-filters {
   display: flex;
@@ -35,7 +33,7 @@
     color 0.2s;
 }
 .pbs-filter-group button.active {
-  background: #b71c1c;
+  background: #8b0000;
   color: #fff;
 }
 .pbs-table {
@@ -62,7 +60,7 @@
   font-size: 18px;
   margin-right: 8px;
   cursor: pointer;
-  color: #b71c1c;
+  color: #8b0000;
 }
 .pbs-event-name {
   font-weight: 500;
@@ -103,10 +101,10 @@
   gap: 4px;
 }
 .pbs-badge {
-  background: #b71c1c;
+  background: #8b0000;
   color: #fff;
   font-size: 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 2px 6px;
   margin-left: 4px;
   font-weight: 600;
@@ -114,7 +112,7 @@
 .pbs-fullsheet-btn {
   background: none;
   border: none;
-  color: #b71c1c;
+  color: #8b0000;
   font-weight: 600;
   cursor: pointer;
   float: right;
