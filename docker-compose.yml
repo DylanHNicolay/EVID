@@ -10,8 +10,15 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      - postgres_data:/var/lib/postgresql/data
       - ./INIT.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
       - ./SEED.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d mydb && psql -U admin -d mydb -c 'SELECT 1 FROM meets LIMIT 1' -q"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
     networks:
       - app_network
 
@@ -46,7 +53,8 @@ services:
     networks:
       - app_network
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   react_app:
     build:
