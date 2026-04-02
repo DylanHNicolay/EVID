@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ScoresSection.css';
 import DiveChart from './DiveChart';
 import type { DiveScore } from '../../../types';
+import Progression from '../Progression';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
 
@@ -57,7 +58,7 @@ interface ScoreTabsProps {
 }
 
 const ScoreTabs: React.FC<ScoreTabsProps> = ({ activeTab, onTabChange }) => {
-  const tabs = ['Personal Bests', 'Event Progression'];
+  const tabs = ['Personal Bests', 'Event History', 'Event Progression'];
   return (
     <div className="score-tabs">
       {tabs.map((tab) => (
@@ -259,7 +260,10 @@ const ScoresSection: React.FC<ScoresSectionProps> = ({
       <div className="scores-card">
         <ScoreTabs activeTab={activeTab} onTabChange={setActiveTab} />
         {activeTab === 'Personal Bests' && renderPBs()}
-        {activeTab === 'Event Progression' && renderProgression()}
+        {activeTab === 'Event History' && renderProgression()}
+        {activeTab === 'Event Progression' && (
+          <Progression athleteId={athleteId} />
+        )}
       </div>
     </div>
   );
