@@ -11,6 +11,8 @@ interface ProfileCardProps {
   avatarUrl?: string;
   activeTab: string;
   onTabChange: (tab: string) => void;
+  isOwnProfile?: boolean;
+  onEditProfile?: () => void;
 }
 
 const ProfileCard = ({
@@ -22,6 +24,8 @@ const ProfileCard = ({
   avatarUrl,
   activeTab,
   onTabChange,
+  isOwnProfile,
+  onEditProfile,
 }: ProfileCardProps): React.ReactElement => {
   const initials = `${firstName[0]}${lastName[0]}`;
 
@@ -50,9 +54,22 @@ const ProfileCard = ({
 
       {/* Info */}
       <div className="profile-info">
-        <h2 className="profile-name">
-          {firstName} {lastName}
-        </h2>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <h2 className="profile-name">
+            {firstName} {lastName}
+          </h2>
+          {isOwnProfile && (
+            <button className="profile-edit-btn" onClick={onEditProfile}>
+              Manage
+            </button>
+          )}
+        </div>
         <p className="profile-meta">
           {location} · <span className="profile-team">{team}</span>
         </p>
