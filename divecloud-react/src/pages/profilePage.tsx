@@ -31,6 +31,12 @@ export default function ProfilePage(): React.ReactElement {
   const athleteId =
     paramId || (user?.athlete_id ? String(user.athlete_id) : null);
 
+  const isOwnProfile =
+    isAuthenticated &&
+    user?.athlete_id != null &&
+    athlete != null &&
+    user.athlete_id === athlete.id;
+
   // #region agent log
   fetch('http://127.0.0.1:7509/ingest/3339ea9c-7f45-41b9-a88d-8b348632910c', {
     method: 'POST',
@@ -177,6 +183,8 @@ export default function ProfilePage(): React.ReactElement {
         bannerUrl={athlete.banner_url || undefined}
         activeTab={activeTab}
         onTabChange={setActiveTab}
+        isOwnProfile={isOwnProfile}
+        onEditProfile={() => navigate(`/profile/${athlete.id}/edit`)}
       />
 
       {activeTab === 'Home' && <ProfileHomeTab athleteId={athlete.id} />}

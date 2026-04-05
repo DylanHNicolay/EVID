@@ -68,3 +68,20 @@
   color: #8b0000;
   cursor: pointer;
 }
+.profile-edit-btn {
+  padding: 8px 18px;
+  border: 2px solid #b91c1c;
+  border-radius: 8px;
+  background: transparent;
+  color: #b91c1c;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.profile-edit-btn:hover {
+  background: #b91c1c;
+  color: #ffffff;
+}
