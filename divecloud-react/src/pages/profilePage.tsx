@@ -27,6 +27,7 @@ export default function ProfilePage(): React.ReactElement {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('Home');
   const [athlete, setAthlete] = useState<AthleteProfile | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const athleteId =
     paramId || (user?.athlete_id ? String(user.athlete_id) : null);
@@ -37,139 +38,47 @@ export default function ProfilePage(): React.ReactElement {
     athlete != null &&
     user.athlete_id === athlete.id;
 
-  // #region agent log
-  fetch('http://127.0.0.1:7509/ingest/3339ea9c-7f45-41b9-a88d-8b348632910c', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Debug-Session-Id': '68e3ce',
-    },
-    body: JSON.stringify({
-      sessionId: '68e3ce',
-      runId: 'pre-fix',
-      hypothesisId: 'H1',
-      location: 'profilePage.tsx:32',
-      message: 'ProfilePage render',
-      data: {
-        paramId: paramId || null,
-        userAthleteId: user?.athlete_id,
-        userId: user?.id,
-        userRole: user?.role,
-        computedAthleteId: athleteId,
-        isAuthenticated,
-      },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {});
-  // #endregion
-
   useEffect(() => {
+    // If no athleteId param and not authenticated, redirect to login
     if (!paramId && !isAuthenticated) {
       navigate('/login', { replace: true });
       return;
     }
-    if (!athleteId) return;
 
-    // #region agent log
-    fetch('http://127.0.0.1:7509/ingest/3339ea9c-7f45-41b9-a88d-8b348632910c', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Debug-Session-Id': '68e3ce',
-      },
-      body: JSON.stringify({
-        sessionId: '68e3ce',
-        runId: 'pre-fix',
-        hypothesisId: 'H4',
-        location: 'profilePage.tsx:useEffect',
-        message: 'Fetching athlete',
-        data: { athleteId, url: `${API_URL}/api/athletes/${athleteId}` },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
+    // If no athleteId and no user athlete_id, can't show profile
+    if (!athleteId) {
+      setLoading(false);
+      return;
+    }
+
+    // Fetch athlete data
     fetch(`${API_URL}/api/athletes/${athleteId}`)
       .then((r) => {
-        // #region agent log
-        fetch(
-          'http://127.0.0.1:7509/ingest/3339ea9c-7f45-41b9-a88d-8b348632910c',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Debug-Session-Id': '68e3ce',
-            },
-            body: JSON.stringify({
-              sessionId: '68e3ce',
-              runId: 'pre-fix',
-              hypothesisId: 'H4',
-              location: 'profilePage.tsx:fetchResponse',
-              message: 'Athlete API response',
-              data: { status: r.status, ok: r.ok },
-              timestamp: Date.now(),
-            }),
-          }
-        ).catch(() => {});
-        // #endregion
+        if (!r.ok) {
+          throw new Error('Failed to fetch athlete');
+        }
         return r.json();
       })
       .then((data) => {
-        // #region agent log
-        fetch(
-          'http://127.0.0.1:7509/ingest/3339ea9c-7f45-41b9-a88d-8b348632910c',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Debug-Session-Id': '68e3ce',
-            },
-            body: JSON.stringify({
-              sessionId: '68e3ce',
-              runId: 'pre-fix',
-              hypothesisId: 'H5',
-              location: 'profilePage.tsx:setAthlete',
-              message: 'Setting athlete data',
-              data: {
-                hasData: !!data,
-                keys: data ? Object.keys(data) : null,
-                firstName: data?.first_name,
-                id: data?.id,
-              },
-              timestamp: Date.now(),
-            }),
-          }
-        ).catch(() => {});
-        // #endregion
         setAthlete(data);
+        setLoading(false);
       })
       .catch((err) => {
-        // #region agent log
-        fetch(
-          'http://127.0.0.1:7509/ingest/3339ea9c-7f45-41b9-a88d-8b348632910c',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Debug-Session-Id': '68e3ce',
-            },
-            body: JSON.stringify({
-              sessionId: '68e3ce',
-              runId: 'pre-fix',
-              hypothesisId: 'H6',
-              location: 'profilePage.tsx:fetchError',
-              message: 'Athlete fetch error',
-              data: { error: String(err) },
-              timestamp: Date.now(),
-            }),
-          }
-        ).catch(() => {});
-        // #endregion
-        console.error(err);
+        console.error('Error fetching athlete:', err);
+        setLoading(false);
       });
   }, [athleteId, paramId, isAuthenticated, navigate]);
 
+  if (loading) {
+    return <div className="profile-page-loading">Loading...</div>;
+  }
+
   if (!athlete) {
-    return <div />;
+    return (
+      <div className="profile-page-error">
+        <p>Profile not found</p>
+      </div>
+    );
   }
 
   return (
@@ -184,7 +93,7 @@ export default function ProfilePage(): React.ReactElement {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         isOwnProfile={isOwnProfile}
-        onEditProfile={() => navigate(`/profile/${athlete.id}/edit`)}
+        onEditProfile={() => navigate('/profile/edit')}
       />
 
       {activeTab === 'Home' && <ProfileHomeTab athleteId={athlete.id} />}
