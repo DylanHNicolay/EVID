@@ -1,0 +1,239 @@
+.profile-media-container {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.profile-media-card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.profile-media-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-media-error {
+  background-color: #fee;
+  color: #c33;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border-left: 4px solid #e74c3c;
+}
+
+.profile-media-success {
+  background-color: #efe;
+  color: #3a3;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border-left: 4px solid #27ae60;
+}
+
+.profile-media-upload {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-media-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-media-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-media-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-media-input {
+  padding: 10px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.profile-media-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  background-color: #fafbfc;
+}
+
+.profile-media-file-input {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.profile-media-file {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+.profile-media-file-label {
+  display: block;
+  padding: 12px 16px;
+  background-color: #f5f5f5;
+  border: 2px dashed #d0d0d0;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.profile-media-file:focus + .profile-media-file-label {
+  border-color: #4a90e2;
+  background-color: #fafbfc;
+}
+
+.profile-media-file-label:hover {
+  border-color: #4a90e2;
+  background-color: #fafbfc;
+}
+
+.profile-media-upload-btn {
+  padding: 12px 24px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-media-upload-btn:hover:not(:disabled) {
+  background-color: #c0392b;
+}
+
+.profile-media-upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.profile-media-gallery {
+  margin-top: 20px;
+}
+
+.profile-media-loading {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
+.profile-media-empty {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
+.profile-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.profile-media-item {
+  position: relative;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.profile-media-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-media-thumbnail {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-media-item-info {
+  padding: 12px;
+  background-color: #fff;
+}
+
+.profile-media-item-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-media-item-info p {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: #999;
+}
+
+.profile-media-delete-btn {
+  width: 100%;
+  padding: 6px 8px;
+  background-color: #fee;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-media-delete-btn:hover {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .profile-media-card {
+    padding: 20px;
+  }
+
+  .profile-media-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .profile-media-thumbnail {
+    height: 120px;
+  }
+}

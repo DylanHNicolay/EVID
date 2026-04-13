@@ -10,6 +10,7 @@ import RegisterPage from './pages/RegisterPage';
 import MeetPage from './pages/MeetPage';
 import MeetsPage from './pages/MeetsPage';
 import './App.css';
+import EditProfilePage from './pages/EditProfilePage';
 
 function App(): React.ReactElement {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -29,6 +30,7 @@ function App(): React.ReactElement {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/meet/:meetId" element={<MeetPage />} />
+            <Route path="/profile/edit" element={<EditProfilePage />} />
           </Routes>
         </main>
       </div>

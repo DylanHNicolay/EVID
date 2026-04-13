@@ -10,10 +10,16 @@ CREATE TABLE users (
   role TEXT NOT NULL CHECK (role IN ('athlete', 'coach', 'admin')),
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
+  middle_initial VARCHAR(1),
+  date_of_birth DATE,
+  gender VARCHAR(50),
+  preferred_first_name TEXT,
+  uss_number VARCHAR(50),
   location TEXT,
   avatar_url TEXT,
   banner_url TEXT,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- ─────────────────────────────────────────────
@@ -150,14 +156,25 @@ CREATE TABLE dive_results (
 );
 
 -- ─────────────────────────────────────────────
+-- Athlete photos
+-- ─────────────────────────────────────────────
+CREATE TABLE athlete_photos (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  athlete_id BIGINT NOT NULL REFERENCES athletes(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  url TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─────────────────────────────────────────────
 -- Athlete videos
 -- ─────────────────────────────────────────────
 CREATE TABLE athlete_videos (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   athlete_id BIGINT NOT NULL REFERENCES athletes(id) ON DELETE CASCADE,
   dive_result_id BIGINT REFERENCES dive_results(id) ON DELETE SET NULL,
-  video_url TEXT NOT NULL,
   title TEXT,
+  video_url TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -193,7 +210,9 @@ CREATE TABLE college_commitments (
 CREATE INDEX idx_athletes_name ON athletes (last_name, first_name);
 CREATE INDEX idx_athletes_team ON athletes (team_id);
 CREATE INDEX idx_athletes_gender ON athletes (gender);
+CREATE INDEX idx_athletes_user ON athletes (user_id);
 CREATE INDEX idx_coaches_team ON coaches (team_id);
+CREATE INDEX idx_coaches_user ON coaches (user_id);
 CREATE INDEX idx_meets_date ON meets (meet_date DESC);
 CREATE INDEX idx_meets_season ON meets (season);
 CREATE INDEX idx_meets_status ON meets (status);
@@ -203,6 +222,8 @@ CREATE INDEX idx_events_meet ON events (meet_id);
 CREATE INDEX idx_entries_event_rank ON meet_entries (event_id, final_rank);
 CREATE INDEX idx_entries_athlete ON meet_entries (athlete_id);
 CREATE INDEX idx_dive_results_entry ON dive_results (meet_entry_id);
+CREATE INDEX idx_athlete_photos ON athlete_photos (athlete_id);
+CREATE INDEX idx_athlete_videos ON athlete_videos (athlete_id);
 CREATE INDEX idx_commitments_athlete ON college_commitments (athlete_id);
 
 COMMIT;

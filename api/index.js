@@ -143,6 +143,253 @@ app.get('/api/auth/me', async (req, res) => {
   }
 });
 
+// ─── User Profile (Edit) ─────────────────────────────
+
+app.get('/api/auth/profile', async (req, res) => {
+  try {
+    const header = req.headers.authorization;
+    if (!header || !header.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token' });
+    }
+    const decoded = jwt.verify(header.slice(7), JWT_SECRET);
+    const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.id]);
+    if (rows.length === 0) return res.status(401).json({ error: 'User not found' });
+
+    res.json(rows[0]);
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    console.error('profile get error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/api/auth/profile', async (req, res) => {
+  try {
+    const header = req.headers.authorization;
+    if (!header || !header.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token' });
+    }
+    const decoded = jwt.verify(header.slice(7), JWT_SECRET);
+    
+    const {
+      first_name,
+      last_name,
+      middle_initial,
+      date_of_birth,
+      gender,
+      preferred_first_name,
+      uss_number,
+    } = req.body;
+
+    // Convert empty strings to null for nullable fields
+    const sanitizedData = {
+      first_name: first_name || undefined,
+      last_name: last_name || undefined,
+      middle_initial: middle_initial || null,
+      date_of_birth: date_of_birth || null,
+      gender: gender || null,
+      preferred_first_name: preferred_first_name || null,
+      uss_number: uss_number || null,
+    };
+
+    // Update users table
+    const { rows } = await pool.query(
+      `UPDATE users
+       SET first_name = COALESCE($1, first_name),
+           last_name = COALESCE($2, last_name),
+           middle_initial = COALESCE($3, middle_initial),
+           date_of_birth = COALESCE($4, date_of_birth),
+           gender = COALESCE($5, gender),
+           preferred_first_name = COALESCE($6, preferred_first_name),
+           uss_number = COALESCE($7, uss_number),
+           updated_at = NOW()
+       WHERE id = $8
+       RETURNING *`,
+      [
+        sanitizedData.first_name,
+        sanitizedData.last_name,
+        sanitizedData.middle_initial,
+        sanitizedData.date_of_birth,
+        sanitizedData.gender,
+        sanitizedData.preferred_first_name,
+        sanitizedData.uss_number,
+        decoded.id
+      ]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const user = rows[0];
+
+    // Also update the corresponding athlete record with first_name and last_name
+    if (user.first_name || user.last_name) {
+      await pool.query(
+        `UPDATE athletes
+         SET first_name = $1,
+             last_name = $2
+         WHERE user_id = $3`,
+        [user.first_name, user.last_name, decoded.id]
+      );
+    }
+
+    res.json(user);
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    console.error('profile update error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// ─── Athlete Media (Photos & Videos) ──────────────────
+
+app.get('/api/athletes/:athleteId/media/photos', async (req, res) => {
+  try {
+    const header = req.headers.authorization;
+    if (!header || !header.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token' });
+    }
+    jwt.verify(header.slice(7), JWT_SECRET);
+
+    const { rows } = await pool.query(
+      `SELECT id, title, url, created_at
+       FROM athlete_photos
+       WHERE athlete_id = $1
+       ORDER BY created_at DESC`,
+      [req.params.athleteId]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('get photos error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/athletes/:athleteId/media/videos', async (req, res) => {
+  try {
+    const header = req.headers.authorization;
+    if (!header || !header.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token' });
+    }
+    jwt.verify(header.slice(7), JWT_SECRET);
+
+    const { rows } = await pool.query(
+      `SELECT id, title, video_url, created_at
+       FROM athlete_videos
+       WHERE athlete_id = $1
+       ORDER BY created_at DESC`,
+      [req.params.athleteId]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('get videos error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/athletes/:athleteId/media/photos', async (req, res) => {
+  try {
+    const header = req.headers.authorization;
+    if (!header || !header.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token' });
+    }
+    jwt.verify(header.slice(7), JWT_SECRET);
+
+    // For now, store the URL from the request
+    // In production, you'd handle file uploads with multer
+    const { title, url } = req.body;
+    const { rows } = await pool.query(
+      `INSERT INTO athlete_photos (athlete_id, title, url)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [req.params.athleteId, title, url]
+    );
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('upload photo error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/athletes/:athleteId/media/videos', async (req, res) => {
+  try {
+    const header = req.headers.authorization;
+    if (!header || !header.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token' });
+    }
+    jwt.verify(header.slice(7), JWT_SECRET);
+
+    const { title, video_url } = req.body;
+    const { rows } = await pool.query(
+      `INSERT INTO athlete_videos (athlete_id, title, video_url)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [req.params.athleteId, title, video_url]
+    );
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('upload video error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/api/athletes/:athleteId/media/photos/:photoId', async (req, res) => {
+  try {
+    const header = req.headers.authorization;
+    if (!header || !header.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token' });
+    }
+    jwt.verify(header.slice(7), JWT_SECRET);
+
+    const { rows } = await pool.query(
+      `DELETE FROM athlete_photos
+       WHERE id = $1 AND athlete_id = $2
+       RETURNING id`,
+      [req.params.photoId, req.params.athleteId]
+    );
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Photo not found' });
+    }
+    
+    res.json({ success: true });
+  } catch (err) {
+    console.error('delete photo error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/api/athletes/:athleteId/media/videos/:videoId', async (req, res) => {
+  try {
+    const header = req.headers.authorization;
+    if (!header || !header.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token' });
+    }
+    jwt.verify(header.slice(7), JWT_SECRET);
+
+    const { rows } = await pool.query(
+      `DELETE FROM athlete_videos
+       WHERE id = $1 AND athlete_id = $2
+       RETURNING id`,
+      [req.params.videoId, req.params.athleteId]
+    );
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Video not found' });
+    }
+    
+    res.json({ success: true });
+  } catch (err) {
+    console.error('delete video error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // ─── Home ────────────────────────────────────────────────
 
 app.get('/api/home/recent-meets', async (_req, res) => {
@@ -333,7 +580,8 @@ app.get('/api/athletes/:id', async (req, res) => {
     const { rows } = await pool.query(
       `SELECT a.id, a.first_name, a.last_name, a.gender, a.graduation_year,
               a.hometown, a.bio, a.avatar_url,
-              u.banner_url, u.location,
+              u.banner_url, u.location, u.middle_initial, u.date_of_birth, 
+              u.gender AS user_gender, u.preferred_first_name, u.uss_number,
               t.id AS team_id, t.name AS team_name, t.logo_url AS team_logo,
               t.accent_color AS team_color
        FROM athletes a
