@@ -8,12 +8,22 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
 
 export default function LoginPage(): React.ReactElement {
   const navigate = useNavigate();
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, loading: authLoading, login } = useAuth();
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/', { replace: true });
-  }, [isAuthenticated, navigate]);
+    if (!authLoading && isAuthenticated) navigate('/', { replace: true });
+  }, [authLoading, isAuthenticated, navigate]);
+
+  if (authLoading) {
+    return (
+      <div className="auth-page">
+        <div className="auth-card">
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (credentials: {
     email: string;

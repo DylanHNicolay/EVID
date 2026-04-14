@@ -1,55 +1,70 @@
-.meets-tab-container {
+.meets-tab-layout {
+  width: 100%;
+  max-width: 80%;
+  margin: 0 auto 20px auto;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.meets-results-card {
+  flex: 1;
+  min-width: 0;
   background-color: #ffffff;
   border-radius: 0 0 12px 12px;
   box-shadow:
     0 6px 24px rgba(0, 0, 0, 0.2),
     0 2px 8px rgba(0, 0, 0, 0.12);
-  width: 100%;
-  max-width: 80%;
-  margin: 0 auto 20px auto;
 }
 
-.meets-filters {
+.meets-filter-card {
+  width: 280px;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 16px;
   display: flex;
-  gap: 16px;
-  padding: 20px 40px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  border-bottom: 1px solid #e0e0e0;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .filter-group label {
   font-size: 12px;
   font-weight: 500;
-  color: #333;
+  color: #888;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .filter-select,
 .filter-input {
-  padding: 8px 12px;
+  padding: 6px 10px;
   border: 1px solid #d0d0d0;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 13px;
   background-color: #ffffff;
   color: #333;
-  min-width: 140px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .filter-input {
-  font-size: 14px;
-  color: #999;
+  color: #333;
 }
 
 .filter-input::placeholder {
-  color: #ccc;
+  color: #bbb;
 }
 
 .filter-select:focus,
@@ -61,41 +76,52 @@
 
 .meets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px 40px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  padding: 16px 20px;
+  align-content: start;
 }
 
 @media (max-width: 768px) {
-  .meets-tab-container {
+  .meets-tab-layout {
     max-width: 90%;
+    flex-direction: column-reverse;
+  }
+
+  .meets-filter-card {
+    width: 100%;
   }
 
   .meets-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   }
 }
 
 @media (max-width: 480px) {
-  .meets-tab-container {
+  .meets-tab-layout {
     max-width: 100%;
+  }
+
+  .meets-results-card {
     border-radius: 0;
   }
 
-  .meets-filters {
-    padding: 16px;
-    flex-direction: column;
+  .meets-filter-card {
+    border-radius: 0;
+    padding: 12px 16px;
+  }
+
+  .filter-group {
     align-items: stretch;
   }
 
   .meets-grid {
-    grid-template-columns: 1fr;
-    padding: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 12px 16px;
   }
 
-  .filter-select,
   .filter-input {
-    min-width: auto;
+    width: auto;
   }
 }
 

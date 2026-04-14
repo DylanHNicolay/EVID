@@ -60,8 +60,30 @@ export default function ProfileMeetsTab({
     });
 
   return (
-    <div className="meets-tab-container">
-      <div className="meets-filters">
+    <div className="meets-tab-layout">
+      <div className="meets-results-card">
+        <div className="meets-grid">
+          {filtered.map((m, i) => (
+            <MeetCard
+              key={`${m.meet_id}-${m.event}-${i}`}
+              id={String(m.meet_id)}
+              name={m.meet_name}
+              event={m.event}
+              dives={m.dives}
+              score={Number(m.score)}
+              place={formatPlace(m.rank)}
+              avatarUrl={m.logo_url || undefined}
+              onClick={handleMeetClick}
+            />
+          ))}
+        </div>
+
+        {filtered.length === 0 && (
+          <div className="no-meets-message">No meets found</div>
+        )}
+      </div>
+
+      <aside className="meets-filter-card">
         <div className="filter-group">
           <label htmlFor="name-filter">Name</label>
           <input
@@ -86,27 +108,7 @@ export default function ProfileMeetsTab({
             <option>Name</option>
           </select>
         </div>
-      </div>
-
-      <div className="meets-grid">
-        {filtered.map((m, i) => (
-          <MeetCard
-            key={`${m.meet_id}-${m.event}-${i}`}
-            id={String(m.meet_id)}
-            name={m.meet_name}
-            event={m.event}
-            dives={m.dives}
-            score={Number(m.score)}
-            place={formatPlace(m.rank)}
-            avatarUrl={m.logo_url || undefined}
-            onClick={handleMeetClick}
-          />
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <div className="no-meets-message">No meets found</div>
-      )}
+      </aside>
     </div>
   );
 }

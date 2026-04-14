@@ -6,6 +6,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 interface TopEventEntry {
   entry_id: number;
+  athlete_id: number;
   first_name: string;
   last_name: string;
   gender: string;
@@ -102,7 +103,9 @@ function EventTable({ title, entries }: EventTableProps): React.ReactElement {
             <tr key={entry.entry_id}>
               <td className="top-events-rank">{i + 1}</td>
               <td className="top-events-name">
-                {entry.first_name} {entry.last_name}
+                <Link to={`/profile/${entry.athlete_id}`}>
+                  {entry.first_name} {entry.last_name}
+                </Link>
               </td>
               <td className="top-events-team">
                 <span

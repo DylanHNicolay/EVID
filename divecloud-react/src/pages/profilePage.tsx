@@ -51,7 +51,8 @@ export default function ProfilePage(): React.ReactElement {
       return;
     }
 
-    fetch(`${API_URL}/api/athletes/${athleteId}`)
+    const controller = new AbortController();
+    fetch(`${API_URL}/api/athletes/${athleteId}`, { signal: controller.signal })
       .then((r) => {
         if (!r.ok) {
           throw new Error('Failed to fetch athlete');
@@ -63,9 +64,13 @@ export default function ProfilePage(): React.ReactElement {
         setLoading(false);
       })
       .catch((err) => {
+        if (err.name === 'AbortError') return;
         console.error('Error fetching athlete:', err);
         setLoading(false);
       });
+    return (): void => {
+      controller.abort();
+    };
   }, [athleteId, paramId, isAuthenticated, authLoading, navigate]);
 
   if (authLoading || loading) {

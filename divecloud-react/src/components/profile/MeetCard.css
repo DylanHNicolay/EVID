@@ -1,13 +1,13 @@
 .meet-card {
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 10px;
+  padding: 12px;
   background-color: #ffffff;
   box-shadow:
-    0 6px 24px rgba(0, 0, 0, 0.2),
-    0 2px 8px rgba(0, 0, 0, 0.12);
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   transition: all 0.3s ease;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
 }
@@ -19,10 +19,10 @@
 
 .meet-avatar {
   width: 100%;
-  height: 150px;
-  background-color: #d3d3d3;
+  height: 90px;
+  background-color: #f0f0f0;
   border-radius: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,13 +32,14 @@
 .meet-avatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 8px;
 }
 
 .avatar-placeholder {
-  width: 80px;
-  height: 80px;
-  background-color: #c0c0c0;
+  width: 48px;
+  height: 48px;
+  background-color: #d0d0d0;
   border-radius: 50%;
 }
 
@@ -49,17 +50,23 @@
 }
 
 .meet-name {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  margin: 0 0 16px 0;
-  color: #333;
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .meet-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  font-size: 14px;
+  gap: 4px;
+  font-size: 13px;
   color: #666;
 }
 
@@ -70,9 +77,11 @@
 
 .detail-label {
   font-weight: 500;
-  color: #666;
+  color: #888;
+  font-size: 12px;
 }
 
 .detail-value {
-  color: #999;
+  color: #444;
+  font-size: 12px;
 }

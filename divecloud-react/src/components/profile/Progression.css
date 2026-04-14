@@ -23,6 +23,10 @@
   margin: 12px 0 20px 0;
 }
 
+.event-progression-chart-wrapper {
+  position: relative;
+}
+
 .event-progression-chart {
   width: 100%;
   height: auto;
@@ -61,6 +65,65 @@
 .event-progression-label {
   font-size: 12px;
   fill: #666;
+}
+
+.progression-tooltip {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  margin-top: -14px;
+  background: #1a1a1a;
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.progression-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #1a1a1a;
+}
+
+.progression-tooltip-score {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.progression-tooltip-event {
+  color: #aadce6;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.progression-tooltip-meet {
+  color: #ccc;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.progression-tooltip-date {
+  color: #999;
+  font-size: 11px;
+  margin-top: 1px;
+}
+
+.progression-tooltip-rank {
+  color: #f0c040;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 3px;
 }
 
 /* Responsive */

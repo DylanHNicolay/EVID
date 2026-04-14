@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import './ProfileMediaTab.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
@@ -34,6 +35,7 @@ export default function ProfileMediaTab({
   type,
   athleteId,
 }: ProfileMediaTabProps): React.ReactElement {
+  const { token } = useAuth();
   const [mediaList, setMediaList] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -47,7 +49,6 @@ export default function ProfileMediaTab({
   const fetchMediaList = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       const endpoint =
         type === 'photo'
           ? `/api/athletes/${athleteId}/media/photos`
@@ -66,7 +67,7 @@ export default function ProfileMediaTab({
     } finally {
       setLoading(false);
     }
-  }, [type, athleteId]);
+  }, [type, athleteId, token]);
 
   useEffect(() => {
     fetchMediaList();
@@ -104,7 +105,6 @@ export default function ProfileMediaTab({
     setSuccess('');
 
     try {
-      const token = localStorage.getItem('token');
       const endpoint =
         type === 'photo'
           ? `/api/athletes/${athleteId}/media/photos`
@@ -151,7 +151,6 @@ export default function ProfileMediaTab({
     if (!window.confirm('Delete this item?')) return;
 
     try {
-      const token = localStorage.getItem('token');
       const endpoint =
         type === 'photo'
           ? `/api/athletes/${athleteId}/media/photos/${mediaId}`
@@ -224,10 +223,7 @@ export default function ProfileMediaTab({
             </div>
 
             <div className="profile-media-group">
-              <label
-                htmlFor={`${type}-meet`}
-                className="profile-media-label"
-              >
+              <label htmlFor={`${type}-meet`} className="profile-media-label">
                 Link to Meet / Score{' '}
                 <span className="profile-media-optional">(optional)</span>
               </label>
@@ -239,7 +235,10 @@ export default function ProfileMediaTab({
               >
                 <option value="">No linked score</option>
                 {meets.map((m) => (
-                  <option key={`${m.meet_id}-${m.event}`} value={String(m.meet_id)}>
+                  <option
+                    key={`${m.meet_id}-${m.event}`}
+                    value={String(m.meet_id)}
+                  >
                     {m.meet_name} - {m.event}
                     {m.score ? ` (${Number(m.score).toFixed(1)})` : ''}
                     {' · '}
@@ -254,7 +253,9 @@ export default function ProfileMediaTab({
               disabled={uploading || !mediaUrl.trim()}
               className="profile-media-upload-btn"
             >
-              {uploading ? 'Saving...' : `Add ${type === 'photo' ? 'Photo' : 'Video'} Link`}
+              {uploading
+                ? 'Saving...'
+                : `Add ${type === 'photo' ? 'Photo' : 'Video'} Link`}
             </button>
           </div>
         </div>

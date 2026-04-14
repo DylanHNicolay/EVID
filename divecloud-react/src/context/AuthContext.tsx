@@ -64,8 +64,10 @@ export function AuthProvider({
       setLoading(false);
       return;
     }
+    const controller = new AbortController();
     fetch(`${API_URL}/api/auth/me`, {
       headers: { Authorization: `Bearer ${stored}` },
+      signal: controller.signal,
     })
       .then((r) => {
         if (!r.ok) throw new Error('invalid');
@@ -75,10 +77,12 @@ export function AuthProvider({
         setToken(stored);
         setUser(data);
       })
-      .catch(() => {
+      .catch((err) => {
+        if (err.name === 'AbortError') return;
         localStorage.removeItem('token');
       })
       .finally(() => setLoading(false));
+    return (): void => controller.abort();
   }, []);
 
   return (

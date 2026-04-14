@@ -28,7 +28,7 @@ interface UserProfile {
 }
 
 export default function EditProfilePage(): React.ReactElement {
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, token, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -45,13 +45,14 @@ export default function EditProfilePage(): React.ReactElement {
   useEffect(() => {
     if (authLoading || !isAuthenticated || !user) return;
 
+    const controller = new AbortController();
     const fetchProfile = async (): Promise<void> => {
       try {
-        const token = localStorage.getItem('token');
         const response = await fetch(`${API_URL}/api/auth/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          signal: controller.signal,
         });
 
         if (!response.ok) {
@@ -62,13 +63,17 @@ export default function EditProfilePage(): React.ReactElement {
         setProfile(data);
         setLoading(false);
       } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return;
         setError(err instanceof Error ? err.message : 'An error occurred');
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, [authLoading, isAuthenticated, user]);
+    return (): void => {
+      controller.abort();
+    };
+  }, [authLoading, isAuthenticated, user, token]);
 
   const handleSave = async (
     updatedProfile: Partial<UserProfile>
@@ -76,7 +81,6 @@ export default function EditProfilePage(): React.ReactElement {
     try {
       setError('');
       setSuccess('');
-      const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}/api/auth/profile`, {
         method: 'PUT',
         headers: {

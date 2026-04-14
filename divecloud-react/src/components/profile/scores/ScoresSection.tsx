@@ -145,7 +145,7 @@ const ScoresSection: React.FC<ScoresSectionProps> = ({
                 {pb.height} {pb.dives_required} dive
               </td>
               <td style={{ fontWeight: 600 }}>
-                {Number(pb.total_score).toFixed(1)}
+                {Number(pb.total_score).toFixed(2)}
               </td>
               <td>{pb.meet_name}</td>
               <td>{formatDate(pb.meet_date)}</td>
@@ -214,7 +214,7 @@ const ScoresSection: React.FC<ScoresSectionProps> = ({
                 {r.height} {r.event_name}
               </td>
               <td style={{ fontWeight: 600 }}>
-                {Number(r.total_score).toFixed(1)}
+                {Number(r.total_score).toFixed(2)}
               </td>
               <td>{r.meet_name}</td>
               <td>{formatDate(r.meet_date)}</td>

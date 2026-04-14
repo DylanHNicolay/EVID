@@ -30,7 +30,7 @@ const Header = ({ onMenuClick }: HeaderProps): React.ReactElement => {
   const [results, setResults] = useState<SearchResults | null>(null);
   const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, loading: authLoading, logout } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -212,7 +212,7 @@ const Header = ({ onMenuClick }: HeaderProps): React.ReactElement => {
       </div>
 
       <nav className="header-right">
-        {isAuthenticated ? (
+        {authLoading ? null : isAuthenticated ? (
           <button
             className="header-auth-btn"
             onClick={handleLogout}

@@ -27,16 +27,34 @@ export default function TeamPage(): React.ReactElement {
   const [activeTab, setActiveTab] = useState('Home');
   const [team, setTeam] = useState<TeamInfo | null>(null);
 
-  const teamId = paramId || '1';
+  const teamId = paramId;
 
   useEffect(() => {
-    fetch(`${API_URL}/api/teams/${teamId}`)
-      .then((r) => r.json())
+    if (!teamId) return;
+    const controller = new AbortController();
+    fetch(`${API_URL}/api/teams/${teamId}`, { signal: controller.signal })
+      .then((r) => {
+        if (!r.ok) throw new Error('Team not found');
+        return r.json();
+      })
       .then(setTeam)
-      .catch(console.error);
+      .catch((err) => {
+        if (err.name !== 'AbortError') console.error(err);
+      });
+    return (): void => {
+      controller.abort();
+    };
   }, [teamId, user]);
 
-  if (!team) return <div />;
+  if (!teamId) {
+    return (
+      <div className="team-page-error">
+        <p>No team specified</p>
+      </div>
+    );
+  }
+
+  if (!team) return <div className="team-page-loading">Loading...</div>;
 
   return (
     <>

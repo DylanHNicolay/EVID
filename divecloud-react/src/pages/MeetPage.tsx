@@ -26,6 +26,7 @@ interface TeamRow {
 
 interface ResultRow {
   id: number;
+  athlete_id: number;
   name: string;
   team: string;
   event: string;
@@ -58,23 +59,44 @@ export default function MeetPage(): React.ReactElement {
 
   useEffect(() => {
     if (!meetId) return;
-    fetch(`${API_URL}/api/meets/${meetId}`)
-      .then((r) => r.json())
+    const controller = new AbortController();
+    fetch(`${API_URL}/api/meets/${meetId}`, { signal: controller.signal })
+      .then((r) => {
+        if (!r.ok) throw new Error('Meet not found');
+        return r.json();
+      })
       .then(setMeet)
-      .catch(console.error);
+      .catch((err) => {
+        if (err.name !== 'AbortError') console.error(err);
+      });
+    return (): void => {
+      controller.abort();
+    };
   }, [meetId]);
 
   useEffect(() => {
     if (!meetId) return;
-    fetch(`${API_URL}/api/meets/${meetId}/teams?gender=${gender}`)
+    const controller = new AbortController();
+    fetch(`${API_URL}/api/meets/${meetId}/teams?gender=${gender}`, {
+      signal: controller.signal,
+    })
       .then((r) => r.json())
       .then(setTeams)
-      .catch(console.error);
+      .catch((err) => {
+        if (err.name !== 'AbortError') console.error(err);
+      });
 
-    fetch(`${API_URL}/api/meets/${meetId}/results?gender=${gender}`)
+    fetch(`${API_URL}/api/meets/${meetId}/results?gender=${gender}`, {
+      signal: controller.signal,
+    })
       .then((r) => r.json())
       .then(setResults)
-      .catch(console.error);
+      .catch((err) => {
+        if (err.name !== 'AbortError') console.error(err);
+      });
+    return (): void => {
+      controller.abort();
+    };
   }, [meetId, gender]);
 
   if (!meet) {

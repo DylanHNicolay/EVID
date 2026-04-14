@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoleSelector from '../components/signup/RoleSelector';
 import RegisterForm from '../components/signup/RegisterForm';
@@ -13,12 +13,14 @@ export default function RegisterPage(): React.ReactElement {
   const [role, setRole] = useState<UserRole | null>(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, loading: authLoading, login } = useAuth();
   const justRegistered = useRef(false);
 
-  if (isAuthenticated && !justRegistered.current) {
-    navigate('/', { replace: true });
-  }
+  useEffect(() => {
+    if (!authLoading && isAuthenticated && !justRegistered.current) {
+      navigate('/', { replace: true });
+    }
+  }, [authLoading, isAuthenticated, navigate]);
 
   const handleSubmit = async (data: RegisterPayload): Promise<void> => {
     setError('');

@@ -86,18 +86,26 @@ const teamIcon = (
 );
 
 export default function Sidebar({ open }: SidebarProps): React.ReactElement {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, loading: authLoading, user } = useAuth();
 
   const visibleItems: NavItem[] = [
     { to: '/', label: 'Home', icon: homeIcon },
     { to: '/meets', label: 'Meets', icon: meetsIcon },
   ];
 
-  if (isAuthenticated && user) {
+  if (!authLoading && isAuthenticated && user) {
     if (user.role === 'coach' && user.team_id) {
-      visibleItems.push({ to: `/team/${user.team_id}`, label: 'Team', icon: teamIcon });
+      visibleItems.push({
+        to: `/team/${user.team_id}`,
+        label: 'Team',
+        icon: teamIcon,
+      });
     } else if (user.role === 'athlete') {
-      visibleItems.push({ to: '/profile', label: 'Profile', icon: profileIcon });
+      visibleItems.push({
+        to: '/profile',
+        label: 'Profile',
+        icon: profileIcon,
+      });
     }
   }
 
