@@ -23,7 +23,7 @@ interface AthleteProfile {
 
 export default function ProfilePage(): React.ReactElement {
   const { athleteId: paramId } = useParams<{ athleteId: string }>();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('Home');
   const [athlete, setAthlete] = useState<AthleteProfile | null>(null);
@@ -39,19 +39,18 @@ export default function ProfilePage(): React.ReactElement {
     user.athlete_id === athlete.id;
 
   useEffect(() => {
-    // If no athleteId param and not authenticated, redirect to login
+    if (authLoading) return;
+
     if (!paramId && !isAuthenticated) {
       navigate('/login', { replace: true });
       return;
     }
 
-    // If no athleteId and no user athlete_id, can't show profile
     if (!athleteId) {
       setLoading(false);
       return;
     }
 
-    // Fetch athlete data
     fetch(`${API_URL}/api/athletes/${athleteId}`)
       .then((r) => {
         if (!r.ok) {
@@ -67,9 +66,9 @@ export default function ProfilePage(): React.ReactElement {
         console.error('Error fetching athlete:', err);
         setLoading(false);
       });
-  }, [athleteId, paramId, isAuthenticated, navigate]);
+  }, [athleteId, paramId, isAuthenticated, authLoading, navigate]);
 
-  if (loading) {
+  if (authLoading || loading) {
     return <div className="profile-page-loading">Loading...</div>;
   }
 

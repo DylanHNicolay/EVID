@@ -28,7 +28,7 @@ interface UserProfile {
 }
 
 export default function EditProfilePage(): React.ReactElement {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -36,16 +36,14 @@ export default function EditProfilePage(): React.ReactElement {
   const [success, setSuccess] = useState('');
   const [activeTab, setActiveTab] = useState('Profile');
 
-  // Redirect to login if not authenticated
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       navigate('/login', { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [authLoading, isAuthenticated, navigate]);
 
-  // Fetch user profile
   useEffect(() => {
-    if (!isAuthenticated || !user) return;
+    if (authLoading || !isAuthenticated || !user) return;
 
     const fetchProfile = async (): Promise<void> => {
       try {
@@ -70,7 +68,7 @@ export default function EditProfilePage(): React.ReactElement {
     };
 
     fetchProfile();
-  }, [isAuthenticated, user]);
+  }, [authLoading, isAuthenticated, user]);
 
   const handleSave = async (
     updatedProfile: Partial<UserProfile>
@@ -106,7 +104,7 @@ export default function EditProfilePage(): React.ReactElement {
     }
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="edit-profile-page">
         <p>Loading...</p>
