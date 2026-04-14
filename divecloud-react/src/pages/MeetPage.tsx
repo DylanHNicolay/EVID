@@ -83,6 +83,7 @@ export default function MeetPage(): React.ReactElement {
 
   const homeTeam = teams[0]
     ? {
+        teamId: teams[0].team_id,
         name: teams[0].name,
         score: Number(teams[0].team_score),
         logoUrl: teams[0].logo_url ?? undefined,
@@ -90,6 +91,7 @@ export default function MeetPage(): React.ReactElement {
     : { name: '—', score: 0 };
   const awayTeam = teams[1]
     ? {
+        teamId: teams[1].team_id,
         name: teams[1].name,
         score: Number(teams[1].team_score),
         logoUrl: teams[1].logo_url ?? undefined,

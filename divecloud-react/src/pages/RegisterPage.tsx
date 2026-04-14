@@ -35,7 +35,11 @@ export default function RegisterPage(): React.ReactElement {
       }
       justRegistered.current = true;
       login(json.token, json.user);
-      navigate(data.role === 'diver' ? '/profile' : '/');
+      if (data.role === 'coach' && data.teamId) {
+        navigate(`/team/${data.teamId}`);
+      } else {
+        navigate('/profile');
+      }
     } catch {
       setError('Network error');
     }

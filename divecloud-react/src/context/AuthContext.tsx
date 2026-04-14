@@ -16,6 +16,7 @@ export interface AuthUser {
   last_name: string;
   avatar_url: string | null;
   athlete_id?: number | null;
+  team_id?: number | null;
 }
 
 interface AuthContextValue {

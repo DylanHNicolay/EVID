@@ -46,6 +46,7 @@ app.post('/api/auth/register', async (req, res) => {
       email, password, firstName, lastName, role,
       middleInitial, dateOfBirth, gender, preferredFirstName,
       ussNumber, graduationYear, hometown, avatarUrl, bannerUrl,
+      teamId, coachTitle,
     } = req.body;
 
     if (!email || !password || !firstName || !lastName || !role) {
@@ -94,14 +95,20 @@ app.post('/api/auth/register', async (req, res) => {
       );
       athleteId = ar.rows[0].id;
     } else if (dbRole === 'coach') {
+      if (!teamId) {
+        return res.status(400).json({ error: 'Team is required for coach accounts' });
+      }
       await pool.query(
-        `INSERT INTO coaches (user_id, team_id, title) VALUES ($1, (SELECT id FROM teams LIMIT 1), 'Coach')`,
-        [user.id]
+        `INSERT INTO coaches (user_id, team_id, title) VALUES ($1, $2, $3)`,
+        [user.id, teamId, coachTitle || 'Coach']
       );
     }
 
     const token = signToken(user);
-    res.status(201).json({ token, user: { ...userPayload(user), athlete_id: athleteId } });
+    res.status(201).json({
+      token,
+      user: { ...userPayload(user), athlete_id: athleteId, team_id: teamId || null },
+    });
   } catch (err) {
     console.error('register error:', err);
     res.status(500).json({ error: 'Internal server error' });
@@ -152,12 +159,16 @@ app.get('/api/auth/me', async (req, res) => {
 
     const user = rows[0];
     let athleteId = null;
+    let teamId = null;
     if (user.role === 'athlete') {
       const ar = await pool.query('SELECT id FROM athletes WHERE user_id = $1', [user.id]);
       if (ar.rows.length > 0) athleteId = ar.rows[0].id;
+    } else if (user.role === 'coach') {
+      const cr = await pool.query('SELECT team_id FROM coaches WHERE user_id = $1', [user.id]);
+      if (cr.rows.length > 0) teamId = cr.rows[0].team_id;
     }
 
-    res.json({ ...userPayload(user), athlete_id: athleteId });
+    res.json({ ...userPayload(user), athlete_id: athleteId, team_id: teamId });
   } catch (err) {
     if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
       return res.status(401).json({ error: 'Invalid token' });
@@ -774,6 +785,30 @@ app.get('/api/athletes/:id/progression', async (req, res) => {
 
 // ─── Teams ───────────────────────────────────────────────
 
+app.get('/api/teams', async (req, res) => {
+  try {
+    const q = (req.query.q || '').trim();
+    let query, params;
+    if (q) {
+      query = `SELECT id, name, abbreviation, school, location, logo_url
+               FROM teams
+               WHERE name ILIKE $1 OR abbreviation ILIKE $1 OR school ILIKE $1
+               ORDER BY name
+               LIMIT 30`;
+      params = [`%${q}%`];
+    } else {
+      query = `SELECT id, name, abbreviation, school, location, logo_url
+               FROM teams ORDER BY name LIMIT 30`;
+      params = [];
+    }
+    const { rows } = await pool.query(query, params);
+    res.json(rows);
+  } catch (err) {
+    console.error('teams search error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.get('/api/teams/:id', async (req, res) => {
   try {
     const { rows } = await pool.query(
@@ -829,6 +864,25 @@ app.get('/api/teams/:id/coaches', async (req, res) => {
   }
 });
 
+app.get('/api/teams/:id/stats', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const [rosterRes, meetsRes, coachRes] = await Promise.all([
+      pool.query('SELECT COUNT(*)::int AS count FROM athletes WHERE team_id = $1', [id]),
+      pool.query('SELECT COUNT(DISTINCT meet_id)::int AS count FROM meet_teams WHERE team_id = $1', [id]),
+      pool.query('SELECT COUNT(*)::int AS count FROM coaches WHERE team_id = $1', [id]),
+    ]);
+    res.json({
+      roster_count: rosterRes.rows[0].count,
+      meet_count: meetsRes.rows[0].count,
+      coach_count: coachRes.rows[0].count,
+    });
+  } catch (err) {
+    console.error('team stats error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.get('/api/teams/:id/meets', async (req, res) => {
   try {
     const season = req.query.season;
@@ -874,7 +928,8 @@ app.get('/api/search', async (req, res) => {
       ),
       pool.query(
         `SELECT id, name, location, logo_url
-         FROM teams WHERE name ILIKE $1
+         FROM teams
+         WHERE name ILIKE $1 OR abbreviation ILIKE $1 OR school ILIKE $1
          LIMIT 5`,
         [pattern]
       ),

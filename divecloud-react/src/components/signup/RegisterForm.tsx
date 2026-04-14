@@ -1,7 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { UserRole } from './RoleSelector';
 import '../login/LoginForm.css';
 import './Signup.css';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
+
+interface TeamOption {
+  id: number;
+  name: string;
+  abbreviation: string | null;
+  school: string | null;
+  location: string | null;
+}
 
 export interface RegisterPayload {
   role: UserRole;
@@ -18,6 +28,8 @@ export interface RegisterPayload {
   hometown?: string;
   avatarUrl?: string;
   bannerUrl?: string;
+  teamId?: number;
+  coachTitle?: string;
 }
 
 interface RegisterFormProps {
@@ -53,8 +65,41 @@ export default function RegisterForm({
   const [ussNumber, setUssNumber] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
   const [bannerUrl, setBannerUrl] = useState('');
+  const [coachTitle, setCoachTitle] = useState('');
+  const [teamQuery, setTeamQuery] = useState('');
+  const [teamResults, setTeamResults] = useState<TeamOption[]>([]);
+  const [selectedTeam, setSelectedTeam] = useState<TeamOption | null>(null);
+  const [showTeamDropdown, setShowTeamDropdown] = useState(false);
+  const teamDropdownRef = useRef<HTMLDivElement>(null);
   const [validationError, setValidationError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (role !== 'coach' || selectedTeam) return;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+      fetch(`${API_URL}/api/teams?q=${encodeURIComponent(teamQuery)}`, {
+        signal: controller.signal,
+      })
+        .then((r) => r.json())
+        .then((data: TeamOption[]) => {
+          setTeamResults(data);
+          setShowTeamDropdown(true);
+        })
+        .catch(() => {});
+    }, 250);
+    return (): void => { clearTimeout(timeout); controller.abort(); };
+  }, [teamQuery, role, selectedTeam]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent): void => {
+      if (teamDropdownRef.current && !teamDropdownRef.current.contains(e.target as Node)) {
+        setShowTeamDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return (): void => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const clearError = (): void => setValidationError('');
 
@@ -99,6 +144,11 @@ export default function RegisterForm({
       return;
     }
 
+    if (role === 'coach' && !selectedTeam) {
+      setValidationError('Please search for and select a team');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await onSubmit({
@@ -116,6 +166,8 @@ export default function RegisterForm({
         hometown: hometown.trim() || undefined,
         avatarUrl: avatarUrl.trim() || undefined,
         bannerUrl: bannerUrl.trim() || undefined,
+        teamId: selectedTeam?.id,
+        coachTitle: coachTitle.trim() || undefined,
       });
     } finally {
       setIsSubmitting(false);
@@ -271,6 +323,75 @@ export default function RegisterForm({
               onChange={(e): void => { setUssNumber(e.target.value); clearError(); }}
               disabled={isSubmitting}
             />
+          </>
+        )}
+
+        {role === 'coach' && (
+          <>
+            <p className="auth-form-section">Team & Role</p>
+
+            <label htmlFor="register-team">Team *</label>
+            <div className="auth-team-search" ref={teamDropdownRef}>
+              {selectedTeam ? (
+                <div className="auth-team-selected">
+                  <span>{selectedTeam.name}{selectedTeam.school ? ` — ${selectedTeam.school}` : ''}</span>
+                  <button
+                    type="button"
+                    className="auth-team-clear"
+                    onClick={(): void => { setSelectedTeam(null); setTeamQuery(''); }}
+                    disabled={isSubmitting}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ) : (
+                <input
+                  id="register-team"
+                  type="text"
+                  placeholder="Search by team name or school…"
+                  value={teamQuery}
+                  onChange={(e): void => { setTeamQuery(e.target.value); clearError(); }}
+                  onFocus={(): void => { if (teamResults.length) setShowTeamDropdown(true); }}
+                  disabled={isSubmitting}
+                  autoComplete="off"
+                />
+              )}
+              {showTeamDropdown && !selectedTeam && teamResults.length > 0 && (
+                <ul className="auth-team-dropdown">
+                  {teamResults.map((t) => (
+                    <li key={t.id}>
+                      <button
+                        type="button"
+                        className="auth-team-option"
+                        onClick={(): void => {
+                          setSelectedTeam(t);
+                          setShowTeamDropdown(false);
+                          clearError();
+                        }}
+                      >
+                        <strong>{t.name}</strong>
+                        {t.school && <span className="auth-team-school">{t.school}</span>}
+                        {t.location && <span className="auth-team-location">{t.location}</span>}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {showTeamDropdown && !selectedTeam && teamQuery && teamResults.length === 0 && (
+                <div className="auth-team-dropdown auth-team-empty">No teams found</div>
+              )}
+            </div>
+
+            <label htmlFor="register-title">Title</label>
+            <input
+              id="register-title"
+              type="text"
+              placeholder="e.g. Head Coach, Assistant Coach, Diving Director"
+              value={coachTitle}
+              onChange={(e): void => { setCoachTitle(e.target.value); clearError(); }}
+              disabled={isSubmitting}
+            />
+            <p className="auth-form-hint">Defaults to "Coach" if left blank.</p>
           </>
         )}
 

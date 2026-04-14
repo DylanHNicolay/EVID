@@ -117,3 +117,91 @@
   border-color: #1a7c8f;
   box-shadow: 0 0 0 2px rgba(26, 124, 143, 0.15);
 }
+
+/* ── Team search autocomplete ── */
+
+.auth-team-search {
+  position: relative;
+}
+
+.auth-team-selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d7d7d6;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: #f9f9f9;
+  min-height: 44px;
+}
+
+.auth-team-clear {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+  padding: 0 0 0 8px;
+  line-height: 1;
+}
+
+.auth-team-clear:hover {
+  color: #333;
+}
+
+.auth-team-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #d7d7d6;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.auth-team-empty {
+  padding: 12px;
+  font-size: 13px;
+  color: #999;
+  text-align: center;
+}
+
+.auth-team-option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.auth-team-option:hover {
+  background: #f0f7f8;
+}
+
+.auth-team-option strong {
+  color: #333;
+}
+
+.auth-team-school {
+  font-size: 12px;
+  color: #666;
+}
+
+.auth-team-location {
+  font-size: 11px;
+  color: #999;
+}

@@ -11,10 +11,14 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
 interface TeamInfo {
   id: number;
   name: string;
+  abbreviation: string | null;
+  school: string | null;
   division: string | null;
   conference: string | null;
+  location: string | null;
   logo_url: string | null;
   banner_url: string | null;
+  accent_color: string | null;
 }
 
 export default function TeamPage(): React.ReactElement {
@@ -46,7 +50,7 @@ export default function TeamPage(): React.ReactElement {
         onTabChange={setActiveTab}
       />
 
-      {activeTab === 'Home' && <TeamHomeTab />}
+      {activeTab === 'Home' && <TeamHomeTab team={team} />}
       {activeTab === 'Meets' && <TeamMeetsTab teamId={team.id} />}
       {activeTab === 'Roster' && <TeamRosterTab teamId={team.id} />}
     </>
