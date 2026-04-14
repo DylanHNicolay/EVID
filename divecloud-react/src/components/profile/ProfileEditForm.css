@@ -88,6 +88,40 @@
   background-color: #fef5f5;
 }
 
+.profile-edit-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+.profile-edit-group--image {
+  min-width: 0;
+}
+
+.profile-edit-image-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-edit-preview {
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  object-fit: cover;
+}
+
+.profile-edit-preview--avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+
+.profile-edit-preview--banner {
+  width: 100%;
+  height: 80px;
+  border-radius: 4px;
+}
+
 .profile-edit-error-text {
   font-size: 12px;
   color: #e74c3c;

@@ -10,6 +10,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
 interface UserProfile {
   id: number;
   email: string;
+  role: string;
   first_name: string;
   last_name: string;
   middle_initial?: string;
@@ -20,6 +21,10 @@ interface UserProfile {
   avatar_url?: string;
   banner_url?: string;
   location?: string;
+  athlete_hometown?: string;
+  athlete_graduation_year?: number;
+  athlete_bio?: string;
+  athlete_gender?: string;
 }
 
 export default function EditProfilePage(): React.ReactElement {

@@ -2,6 +2,7 @@ import React from 'react';
 import './MeetPageCard.css';
 
 interface MeetPageCardProps {
+  meetId: number;
   name: string;
   status: 'Upcoming' | 'Completed';
   date: string;
@@ -10,6 +11,7 @@ interface MeetPageCardProps {
 }
 
 const MeetPageCard = ({
+  meetId,
   name,
   status,
   date,
@@ -35,6 +37,7 @@ const MeetPageCard = ({
           </span>
           <span className="meet-page-date">{date}</span>
           <span className="meet-page-location">{location}</span>
+          <span className="meet-page-id">Meet ID: {meetId}</span>
         </p>
       </div>
     </div>

@@ -289,15 +289,19 @@ export default function RegisterForm({
           disabled={isSubmitting}
         />
 
-        <label htmlFor="register-banner">Banner Image URL</label>
-        <input
-          id="register-banner"
-          type="url"
-          placeholder="https://example.com/banner.jpg"
-          value={bannerUrl}
-          onChange={(e): void => { setBannerUrl(e.target.value); clearError(); }}
-          disabled={isSubmitting}
-        />
+        {role === 'diver' && (
+          <>
+            <label htmlFor="register-banner">Banner Image URL</label>
+            <input
+              id="register-banner"
+              type="url"
+              placeholder="https://example.com/banner.jpg"
+              value={bannerUrl}
+              onChange={(e): void => { setBannerUrl(e.target.value); clearError(); }}
+              disabled={isSubmitting}
+            />
+          </>
+        )}
 
         <button
           className="auth-submit-btn"

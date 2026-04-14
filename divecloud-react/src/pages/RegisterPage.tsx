@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoleSelector from '../components/signup/RoleSelector';
 import RegisterForm from '../components/signup/RegisterForm';
@@ -14,10 +14,11 @@ export default function RegisterPage(): React.ReactElement {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { isAuthenticated, login } = useAuth();
+  const justRegistered = useRef(false);
 
-  useEffect(() => {
-    if (isAuthenticated) navigate('/', { replace: true });
-  }, [isAuthenticated, navigate]);
+  if (isAuthenticated && !justRegistered.current) {
+    navigate('/', { replace: true });
+  }
 
   const handleSubmit = async (data: RegisterPayload): Promise<void> => {
     setError('');
@@ -32,8 +33,9 @@ export default function RegisterPage(): React.ReactElement {
         setError(json.error || 'Registration failed');
         return;
       }
+      justRegistered.current = true;
       login(json.token, json.user);
-      navigate('/');
+      navigate(data.role === 'diver' ? '/profile' : '/');
     } catch {
       setError('Network error');
     }

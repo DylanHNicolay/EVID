@@ -12,6 +12,7 @@ interface NavItem {
   label: string;
   icon: React.ReactElement;
   authOnly?: boolean;
+  hideForRoles?: string[];
 }
 
 const navItems: NavItem[] = [
@@ -66,6 +67,7 @@ const navItems: NavItem[] = [
     to: '/profile',
     label: 'Profile',
     authOnly: true,
+    hideForRoles: ['coach', 'admin'],
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
         <circle cx="11" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
@@ -81,10 +83,12 @@ const navItems: NavItem[] = [
 ];
 
 export default function Sidebar({ open }: SidebarProps): React.ReactElement {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const visibleItems = navItems.filter(
-    (item) => !item.authOnly || isAuthenticated
+    (item) =>
+      (!item.authOnly || isAuthenticated) &&
+      !(item.hideForRoles && user && item.hideForRoles.includes(user.role))
   );
 
   return (

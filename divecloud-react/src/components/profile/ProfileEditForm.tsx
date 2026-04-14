@@ -4,6 +4,7 @@ import './ProfileEditForm.css';
 interface UserProfile {
   id: number;
   email: string;
+  role: string;
   first_name: string;
   last_name: string;
   middle_initial?: string;
@@ -11,6 +12,13 @@ interface UserProfile {
   gender?: string;
   preferred_first_name?: string;
   uss_number?: string;
+  avatar_url?: string;
+  banner_url?: string;
+  location?: string;
+  athlete_hometown?: string;
+  athlete_graduation_year?: number;
+  athlete_bio?: string;
+  athlete_gender?: string;
 }
 
 interface ProfileEditFormProps {
@@ -32,8 +40,16 @@ export default function ProfileEditForm({
     date_of_birth: profile.date_of_birth || '',
     gender: profile.gender || '',
     uss_number: profile.uss_number || '',
+    avatar_url: profile.avatar_url || '',
+    banner_url: profile.banner_url || '',
+    location: profile.location || '',
+    athlete_hometown: profile.athlete_hometown || '',
+    athlete_graduation_year: profile.athlete_graduation_year || undefined,
+    athlete_bio: profile.athlete_bio || '',
+    athlete_gender: profile.athlete_gender || '',
   });
 
+  const isAthlete = profile.role === 'athlete';
   const [isSaving, setIsSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -56,20 +72,25 @@ export default function ProfileEditForm({
         newErrors.date_of_birth = 'Please enter a valid date of birth';
       }
     }
+    const gradYear = formData.athlete_graduation_year;
+    if (gradYear !== undefined && gradYear !== null) {
+      if (gradYear < 1980 || gradYear > 2100) {
+        newErrors.athlete_graduation_year = 'Must be between 1980 and 2100';
+      }
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'athlete_graduation_year' ? (value ? parseInt(value, 10) : undefined) : value,
     }));
-    // Clear error for this field
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -81,10 +102,7 @@ export default function ProfileEditForm({
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSaving(true);
     try {
@@ -97,11 +115,64 @@ export default function ProfileEditForm({
   return (
     <div className="profile-edit-form-container">
       <div className="profile-edit-card">
-        <div className="profile-edit-section">
-          <h2 className="profile-edit-section-title">About you</h2>
+        <form onSubmit={handleSubmit} className="profile-edit-form">
+          {/* Images Section */}
+          <div className="profile-edit-section">
+            <h2 className="profile-edit-section-title">Profile Images</h2>
+            <div className="profile-edit-row">
+              <div className="profile-edit-group profile-edit-group--image">
+                <label htmlFor="avatar_url" className="profile-edit-label">
+                  Profile Picture URL
+                </label>
+                <div className="profile-edit-image-field">
+                  {formData.avatar_url && (
+                    <img
+                      src={formData.avatar_url}
+                      alt="Avatar preview"
+                      className="profile-edit-preview profile-edit-preview--avatar"
+                    />
+                  )}
+                  <input
+                    id="avatar_url"
+                    type="url"
+                    name="avatar_url"
+                    value={formData.avatar_url || ''}
+                    onChange={handleInputChange}
+                    className="profile-edit-input"
+                    placeholder="https://example.com/photo.jpg"
+                  />
+                </div>
+              </div>
+              <div className="profile-edit-group profile-edit-group--image">
+                <label htmlFor="banner_url" className="profile-edit-label">
+                  Banner Image URL
+                </label>
+                <div className="profile-edit-image-field">
+                  {formData.banner_url && (
+                    <img
+                      src={formData.banner_url}
+                      alt="Banner preview"
+                      className="profile-edit-preview profile-edit-preview--banner"
+                    />
+                  )}
+                  <input
+                    id="banner_url"
+                    type="url"
+                    name="banner_url"
+                    value={formData.banner_url || ''}
+                    onChange={handleInputChange}
+                    className="profile-edit-input"
+                    placeholder="https://example.com/banner.jpg"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <form onSubmit={handleSubmit} className="profile-edit-form">
-            {/* First Row: First Name, Middle Initial, Last Name, USS Number */}
+          {/* About Section */}
+          <div className="profile-edit-section">
+            <h2 className="profile-edit-section-title">About you</h2>
+
             <div className="profile-edit-row">
               <div className="profile-edit-group">
                 <label htmlFor="first_name" className="profile-edit-label">
@@ -114,12 +185,9 @@ export default function ProfileEditForm({
                   value={formData.first_name || ''}
                   onChange={handleInputChange}
                   className={`profile-edit-input ${errors.first_name ? 'error' : ''}`}
-                  placeholder="Ashley"
                 />
                 {errors.first_name && (
-                  <span className="profile-edit-error-text">
-                    {errors.first_name}
-                  </span>
+                  <span className="profile-edit-error-text">{errors.first_name}</span>
                 )}
               </div>
 
@@ -137,9 +205,7 @@ export default function ProfileEditForm({
                   className={`profile-edit-input middle ${errors.middle_initial ? 'error' : ''}`}
                 />
                 {errors.middle_initial && (
-                  <span className="profile-edit-error-text">
-                    {errors.middle_initial}
-                  </span>
+                  <span className="profile-edit-error-text">{errors.middle_initial}</span>
                 )}
               </div>
 
@@ -154,12 +220,9 @@ export default function ProfileEditForm({
                   value={formData.last_name || ''}
                   onChange={handleInputChange}
                   className={`profile-edit-input ${errors.last_name ? 'error' : ''}`}
-                  placeholder="Chan"
                 />
                 {errors.last_name && (
-                  <span className="profile-edit-error-text">
-                    {errors.last_name}
-                  </span>
+                  <span className="profile-edit-error-text">{errors.last_name}</span>
                 )}
               </div>
 
@@ -174,19 +237,14 @@ export default function ProfileEditForm({
                   value={formData.uss_number || ''}
                   onChange={handleInputChange}
                   className="profile-edit-input"
-                  placeholder=""
                 />
               </div>
             </div>
 
-            {/* Second Row: Preferred First Name, Date of Birth, Gender */}
             <div className="profile-edit-row">
               <div className="profile-edit-group">
-                <label
-                  htmlFor="preferred_first_name"
-                  className="profile-edit-label"
-                >
-                  Prefered First Name
+                <label htmlFor="preferred_first_name" className="profile-edit-label">
+                  Preferred First Name
                 </label>
                 <input
                   id="preferred_first_name"
@@ -211,18 +269,13 @@ export default function ProfileEditForm({
                   className={`profile-edit-input ${errors.date_of_birth ? 'error' : ''}`}
                 />
                 {errors.date_of_birth && (
-                  <span className="profile-edit-error-text">
-                    {errors.date_of_birth}
-                  </span>
+                  <span className="profile-edit-error-text">{errors.date_of_birth}</span>
                 )}
               </div>
 
               <div className="profile-edit-group">
                 <label htmlFor="gender" className="profile-edit-label">
-                  Gender{' '}
-                  <span className="profile-edit-optional">
-                    +Add gender pronoun
-                  </span>
+                  Gender
                 </label>
                 <select
                   id="gender"
@@ -238,28 +291,118 @@ export default function ProfileEditForm({
                   <option value="prefer_not_to_say">Prefer not to say</option>
                 </select>
               </div>
-            </div>
 
-            {/* Action Buttons */}
-            <div className="profile-edit-actions">
-              <button
-                type="button"
-                className="profile-edit-button cancel"
-                onClick={onCancel}
-                disabled={isSaving}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="profile-edit-button save"
-                disabled={isSaving}
-              >
-                {isSaving ? 'Saving...' : 'Save Changes'}
-              </button>
+              <div className="profile-edit-group">
+                <label htmlFor="location" className="profile-edit-label">
+                  Location
+                </label>
+                <input
+                  id="location"
+                  type="text"
+                  name="location"
+                  value={formData.location || ''}
+                  onChange={handleInputChange}
+                  className="profile-edit-input"
+                  placeholder="City, State"
+                />
+              </div>
             </div>
-          </form>
-        </div>
+          </div>
+
+          {/* Athlete Section */}
+          {isAthlete && (
+            <div className="profile-edit-section">
+              <h2 className="profile-edit-section-title">Athlete Info</h2>
+
+              <div className="profile-edit-row">
+                <div className="profile-edit-group">
+                  <label htmlFor="athlete_gender" className="profile-edit-label">
+                    Competition Category
+                  </label>
+                  <select
+                    id="athlete_gender"
+                    name="athlete_gender"
+                    value={formData.athlete_gender || ''}
+                    onChange={handleInputChange}
+                    className="profile-edit-input"
+                  >
+                    <option value="">Select category</option>
+                    <option value="men">Men</option>
+                    <option value="women">Women</option>
+                  </select>
+                </div>
+
+                <div className="profile-edit-group">
+                  <label htmlFor="athlete_hometown" className="profile-edit-label">
+                    Hometown
+                  </label>
+                  <input
+                    id="athlete_hometown"
+                    type="text"
+                    name="athlete_hometown"
+                    value={formData.athlete_hometown || ''}
+                    onChange={handleInputChange}
+                    className="profile-edit-input"
+                    placeholder="City, State"
+                  />
+                </div>
+
+                <div className="profile-edit-group">
+                  <label htmlFor="athlete_graduation_year" className="profile-edit-label">
+                    Graduation Year
+                  </label>
+                  <input
+                    id="athlete_graduation_year"
+                    type="number"
+                    name="athlete_graduation_year"
+                    min={1980}
+                    max={2100}
+                    value={formData.athlete_graduation_year || ''}
+                    onChange={handleInputChange}
+                    className={`profile-edit-input ${errors.athlete_graduation_year ? 'error' : ''}`}
+                  />
+                  {errors.athlete_graduation_year && (
+                    <span className="profile-edit-error-text">{errors.athlete_graduation_year}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="profile-edit-group">
+                <label htmlFor="athlete_bio" className="profile-edit-label">
+                  Bio
+                </label>
+                <textarea
+                  id="athlete_bio"
+                  name="athlete_bio"
+                  rows={4}
+                  value={formData.athlete_bio || ''}
+                  onChange={handleInputChange}
+                  className="profile-edit-input profile-edit-textarea"
+                  placeholder="Tell us about yourself..."
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="profile-edit-actions">
+            <button
+              type="button"
+              className="profile-edit-button cancel"
+              onClick={onCancel}
+              disabled={isSaving}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="profile-edit-button save"
+              disabled={isSaving}
+            >
+              {isSaving ? 'Saving...' : 'Save Changes'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -8,7 +8,19 @@ interface MediaItem {
   title: string;
   url?: string;
   video_url?: string;
+  meet_name?: string;
+  event_height?: string;
+  total_score?: number;
   created_at: string;
+}
+
+interface MeetOption {
+  meet_id: number;
+  meet_name: string;
+  meet_date: string;
+  event: string;
+  score: number | null;
+  rank: number | null;
 }
 
 interface ProfileMediaTabProps {
@@ -20,7 +32,6 @@ interface ProfileMediaTabProps {
 
 export default function ProfileMediaTab({
   type,
-  userId,
   athleteId,
 }: ProfileMediaTabProps): React.ReactElement {
   const [mediaList, setMediaList] = useState<MediaItem[]>([]);
@@ -29,9 +40,10 @@ export default function ProfileMediaTab({
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [title, setTitle] = useState('');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [mediaUrl, setMediaUrl] = useState('');
+  const [meets, setMeets] = useState<MeetOption[]>([]);
+  const [selectedEntryId, setSelectedEntryId] = useState('');
 
-  // Memoize fetchMediaList so it's stable across renders
   const fetchMediaList = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
@@ -42,9 +54,7 @@ export default function ProfileMediaTab({
           : `/api/athletes/${athleteId}/media/videos`;
 
       const response = await fetch(`${API_URL}${endpoint}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.ok) {
@@ -58,45 +68,32 @@ export default function ProfileMediaTab({
     }
   }, [type, athleteId]);
 
-  // Fetch media on component mount or when type/athleteId changes
   useEffect(() => {
     fetchMediaList();
   }, [fetchMediaList]);
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-
-      // Validate file type
-      const isValidType =
-        type === 'photo'
-          ? file.type.startsWith('image/')
-          : file.type.startsWith('video/');
-
-      if (!isValidType) {
-        setError(`Please select a valid ${type} file`);
-        return;
+  useEffect(() => {
+    const fetchMeets = async (): Promise<void> => {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/athletes/${athleteId}/meets`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setMeets(data);
+        }
+      } catch (err) {
+        console.error('Error fetching meets:', err);
       }
-
-      // Validate file size (max 100MB for video, 10MB for photo)
-      const maxSize = type === 'photo' ? 10 * 1024 * 1024 : 100 * 1024 * 1024;
-      if (file.size > maxSize) {
-        setError(`File size must be less than ${maxSize / (1024 * 1024)}MB`);
-        return;
-      }
-
-      setSelectedFile(file);
-      setError('');
-    }
-  };
+    };
+    fetchMeets();
+  }, [athleteId]);
 
   const handleUpload = async (): Promise<void> => {
-    if (!selectedFile) {
-      setError('Please select a file');
+    if (!mediaUrl.trim()) {
+      setError('Please enter a URL');
       return;
     }
-
     if (!title.trim()) {
       setError('Please enter a title');
       return;
@@ -107,22 +104,30 @@ export default function ProfileMediaTab({
     setSuccess('');
 
     try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('title', title);
-
       const token = localStorage.getItem('token');
       const endpoint =
         type === 'photo'
           ? `/api/athletes/${athleteId}/media/photos`
           : `/api/athletes/${athleteId}/media/videos`;
 
+      const body: Record<string, string | number | null> = {
+        title: title.trim(),
+        meet_entry_id: selectedEntryId ? parseInt(selectedEntryId, 10) : null,
+      };
+
+      if (type === 'photo') {
+        body.url = mediaUrl.trim();
+      } else {
+        body.video_url = mediaUrl.trim();
+      }
+
       const response = await fetch(`${API_URL}${endpoint}`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: formData,
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
@@ -130,22 +135,13 @@ export default function ProfileMediaTab({
         throw new Error(data.error || 'Upload failed');
       }
 
-      setSuccess(
-        `${type === 'photo' ? 'Photo' : 'Video'} uploaded successfully!`
-      );
+      setSuccess(`${type === 'photo' ? 'Photo' : 'Video'} link saved!`);
       setTitle('');
-      setSelectedFile(null);
-
-      // Reset file input
-      const fileInput = document.getElementById(
-        `${type}-input`
-      ) as HTMLInputElement;
-      if (fileInput) fileInput.value = '';
-
-      // Refresh media list
+      setMediaUrl('');
+      setSelectedEntryId('');
       await fetchMediaList();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed');
+      setError(err instanceof Error ? err.message : 'Save failed');
     } finally {
       setUploading(false);
     }
@@ -163,27 +159,36 @@ export default function ProfileMediaTab({
 
       const response = await fetch(`${API_URL}${endpoint}`, {
         method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) throw new Error('Delete failed');
 
-      setSuccess('Item deleted successfully');
+      setSuccess('Item deleted');
       await fetchMediaList();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Delete failed');
     }
   };
 
+  const formatDate = (raw: string): string => {
+    const iso = raw.includes('T') ? raw.split('T')[0] : raw;
+    const [y, m, d] = iso.split('-').map(Number);
+    const dt = new Date(y, m - 1, d);
+    return dt.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  };
+
   return (
     <div className="profile-media-container">
       <div className="profile-media-card">
-        {/* Upload Section */}
+        {/* Add Link Section */}
         <div className="profile-media-upload">
           <h3 className="profile-media-title">
-            Upload {type === 'photo' ? 'Photo' : 'Video'}
+            Add {type === 'photo' ? 'Photo' : 'Video'} Link
           </h3>
 
           {error && <div className="profile-media-error">{error}</div>}
@@ -205,39 +210,56 @@ export default function ProfileMediaTab({
             </div>
 
             <div className="profile-media-group">
-              <label htmlFor={`${type}-input`} className="profile-media-label">
-                Select {type === 'photo' ? 'Photo' : 'Video'} File
+              <label htmlFor={`${type}-url`} className="profile-media-label">
+                {type === 'photo' ? 'Photo' : 'Video'} URL
               </label>
-              <div className="profile-media-file-input">
-                <input
-                  id={`${type}-input`}
-                  type="file"
-                  onChange={handleFileSelect}
-                  accept={type === 'photo' ? 'image/*' : 'video/*'}
-                  className="profile-media-file"
-                />
-                <label
-                  htmlFor={`${type}-input`}
-                  className="profile-media-file-label"
-                >
-                  {selectedFile ? selectedFile.name : `Choose ${type} file`}
-                </label>
-              </div>
+              <input
+                id={`${type}-url`}
+                type="url"
+                value={mediaUrl}
+                onChange={(e) => setMediaUrl(e.target.value)}
+                placeholder={`https://example.com/${type === 'photo' ? 'image.jpg' : 'video.mp4'}`}
+                className="profile-media-input"
+              />
+            </div>
+
+            <div className="profile-media-group">
+              <label
+                htmlFor={`${type}-meet`}
+                className="profile-media-label"
+              >
+                Link to Meet / Score{' '}
+                <span className="profile-media-optional">(optional)</span>
+              </label>
+              <select
+                id={`${type}-meet`}
+                value={selectedEntryId}
+                onChange={(e) => setSelectedEntryId(e.target.value)}
+                className="profile-media-input"
+              >
+                <option value="">No linked score</option>
+                {meets.map((m) => (
+                  <option key={`${m.meet_id}-${m.event}`} value={String(m.meet_id)}>
+                    {m.meet_name} - {m.event}
+                    {m.score ? ` (${Number(m.score).toFixed(1)})` : ''}
+                    {' · '}
+                    {formatDate(m.meet_date)}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <button
               onClick={handleUpload}
-              disabled={uploading || !selectedFile}
+              disabled={uploading || !mediaUrl.trim()}
               className="profile-media-upload-btn"
             >
-              {uploading
-                ? `Uploading...`
-                : `Upload ${type === 'photo' ? 'Photo' : 'Video'}`}
+              {uploading ? 'Saving...' : `Add ${type === 'photo' ? 'Photo' : 'Video'} Link`}
             </button>
           </div>
         </div>
 
-        {/* Media Gallery */}
+        {/* Media List */}
         <div className="profile-media-gallery">
           <h3 className="profile-media-title">
             Your {type === 'photo' ? 'Photos' : 'Videos'}
@@ -246,7 +268,7 @@ export default function ProfileMediaTab({
           {loading ? (
             <p className="profile-media-loading">Loading...</p>
           ) : mediaList.length === 0 ? (
-            <p className="profile-media-empty">No {type}s uploaded yet</p>
+            <p className="profile-media-empty">No {type}s added yet</p>
           ) : (
             <div className="profile-media-grid">
               {mediaList.map((item) => (
@@ -267,6 +289,14 @@ export default function ProfileMediaTab({
                   )}
                   <div className="profile-media-item-info">
                     <h4>{item.title}</h4>
+                    {item.meet_name && (
+                      <p className="profile-media-meet-link">
+                        {item.event_height} at {item.meet_name}
+                        {item.total_score
+                          ? ` · ${Number(item.total_score).toFixed(1)} pts`
+                          : ''}
+                      </p>
+                    )}
                     <p>{new Date(item.created_at).toLocaleDateString()}</p>
                     <button
                       onClick={() => handleDelete(item.id)}

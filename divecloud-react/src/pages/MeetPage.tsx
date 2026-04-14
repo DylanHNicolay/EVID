@@ -99,6 +99,7 @@ export default function MeetPage(): React.ReactElement {
   return (
     <div className="meet-page">
       <MeetPageCard
+        meetId={meet.id}
         name={meet.name}
         status={statusLabel(meet.status)}
         date={formatDate(meet.meet_date)}

@@ -179,7 +179,24 @@ app.get('/api/auth/profile', async (req, res) => {
     const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.id]);
     if (rows.length === 0) return res.status(401).json({ error: 'User not found' });
 
-    res.json(rows[0]);
+    const user = rows[0];
+    let athleteData = {};
+    if (user.role === 'athlete') {
+      const ar = await pool.query(
+        'SELECT hometown, graduation_year, bio, gender AS athlete_gender FROM athletes WHERE user_id = $1',
+        [user.id]
+      );
+      if (ar.rows.length > 0) {
+        athleteData = {
+          athlete_hometown: ar.rows[0].hometown,
+          athlete_graduation_year: ar.rows[0].graduation_year,
+          athlete_bio: ar.rows[0].bio,
+          athlete_gender: ar.rows[0].athlete_gender,
+        };
+      }
+    }
+
+    res.json({ ...user, ...athleteData });
   } catch (err) {
     if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
       return res.status(401).json({ error: 'Invalid token' });
@@ -196,29 +213,14 @@ app.put('/api/auth/profile', async (req, res) => {
       return res.status(401).json({ error: 'No token' });
     }
     const decoded = jwt.verify(header.slice(7), JWT_SECRET);
-    
+
     const {
-      first_name,
-      last_name,
-      middle_initial,
-      date_of_birth,
-      gender,
-      preferred_first_name,
-      uss_number,
+      first_name, last_name, middle_initial, date_of_birth,
+      gender, preferred_first_name, uss_number,
+      avatar_url, banner_url, location,
+      athlete_hometown, athlete_graduation_year, athlete_bio, athlete_gender,
     } = req.body;
 
-    // Convert empty strings to null for nullable fields
-    const sanitizedData = {
-      first_name: first_name || undefined,
-      last_name: last_name || undefined,
-      middle_initial: middle_initial || null,
-      date_of_birth: date_of_birth || null,
-      gender: gender || null,
-      preferred_first_name: preferred_first_name || null,
-      uss_number: uss_number || null,
-    };
-
-    // Update users table
     const { rows } = await pool.query(
       `UPDATE users
        SET first_name = COALESCE($1, first_name),
@@ -228,18 +230,18 @@ app.put('/api/auth/profile', async (req, res) => {
            gender = COALESCE($5, gender),
            preferred_first_name = COALESCE($6, preferred_first_name),
            uss_number = COALESCE($7, uss_number),
+           avatar_url = COALESCE($8, avatar_url),
+           banner_url = COALESCE($9, banner_url),
+           location = COALESCE($10, location),
            updated_at = NOW()
-       WHERE id = $8
+       WHERE id = $11
        RETURNING *`,
       [
-        sanitizedData.first_name,
-        sanitizedData.last_name,
-        sanitizedData.middle_initial,
-        sanitizedData.date_of_birth,
-        sanitizedData.gender,
-        sanitizedData.preferred_first_name,
-        sanitizedData.uss_number,
-        decoded.id
+        first_name || undefined, last_name || undefined,
+        middle_initial || null, date_of_birth || null,
+        gender || null, preferred_first_name || null, uss_number || null,
+        avatar_url || null, banner_url || null, location || null,
+        decoded.id,
       ]
     );
 
@@ -248,19 +250,43 @@ app.put('/api/auth/profile', async (req, res) => {
     }
 
     const user = rows[0];
+    let athleteData = {};
 
-    // Also update the corresponding athlete record with first_name and last_name
-    if (user.first_name || user.last_name) {
-      await pool.query(
+    if (user.role === 'athlete') {
+      const ar = await pool.query(
         `UPDATE athletes
          SET first_name = $1,
-             last_name = $2
-         WHERE user_id = $3`,
+             last_name = $2,
+             gender = COALESCE($3, gender),
+             hometown = COALESCE($4, hometown),
+             graduation_year = COALESCE($5, graduation_year),
+             bio = COALESCE($6, bio),
+             avatar_url = COALESCE($7, avatar_url)
+         WHERE user_id = $8
+         RETURNING hometown, graduation_year, bio, gender AS athlete_gender`,
+        [
+          user.first_name, user.last_name,
+          athlete_gender || null, athlete_hometown || null,
+          athlete_graduation_year || null, athlete_bio || null,
+          avatar_url || null, decoded.id,
+        ]
+      );
+      if (ar.rows.length > 0) {
+        athleteData = {
+          athlete_hometown: ar.rows[0].hometown,
+          athlete_graduation_year: ar.rows[0].graduation_year,
+          athlete_bio: ar.rows[0].bio,
+          athlete_gender: ar.rows[0].athlete_gender,
+        };
+      }
+    } else if (user.first_name || user.last_name) {
+      await pool.query(
+        `UPDATE athletes SET first_name = $1, last_name = $2 WHERE user_id = $3`,
         [user.first_name, user.last_name, decoded.id]
       );
     }
 
-    res.json(user);
+    res.json({ ...user, ...athleteData });
   } catch (err) {
     if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
       return res.status(401).json({ error: 'Invalid token' });
@@ -274,17 +300,15 @@ app.put('/api/auth/profile', async (req, res) => {
 
 app.get('/api/athletes/:athleteId/media/photos', async (req, res) => {
   try {
-    const header = req.headers.authorization;
-    if (!header || !header.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'No token' });
-    }
-    jwt.verify(header.slice(7), JWT_SECRET);
-
     const { rows } = await pool.query(
-      `SELECT id, title, url, created_at
-       FROM athlete_photos
-       WHERE athlete_id = $1
-       ORDER BY created_at DESC`,
+      `SELECT ap.id, ap.title, ap.url, ap.created_at,
+              m.name AS meet_name, e.height AS event_height, me.total_score
+       FROM athlete_photos ap
+       LEFT JOIN meet_entries me ON me.id = ap.meet_entry_id
+       LEFT JOIN events e ON e.id = me.event_id
+       LEFT JOIN meets m ON m.id = e.meet_id
+       WHERE ap.athlete_id = $1
+       ORDER BY ap.created_at DESC`,
       [req.params.athleteId]
     );
     res.json(rows);
@@ -296,17 +320,15 @@ app.get('/api/athletes/:athleteId/media/photos', async (req, res) => {
 
 app.get('/api/athletes/:athleteId/media/videos', async (req, res) => {
   try {
-    const header = req.headers.authorization;
-    if (!header || !header.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'No token' });
-    }
-    jwt.verify(header.slice(7), JWT_SECRET);
-
     const { rows } = await pool.query(
-      `SELECT id, title, video_url, created_at
-       FROM athlete_videos
-       WHERE athlete_id = $1
-       ORDER BY created_at DESC`,
+      `SELECT av.id, av.title, av.video_url, av.created_at,
+              m.name AS meet_name, e.height AS event_height, me.total_score
+       FROM athlete_videos av
+       LEFT JOIN meet_entries me ON me.id = av.meet_entry_id
+       LEFT JOIN events e ON e.id = me.event_id
+       LEFT JOIN meets m ON m.id = e.meet_id
+       WHERE av.athlete_id = $1
+       ORDER BY av.created_at DESC`,
       [req.params.athleteId]
     );
     res.json(rows);
@@ -324,14 +346,12 @@ app.post('/api/athletes/:athleteId/media/photos', async (req, res) => {
     }
     jwt.verify(header.slice(7), JWT_SECRET);
 
-    // For now, store the URL from the request
-    // In production, you'd handle file uploads with multer
-    const { title, url } = req.body;
+    const { title, url, meet_entry_id } = req.body;
     const { rows } = await pool.query(
-      `INSERT INTO athlete_photos (athlete_id, title, url)
-       VALUES ($1, $2, $3)
+      `INSERT INTO athlete_photos (athlete_id, title, url, meet_entry_id)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [req.params.athleteId, title, url]
+      [req.params.athleteId, title, url, meet_entry_id || null]
     );
     res.json(rows[0]);
   } catch (err) {
@@ -348,12 +368,12 @@ app.post('/api/athletes/:athleteId/media/videos', async (req, res) => {
     }
     jwt.verify(header.slice(7), JWT_SECRET);
 
-    const { title, video_url } = req.body;
+    const { title, video_url, meet_entry_id } = req.body;
     const { rows } = await pool.query(
-      `INSERT INTO athlete_videos (athlete_id, title, video_url)
-       VALUES ($1, $2, $3)
+      `INSERT INTO athlete_videos (athlete_id, title, video_url, meet_entry_id)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [req.params.athleteId, title, video_url]
+      [req.params.athleteId, title, video_url, meet_entry_id || null]
     );
     res.json(rows[0]);
   } catch (err) {
