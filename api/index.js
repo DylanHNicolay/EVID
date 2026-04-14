@@ -42,7 +42,12 @@ function userPayload(u) {
 
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { email, password, firstName, lastName, role } = req.body;
+    const {
+      email, password, firstName, lastName, role,
+      middleInitial, dateOfBirth, gender, preferredFirstName,
+      ussNumber, graduationYear, hometown, avatarUrl, bannerUrl,
+    } = req.body;
+
     if (!email || !password || !firstName || !lastName || !role) {
       return res.status(400).json({ error: 'All fields are required' });
     }
@@ -56,19 +61,38 @@ app.post('/api/auth/register', async (req, res) => {
       return res.status(409).json({ error: 'Email already registered' });
     }
 
+    const finalAvatar = avatarUrl || `https://i.pravatar.cc/150?u=${encodeURIComponent(email)}`;
+    const finalBanner = bannerUrl || 'https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=1200';
+
     const hash = await bcrypt.hash(password, BCRYPT_ROUNDS);
     const { rows } = await pool.query(
-      `INSERT INTO users (email, password_hash, role, first_name, last_name)
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [email, hash, dbRole, firstName, lastName]
+      `INSERT INTO users
+         (email, password_hash, role, first_name, last_name,
+          middle_initial, date_of_birth, gender, preferred_first_name,
+          uss_number, avatar_url, banner_url)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
+      [
+        email, hash, dbRole, firstName, lastName,
+        middleInitial || null, dateOfBirth || null, gender || null,
+        preferredFirstName || null, ussNumber || null,
+        finalAvatar, finalBanner,
+      ]
     );
     const user = rows[0];
 
+    let athleteId = null;
     if (dbRole === 'athlete') {
-      await pool.query(
-        `INSERT INTO athletes (user_id, first_name, last_name) VALUES ($1, $2, $3)`,
-        [user.id, firstName, lastName]
+      const ar = await pool.query(
+        `INSERT INTO athletes
+           (user_id, first_name, last_name, gender, graduation_year, hometown, avatar_url)
+         VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
+        [
+          user.id, firstName, lastName,
+          gender || null, graduationYear || null, hometown || null,
+          finalAvatar,
+        ]
       );
+      athleteId = ar.rows[0].id;
     } else if (dbRole === 'coach') {
       await pool.query(
         `INSERT INTO coaches (user_id, team_id, title) VALUES ($1, (SELECT id FROM teams LIMIT 1), 'Coach')`,
@@ -77,7 +101,7 @@ app.post('/api/auth/register', async (req, res) => {
     }
 
     const token = signToken(user);
-    res.status(201).json({ token, user: userPayload(user) });
+    res.status(201).json({ token, user: { ...userPayload(user), athlete_id: athleteId } });
   } catch (err) {
     console.error('register error:', err);
     res.status(500).json({ error: 'Internal server error' });

@@ -41,7 +41,7 @@ export default function RegisterPage(): React.ReactElement {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
+      <div className="auth-card auth-card--wide">
         <h1>{role ? 'Register' : 'Register as'}</h1>
 
         {role ? (
