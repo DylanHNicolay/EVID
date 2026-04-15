@@ -63,7 +63,7 @@
 .scores-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 8px;
+  margin-top: 0;
 }
 
 .scores-table th {
@@ -71,8 +71,19 @@
   color: #888;
   font-weight: 500;
   font-size: 15px;
-  padding: 10px 16px;
+  padding: 14px 20px;
   border-bottom: 2px solid #eee;
+}
+
+.result-row td {
+  padding: 14px 20px;
+}
+
+.scores-table th:first-child,
+.result-row td:first-child {
+  width: 44px;
+  padding-left: 14px;
+  padding-right: 8px;
 }
 
 /* Responsive */

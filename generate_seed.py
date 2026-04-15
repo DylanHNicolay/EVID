@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generates SEED.sql with ~4,500+ rows of realistic sample data for divecloud.
+Generates SEED.sql with ~20,000+ rows of realistic sample data for divecloud.
 Run: python generate_seed.py
 """
 
@@ -26,7 +26,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "ACC",
         "location": "Charlottesville, VA",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Virginia_Cavaliers_logo.svg/200px-Virginia_Cavaliers_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/University_of_Virginia_seal.svg/250px-University_of_Virginia_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1562774053-701939374585?w=1200",
         "accent_color": "#232D4B",
     },
@@ -37,7 +37,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "Pac-12",
         "location": "Stanford, CA",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/200px-Stanford_Cardinal_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Seal_of_Leland_Stanford_Junior_University.svg/250px-Seal_of_Leland_Stanford_Junior_University.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=1200",
         "accent_color": "#8C1515",
     },
@@ -48,7 +48,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "SEC",
         "location": "Austin, TX",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Texas_Longhorns_logo.svg/200px-Texas_Longhorns_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e1/University_of_Texas_at_Austin_seal.svg/250px-University_of_Texas_at_Austin_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1568792923760-d70635a89fdc?w=1200",
         "accent_color": "#BF5700",
     },
@@ -59,7 +59,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "Big Ten",
         "location": "Ann Arbor, MI",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Michigan_Wolverines_logo.svg/200px-Michigan_Wolverines_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Seal_of_the_University_of_Michigan.svg/250px-Seal_of_the_University_of_Michigan.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1590012314607-cda9d9b699ae?w=1200",
         "accent_color": "#00274C",
     },
@@ -70,7 +70,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "Big Ten",
         "location": "Bloomington, IN",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Indiana_Hoosiers_logo.svg/200px-Indiana_Hoosiers_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5d/Indiana_University_seal.svg/250px-Indiana_University_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1200",
         "accent_color": "#990000",
     },
@@ -81,7 +81,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "Big Ten",
         "location": "Los Angeles, CA",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/USC_Trojans_logo.svg/200px-USC_Trojans_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/University_of_Southern_California_%28USC%29_seal.svg/250px-University_of_Southern_California_%28USC%29_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1200",
         "accent_color": "#990000",
     },
@@ -92,7 +92,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "SEC",
         "location": "Gainesville, FL",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/1/14/Florida_Gators_gator_logo.svg/200px-Florida_Gators_gator_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6d/University_of_Florida_seal.svg/250px-University_of_Florida_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200",
         "accent_color": "#0021A5",
     },
@@ -103,7 +103,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "ACC",
         "location": "Raleigh, NC",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/NC_State_Wolfpack_logo.svg/200px-NC_State_Wolfpack_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/North_Carolina_State_University_seal.svg/250px-North_Carolina_State_University_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1200",
         "accent_color": "#CC0000",
     },
@@ -114,7 +114,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "ACC",
         "location": "Durham, NC",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Duke_Blue_Devils_logo.svg/200px-Duke_Blue_Devils_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Duke_University_logo.svg/250px-Duke_University_logo.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=1200",
         "accent_color": "#003087",
     },
@@ -125,7 +125,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "Big Ten",
         "location": "Columbus, OH",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ohio_State_Buckeyes_logo.svg/200px-Ohio_State_Buckeyes_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e1/Ohio_State_University_seal.svg/250px-Ohio_State_University_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1461896836934-bd45ba8fcb84?w=1200",
         "accent_color": "#BB0000",
     },
@@ -136,7 +136,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "Big Ten",
         "location": "University Park, PA",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/3/3a/Penn_State_Nittany_Lions_logo.svg/200px-Penn_State_Nittany_Lions_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5c/Pennsylvania_State_University_seal.svg/250px-Pennsylvania_State_University_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200",
         "accent_color": "#041E42",
     },
@@ -147,7 +147,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "Big 12",
         "location": "Tucson, AZ",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Arizona_Wildcats_logo.svg/200px-Arizona_Wildcats_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e4/University_of_Arizona_seal.svg/250px-University_of_Arizona_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200",
         "accent_color": "#CC0033",
     },
@@ -158,7 +158,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "SEC",
         "location": "Baton Rouge, LA",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/LSU_Tigers_logo.svg/200px-LSU_Tigers_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Louisiana_State_University%2C_Baton_Rouge%2C_LA.png/250px-Louisiana_State_University%2C_Baton_Rouge%2C_LA.png",
         "banner_url": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=1200",
         "accent_color": "#461D7C",
     },
@@ -169,7 +169,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "SEC",
         "location": "Athens, GA",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Georgia_Bulldogs_logo.svg/200px-Georgia_Bulldogs_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b2/University_of_Georgia_seal.png/250px-University_of_Georgia_seal.png",
         "banner_url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200",
         "accent_color": "#BA0C2F",
     },
@@ -180,7 +180,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "SEC",
         "location": "Knoxville, TN",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Tennessee_Volunteers_logo.svg/200px-Tennessee_Volunteers_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/5/55/Seal_of_the_University_of_Tennessee.svg/250px-Seal_of_the_University_of_Tennessee.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1200",
         "accent_color": "#FF8200",
     },
@@ -191,7 +191,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "SEC",
         "location": "Auburn, AL",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Auburn_Tigers_logo.svg/200px-Auburn_Tigers_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/Auburn_University_seal.svg/250px-Auburn_University_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1200",
         "accent_color": "#0C2340",
     },
@@ -202,7 +202,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "Big Ten",
         "location": "Minneapolis, MN",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/University_of_Minnesota_Logo.svg/200px-University_of_Minnesota_Logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Seal_of_the_University_of_Minnesota.svg/250px-Seal_of_the_University_of_Minnesota.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1544919982-b61976f0ba43?w=1200",
         "accent_color": "#7A0019",
     },
@@ -213,7 +213,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "Big Ten",
         "location": "Evanston, IL",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Northwestern_Wildcats_logo.svg/200px-Northwestern_Wildcats_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Northwestern_University_seal.svg/250px-Northwestern_University_seal.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=1200",
         "accent_color": "#4E2A84",
     },
@@ -224,7 +224,7 @@ TEAMS = [
         "division": "Division I",
         "conference": "ACC",
         "location": "Berkeley, CA",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/California_Golden_Bears_logo.svg/200px-California_Golden_Bears_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Seal_of_University_of_California%2C_Berkeley.svg/250px-Seal_of_University_of_California%2C_Berkeley.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=1200",
         "accent_color": "#003262",
     },
@@ -235,9 +235,229 @@ TEAMS = [
         "division": "Division I",
         "conference": "ACC",
         "location": "Coral Gables, FL",
-        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Miami_Hurricanes_logo.svg/200px-Miami_Hurricanes_logo.svg.png",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/University_of_Miami_logo.svg/250px-University_of_Miami_logo.svg.png",
         "banner_url": "https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=1200",
         "accent_color": "#F47321",
+    },
+    {
+        "name": "Purdue University",
+        "abbreviation": "PUR",
+        "school": "Purdue",
+        "division": "Division I",
+        "conference": "Big Ten",
+        "location": "West Lafayette, IN",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/6/61/Purdue_University_seal.svg/250px-Purdue_University_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1562774053-701939374585?w=1200",
+        "accent_color": "#CEB888",
+    },
+    {
+        "name": "University of Kentucky",
+        "abbreviation": "UK",
+        "school": "Kentucky",
+        "division": "Division I",
+        "conference": "SEC",
+        "location": "Lexington, KY",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2d/University_of_Kentucky_seal.svg/250px-University_of_Kentucky_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200",
+        "accent_color": "#0033A0",
+    },
+    {
+        "name": "University of Alabama",
+        "abbreviation": "BAMA",
+        "school": "Alabama",
+        "division": "Division I",
+        "conference": "SEC",
+        "location": "Tuscaloosa, AL",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/University_of_Alabama_logo.svg/250px-University_of_Alabama_logo.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1200",
+        "accent_color": "#9E1B32",
+    },
+    {
+        "name": "University of South Carolina",
+        "abbreviation": "SC",
+        "school": "South Carolina",
+        "division": "Division I",
+        "conference": "SEC",
+        "location": "Columbia, SC",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/b/bb/University_of_South_Carolina_seal.svg/250px-University_of_South_Carolina_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=1200",
+        "accent_color": "#73000A",
+    },
+    {
+        "name": "Texas A&M University",
+        "abbreviation": "TAMU",
+        "school": "Texas A&M",
+        "division": "Division I",
+        "conference": "SEC",
+        "location": "College Station, TX",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Texas_A%26M_University_seal.svg/250px-Texas_A%26M_University_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1568792923760-d70635a89fdc?w=1200",
+        "accent_color": "#500000",
+    },
+    {
+        "name": "University of Missouri",
+        "abbreviation": "MIZ",
+        "school": "Missouri",
+        "division": "Division I",
+        "conference": "SEC",
+        "location": "Columbia, MO",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/University_of_Missouri_logo.svg/250px-University_of_Missouri_logo.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1544919982-b61976f0ba43?w=1200",
+        "accent_color": "#F1B82D",
+    },
+    {
+        "name": "University of Iowa",
+        "abbreviation": "IOWA",
+        "school": "Iowa",
+        "division": "Division I",
+        "conference": "Big Ten",
+        "location": "Iowa City, IA",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/University_of_Iowa_wordmark.svg/250px-University_of_Iowa_wordmark.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200",
+        "accent_color": "#FFCD00",
+    },
+    {
+        "name": "University of Wisconsin",
+        "abbreviation": "WIS",
+        "school": "Wisconsin",
+        "division": "Division I",
+        "conference": "Big Ten",
+        "location": "Madison, WI",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Seal_of_the_University_of_Wisconsin.svg/250px-Seal_of_the_University_of_Wisconsin.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=1200",
+        "accent_color": "#C5050C",
+    },
+    {
+        "name": "Michigan State University",
+        "abbreviation": "MSU",
+        "school": "Michigan State",
+        "division": "Division I",
+        "conference": "Big Ten",
+        "location": "East Lansing, MI",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Michigan_State_University_seal.svg/250px-Michigan_State_University_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1590012314607-cda9d9b699ae?w=1200",
+        "accent_color": "#18453B",
+    },
+    {
+        "name": "University of Nebraska",
+        "abbreviation": "NEB",
+        "school": "Nebraska",
+        "division": "Division I",
+        "conference": "Big Ten",
+        "location": "Lincoln, NE",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Seal_of_the_University_of_Nebraska.svg/250px-Seal_of_the_University_of_Nebraska.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1461896836934-bd45ba8fcb84?w=1200",
+        "accent_color": "#E41C38",
+    },
+    {
+        "name": "University of Pittsburgh",
+        "abbreviation": "PITT",
+        "school": "Pittsburgh",
+        "division": "Division I",
+        "conference": "ACC",
+        "location": "Pittsburgh, PA",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/f/fb/University_of_Pittsburgh_seal.svg/250px-University_of_Pittsburgh_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=1200",
+        "accent_color": "#003594",
+    },
+    {
+        "name": "Virginia Tech",
+        "abbreviation": "VT",
+        "school": "Virginia Tech",
+        "division": "Division I",
+        "conference": "ACC",
+        "location": "Blacksburg, VA",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/5/54/Virginia_Tech_seal.svg/250px-Virginia_Tech_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1562774053-701939374585?w=1200",
+        "accent_color": "#630031",
+    },
+    {
+        "name": "University of North Carolina",
+        "abbreviation": "UNC",
+        "school": "UNC",
+        "division": "Division I",
+        "conference": "ACC",
+        "location": "Chapel Hill, NC",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5c/University_of_North_Carolina_at_Chapel_Hill_seal.svg/250px-University_of_North_Carolina_at_Chapel_Hill_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1200",
+        "accent_color": "#7BAFD4",
+    },
+    {
+        "name": "Georgia Tech",
+        "abbreviation": "GT",
+        "school": "Georgia Tech",
+        "division": "Division I",
+        "conference": "ACC",
+        "location": "Atlanta, GA",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Georgia_Tech_seal.svg/250px-Georgia_Tech_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200",
+        "accent_color": "#B3A369",
+    },
+    {
+        "name": "University of Arkansas",
+        "abbreviation": "ARK",
+        "school": "Arkansas",
+        "division": "Division I",
+        "conference": "SEC",
+        "location": "Fayetteville, AR",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/University_of_Arkansas_seal.svg/250px-University_of_Arkansas_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=1200",
+        "accent_color": "#9D2235",
+    },
+    {
+        "name": "Arizona State University",
+        "abbreviation": "ASU",
+        "school": "Arizona State",
+        "division": "Division I",
+        "conference": "Big 12",
+        "location": "Tempe, AZ",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a1/Arizona_State_University_seal.svg/250px-Arizona_State_University_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200",
+        "accent_color": "#8C1D40",
+    },
+    {
+        "name": "University of Notre Dame",
+        "abbreviation": "ND",
+        "school": "Notre Dame",
+        "division": "Division I",
+        "conference": "ACC",
+        "location": "Notre Dame, IN",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/University_of_Notre_Dame_seal_%282%29.svg/250px-University_of_Notre_Dame_seal_%282%29.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1200",
+        "accent_color": "#0C2340",
+    },
+    {
+        "name": "Clemson University",
+        "abbreviation": "CLEM",
+        "school": "Clemson",
+        "division": "Division I",
+        "conference": "ACC",
+        "location": "Clemson, SC",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/9/9c/Clemson_University_Seal.svg/250px-Clemson_University_Seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200",
+        "accent_color": "#F56600",
+    },
+    {
+        "name": "Rutgers University",
+        "abbreviation": "RUT",
+        "school": "Rutgers",
+        "division": "Division I",
+        "conference": "Big Ten",
+        "location": "New Brunswick, NJ",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Rutgers_University_seal.svg/250px-Rutgers_University_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=1200",
+        "accent_color": "#CC0033",
+    },
+    {
+        "name": "University of Illinois",
+        "abbreviation": "ILL",
+        "school": "Illinois",
+        "division": "Division I",
+        "conference": "Big Ten",
+        "location": "Champaign, IL",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/University_of_Illinois_seal.svg/250px-University_of_Illinois_seal.svg.png",
+        "banner_url": "https://images.unsplash.com/photo-1544919982-b61976f0ba43?w=1200",
+        "accent_color": "#E84A27",
     },
 ]
 
@@ -249,7 +469,10 @@ FIRST_NAMES_M = [
     "Jake", "Ethan", "Noah", "Liam", "Mason", "Logan", "Alexander",
     "Benjamin", "Samuel", "Jackson", "Owen", "Luke", "Caleb", "Isaac",
     "Dylan", "Carter", "Evan", "Marcus", "Trevor", "Kyle", "Sean",
-    "Cole", "Garrett",
+    "Cole", "Garrett", "Adrian", "Hunter", "Chase", "Colton", "Brayden",
+    "Landon", "Jaxon", "Elijah", "Grayson", "Dominic", "Austin",
+    "Blake", "Gavin", "Parker", "Aiden", "Wyatt", "Tristan", "Max",
+    "Bryce", "Camden", "Kai", "Spencer", "Nolan", "Tanner", "Riley",
 ]
 
 FIRST_NAMES_F = [
@@ -261,7 +484,10 @@ FIRST_NAMES_F = [
     "Allison", "Megan", "Victoria", "Julia", "Kayla", "Anna",
     "Katherine", "Maya", "Zoe", "Mackenzie", "Leah", "Sydney",
     "Gabriella", "Caroline", "Audrey", "Madeline", "Faith", "Peyton",
-    "Nicole",
+    "Nicole", "Harper", "Stella", "Addison", "Scarlett", "Aubrey",
+    "Aria", "Penelope", "Luna", "Nora", "Ellie", "Hazel", "Violet",
+    "Aurora", "Skylar", "Willow", "Camila", "Paisley", "Evelyn",
+    "Reagan", "Kennedy", "Kinsley", "Piper", "Quinn", "Brynn",
 ]
 
 LAST_NAMES = [
@@ -276,6 +502,11 @@ LAST_NAMES = [
     "Chen", "Kim", "Park", "Singh", "Patel", "Zhang", "Li",
     "Wang", "Brooks", "Murphy", "Sullivan", "Reed", "Cooper",
     "Ross", "Morgan", "Bell", "Kelly", "Price", "Bennett", "Wood",
+    "Hoffman", "Meyer", "Ford", "Hamilton", "Graham", "Wallace",
+    "Olson", "Henderson", "Fox", "Rose", "Diaz", "Burke", "Steele",
+    "Dunn", "Pearson", "Hicks", "Burns", "Warren", "Gibson",
+    "Mason", "Elliott", "Cruz", "Webb", "Jordan", "Owens", "Dixon",
+    "Vasquez", "Snyder", "Hunt", "Palmer", "Knight", "Duncan",
 ]
 
 HOMETOWNS = [
@@ -289,6 +520,12 @@ HOMETOWNS = [
     "Tucson, AZ", "Honolulu, HI", "Boulder, CO", "Ann Arbor, MI",
     "Boca Raton, FL", "Scottsdale, AZ", "Madison, WI", "Savannah, GA",
     "Charleston, SC", "Naperville, IL", "Plano, TX", "Irvine, CA",
+    "Fort Worth, TX", "Richmond, VA", "Lexington, KY", "Des Moines, IA",
+    "Omaha, NE", "Albuquerque, NM", "Knoxville, TN", "Boise, ID",
+    "Salt Lake City, UT", "Tulsa, OK", "Virginia Beach, VA",
+    "Overland Park, KS", "Carmel, IN", "Lakewood, CO", "Cary, NC",
+    "Frisco, TX", "Chandler, AZ", "Coral Springs, FL", "Sarasota, FL",
+    "Asheville, NC",
 ]
 
 COACH_TITLES = [
@@ -337,6 +574,11 @@ BANNER_PHOTOS = [
 PLACEMENT_POINTS = [16, 13, 11, 9, 7, 5, 4, 3, 2, 1]
 
 SEASONS = ["2024-2025", "2025-2026"]
+
+# How many athletes per team (12 men + 12 women = 24 per team)
+ATHLETES_PER_TEAM_PER_GENDER = 12
+# How many coaches per team
+COACHES_PER_TEAM = 3
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -418,66 +660,68 @@ def generate():
     p("-- Coach users and coaches")
     used_emails = set()
     for team_id, t in teams:
-        first = random.choice(FIRST_NAMES_M + FIRST_NAMES_F)
-        last = random.choice(LAST_NAMES)
-        email = f"{first.lower()}.{last.lower()}@{t['school'].lower().replace(' ', '')}.edu"
-        while email in used_emails:
+        for coach_num in range(COACHES_PER_TEAM):
+            first = random.choice(FIRST_NAMES_M + FIRST_NAMES_F)
             last = random.choice(LAST_NAMES)
             email = f"{first.lower()}.{last.lower()}@{t['school'].lower().replace(' ', '')}.edu"
-        used_emails.add(email)
+            while email in used_emails:
+                last = random.choice(LAST_NAMES)
+                email = f"{first.lower()}.{last.lower()}@{t['school'].lower().replace(' ', '')}.edu"
+            used_emails.add(email)
 
-        uid += 1
-        avatar = f"https://i.pravatar.cc/150?u=coach-{uid}"
-        banner = random.choice(BANNER_PHOTOS)
-        loc = t["location"]
-        users.append((uid, email, "coach", first, last, loc, avatar, banner))
-        p(f"INSERT INTO users (id, email, password_hash, role, first_name, last_name, location, avatar_url, banner_url) "
-          f"OVERRIDING SYSTEM VALUE VALUES ({uid}, {sql_str(email)}, {sql_str(PASSWORD_HASH)}, 'coach', "
-          f"{sql_str(first)}, {sql_str(last)}, {sql_str(loc)}, {sql_str(avatar)}, {sql_str(banner)});")
+            uid += 1
+            avatar = f"https://i.pravatar.cc/150?u=coach-{uid}"
+            banner = random.choice(BANNER_PHOTOS)
+            loc = t["location"]
+            users.append((uid, email, "coach", first, last, loc, avatar, banner))
+            p(f"INSERT INTO users (id, email, password_hash, role, first_name, last_name, location, avatar_url, banner_url) "
+              f"OVERRIDING SYSTEM VALUE VALUES ({uid}, {sql_str(email)}, {sql_str(PASSWORD_HASH)}, 'coach', "
+              f"{sql_str(first)}, {sql_str(last)}, {sql_str(loc)}, {sql_str(avatar)}, {sql_str(banner)});")
 
-        cid += 1
-        title = random.choice(COACH_TITLES)
-        coaches.append((cid, uid, team_id, title, avatar))
-        p(f"INSERT INTO coaches (id, user_id, team_id, title, photo_url) "
-          f"OVERRIDING SYSTEM VALUE VALUES ({cid}, {uid}, {team_id}, {sql_str(title)}, {sql_str(avatar)});")
+            cid += 1
+            if coach_num == 0:
+                title = "Head Diving Coach"
+            elif coach_num == 1:
+                title = "Associate Head Coach"
+            else:
+                title = "Assistant Diving Coach"
+            coaches.append((cid, uid, team_id, title, avatar))
+            p(f"INSERT INTO coaches (id, user_id, team_id, title, photo_url) "
+              f"OVERRIDING SYSTEM VALUE VALUES ({cid}, {uid}, {team_id}, {sql_str(title)}, {sql_str(avatar)});")
     p()
 
     # ── USERS + ATHLETES ───────────────────────────────────────────
     p("-- Athlete users and athletes")
-    athletes_per_team = 5
     for team_id, t in teams:
-        for i in range(athletes_per_team):
-            gender = "men" if i < 3 else "women"
-            if gender == "men":
-                first = random.choice(FIRST_NAMES_M)
-            else:
-                first = random.choice(FIRST_NAMES_F)
-            last = random.choice(LAST_NAMES)
-            email = f"{first.lower()}.{last.lower()}.{uid+1}@{t['school'].lower().replace(' ', '')}.edu"
-            while email in used_emails:
+        for gender_label, name_pool in [("men", FIRST_NAMES_M), ("women", FIRST_NAMES_F)]:
+            for i in range(ATHLETES_PER_TEAM_PER_GENDER):
+                first = random.choice(name_pool)
                 last = random.choice(LAST_NAMES)
                 email = f"{first.lower()}.{last.lower()}.{uid+1}@{t['school'].lower().replace(' ', '')}.edu"
-            used_emails.add(email)
+                while email in used_emails:
+                    last = random.choice(LAST_NAMES)
+                    email = f"{first.lower()}.{last.lower()}.{uid+1}@{t['school'].lower().replace(' ', '')}.edu"
+                used_emails.add(email)
 
-            uid += 1
-            avatar = f"https://i.pravatar.cc/150?u=athlete-{uid}"
-            banner = random.choice(BANNER_PHOTOS)
-            hometown = random.choice(HOMETOWNS)
-            grad_year = random.choice([2025, 2026, 2027, 2028])
-            skill = round(random.uniform(5.5, 7.8), 2)
-            height_cm = round(random.uniform(155.0, 195.0), 2)
-            loc = hometown
+                uid += 1
+                avatar = f"https://i.pravatar.cc/150?u=athlete-{uid}"
+                banner = random.choice(BANNER_PHOTOS)
+                hometown = random.choice(HOMETOWNS)
+                grad_year = random.choice([2025, 2026, 2027, 2028])
+                skill = round(random.uniform(5.5, 7.8), 2)
+                height_cm = round(random.uniform(155.0, 195.0), 2)
+                loc = hometown
 
-            users.append((uid, email, "athlete", first, last, loc, avatar, banner))
-            p(f"INSERT INTO users (id, email, password_hash, role, first_name, last_name, location, avatar_url, banner_url) "
-              f"OVERRIDING SYSTEM VALUE VALUES ({uid}, {sql_str(email)}, {sql_str(PASSWORD_HASH)}, 'athlete', "
-              f"{sql_str(first)}, {sql_str(last)}, {sql_str(loc)}, {sql_str(avatar)}, {sql_str(banner)});")
+                users.append((uid, email, "athlete", first, last, loc, avatar, banner))
+                p(f"INSERT INTO users (id, email, password_hash, role, first_name, last_name, location, avatar_url, banner_url) "
+                  f"OVERRIDING SYSTEM VALUE VALUES ({uid}, {sql_str(email)}, {sql_str(PASSWORD_HASH)}, 'athlete', "
+                  f"{sql_str(first)}, {sql_str(last)}, {sql_str(loc)}, {sql_str(avatar)}, {sql_str(banner)});")
 
-            aid += 1
-            athletes.append((aid, uid, team_id, first, last, gender, grad_year, hometown, avatar, skill))
-            p(f"INSERT INTO athletes (id, user_id, team_id, first_name, last_name, gender, graduation_year, hometown, height_cm, avatar_url) "
-              f"OVERRIDING SYSTEM VALUE VALUES ({aid}, {uid}, {team_id}, {sql_str(first)}, {sql_str(last)}, "
-              f"{sql_str(gender)}, {grad_year}, {sql_str(hometown)}, {sql_num(height_cm)}, {sql_str(avatar)});")
+                aid += 1
+                athletes.append((aid, uid, team_id, first, last, gender_label, grad_year, hometown, avatar, skill))
+                p(f"INSERT INTO athletes (id, user_id, team_id, first_name, last_name, gender, graduation_year, hometown, height_cm, avatar_url) "
+                  f"OVERRIDING SYSTEM VALUE VALUES ({aid}, {uid}, {team_id}, {sql_str(first)}, {sql_str(last)}, "
+                  f"{sql_str(gender_label)}, {grad_year}, {sql_str(hometown)}, {sql_num(height_cm)}, {sql_str(avatar)});")
     p()
 
     # ── MEETS ──────────────────────────────────────────────────────
@@ -491,8 +735,8 @@ def generate():
         start, end = season_dates[season]
         total_days = (end - start).days
 
-        # 10 dual meets
-        for _ in range(10):
+        # 60 dual meets per season
+        for _ in range(60):
             t1_idx, t2_idx = random.sample(range(len(TEAMS)), 2)
             meet_date = start + timedelta(days=random.randint(0, total_days))
             meet_name = f"{TEAMS[t1_idx]['school']} vs {TEAMS[t2_idx]['school']}"
@@ -509,12 +753,14 @@ def generate():
                 "team_indices": [t1_idx, t2_idx],
             })
 
-        # 3 invitationals
-        for _ in range(3):
+        # 20 invitationals per season (3-6 teams each)
+        for _ in range(20):
             host_idx = random.randint(0, len(TEAMS) - 1)
             meet_date = start + timedelta(days=random.randint(0, total_days))
             meet_name = f"{TEAMS[host_idx]['school']} Invitational"
-            guest_idx = random.choice([i for i in range(len(TEAMS)) if i != host_idx])
+            num_guests = random.randint(2, 5)
+            guest_pool = [i for i in range(len(TEAMS)) if i != host_idx]
+            guest_indices = random.sample(guest_pool, min(num_guests, len(guest_pool)))
             meet_configs.append({
                 "name": meet_name,
                 "date": meet_date,
@@ -525,27 +771,49 @@ def generate():
                 "season": season,
                 "status": "completed",
                 "logo_url": TEAMS[host_idx]["logo_url"],
-                "team_indices": [host_idx, guest_idx],
+                "team_indices": [host_idx] + guest_indices,
             })
 
-        # 2 championships
-        for conf_name in ["ACC", "SEC"]:
+        # 5 exhibition meets per season
+        for _ in range(5):
+            t1_idx, t2_idx = random.sample(range(len(TEAMS)), 2)
+            meet_date = start + timedelta(days=random.randint(0, total_days // 3))
+            meet_name = f"{TEAMS[t1_idx]['school']} Exhibition"
+            meet_configs.append({
+                "name": meet_name,
+                "date": meet_date,
+                "date_end": None,
+                "location": TEAMS[t1_idx]["location"],
+                "course": random.choice(["SCY", "LCM", "SCM"]),
+                "meet_type": "exhibition",
+                "season": season,
+                "status": "completed",
+                "logo_url": TEAMS[t1_idx]["logo_url"],
+                "team_indices": [t1_idx, t2_idx],
+            })
+
+        # Conference championships
+        conferences_seen = set()
+        for i, t in enumerate(TEAMS):
+            conferences_seen.add(t["conference"])
+        for conf_name in sorted(conferences_seen):
             conf_teams = [i for i, t in enumerate(TEAMS) if t["conference"] == conf_name]
             if len(conf_teams) < 2:
                 continue
-            pair = random.sample(conf_teams, 2)
+            # Pick up to 6 teams for conference championship
+            champ_teams = random.sample(conf_teams, min(6, len(conf_teams)))
             meet_date = start + timedelta(days=random.randint(total_days - 60, total_days))
             meet_configs.append({
                 "name": f"{conf_name} Diving Championships",
                 "date": meet_date,
                 "date_end": meet_date + timedelta(days=3),
-                "location": random.choice(["Atlanta, GA", "Greensboro, NC", "Indianapolis, IN"]),
+                "location": random.choice(["Atlanta, GA", "Greensboro, NC", "Indianapolis, IN", "Austin, TX", "Minneapolis, MN"]),
                 "course": "SCY",
                 "meet_type": "championship",
                 "season": season,
                 "status": "completed" if season == "2024-2025" else "upcoming",
                 "logo_url": None,
-                "team_indices": pair,
+                "team_indices": champ_teams,
             })
 
     for mc in meet_configs:
@@ -580,7 +848,11 @@ def generate():
             for cat in ["men", "women"]:
                 dives_req = 6 if height != "platform" else random.choice([6, 8])
                 eid += 1
-                ename = f"{height.upper().replace('M',' Meter').replace('PLATFORM','Platform')} {dives_req} Dive"
+                if height == "platform":
+                    event_label = "Platform"
+                else:
+                    event_label = f"{height.replace('m', ' Meter')}"
+                ename = f"{event_label} {dives_req} Dive"
                 events_list.append((eid, meet_id, ename, height, cat, dives_req))
                 p(f"INSERT INTO events (id, meet_id, event_name, height, category, dives_required) "
                   f"OVERRIDING SYSTEM VALUE VALUES ({eid}, {meet_id}, {sql_str(ename)}, "
@@ -604,6 +876,7 @@ def generate():
 
     # Accumulate team points per meet per team per gender
     team_points = {}  # (meet_id, team_id, gender) -> total_points
+    entry_id_to_idx = {}  # entry_id -> index in entries list
 
     for ev_id, ev_meet_id, ev_name, ev_height, ev_cat, ev_dives_req in events_list:
         mc = None
@@ -616,7 +889,7 @@ def generate():
         for ti in mc["team_indices"]:
             real_team_id = ti + 1
             pool = athletes_by_team_gender.get((real_team_id, ev_cat), [])
-            count = min(len(pool), random.choice([2, 3]))
+            count = min(len(pool), random.choice([3, 4, 5]))
             chosen = random.sample(pool, count) if len(pool) >= count else pool
             for a in chosen:
                 event_athletes.append((a, real_team_id))
@@ -650,6 +923,7 @@ def generate():
                     best_per_athlete_code[key] = (drid, award)
 
             entry_total = round(entry_total, 3)
+            entry_id_to_idx[meid] = len(entries)
             entries.append((meid, ev_id, a_id, a_team_id, entry_total, 0, 0))
             dives.extend(entry_dives)
             event_entry_scores.append((meid, a_team_id, entry_total))
@@ -659,11 +933,10 @@ def generate():
         for rank_idx, (me_id, me_team_id, me_score) in enumerate(event_entry_scores):
             rank = rank_idx + 1
             pts = PLACEMENT_POINTS[rank_idx] if rank_idx < len(PLACEMENT_POINTS) else 0
-            # Update the entry
-            for i, e in enumerate(entries):
-                if e[0] == me_id:
-                    entries[i] = (me_id, e[1], e[2], e[3], me_score, rank, pts)
-                    break
+            # Update the entry (it's always one of the last len(event_entry_scores) entries)
+            entry_idx = entry_id_to_idx[me_id]
+            e = entries[entry_idx]
+            entries[entry_idx] = (me_id, e[1], e[2], e[3], me_score, rank, pts)
             # Accumulate team points
             tpk = (ev_meet_id, me_team_id, ev_cat)
             team_points[tpk] = team_points.get(tpk, 0) + pts
@@ -698,7 +971,7 @@ def generate():
 
     # ── COLLEGE COMMITMENTS ────────────────────────────────────────
     p("-- College commitments")
-    commit_athletes = random.sample(athletes, min(15, len(athletes)))
+    commit_athletes = random.sample(athletes, min(150, len(athletes)))
     for a in commit_athletes:
         a_id = a[0]
         school_idx = random.randint(0, len(TEAMS) - 1)
@@ -716,6 +989,11 @@ def generate():
             "Blessed to announce my commitment!",
             "The coaching staff made this an easy choice.",
             "Looking forward to representing this program.",
+            "Hard work pays off. Next chapter!",
+            "Could not be more excited for this journey.",
+            "Thankful for my family and coaches who got me here.",
+            "Time to take my diving to the next level!",
+            "This is just the beginning.",
         ])
         p(f"INSERT INTO college_commitments (id, athlete_id, school_name, school_logo_url, commitment_date, quote) "
           f"OVERRIDING SYSTEM VALUE VALUES ({ccid}, {a_id}, {sql_str(school['name'])}, "
@@ -724,14 +1002,20 @@ def generate():
 
     # ── ATHLETE VIDEOS ─────────────────────────────────────────────
     p("-- Athlete videos")
-    video_athletes = random.sample(athletes, min(20, len(athletes)))
+    # Build index: athlete_id -> list of dive_result_ids
+    athlete_dive_results = {}
+    entry_athlete_map = {e[0]: e[2] for e in entries}  # entry_id -> athlete_id
+    for d in dives:
+        dr_id, dr_me = d[0], d[1]
+        a_id_for_dive = entry_athlete_map.get(dr_me)
+        if a_id_for_dive is not None:
+            athlete_dive_results.setdefault(a_id_for_dive, []).append(dr_id)
+
+    video_athletes = random.sample(athletes, min(200, len(athletes)))
     for a in video_athletes:
         a_id = a[0]
-        # Pick a random dive result for this athlete
-        athlete_dives = [d for d in dives if any(
-            e[0] == d[1] and e[2] == a_id for e in entries
-        )]
-        dr_link = random.choice(athlete_dives)[0] if athlete_dives else None
+        dr_ids = athlete_dive_results.get(a_id, [])
+        dr_link = random.choice(dr_ids) if dr_ids else None
         avid += 1
         vid_url = random.choice(YOUTUBE_VIDEOS)
         title = f"{a[3]} {a[4]} - Dive Highlight"
@@ -741,7 +1025,7 @@ def generate():
 
     # ── DIVE LIST SIMULATIONS ──────────────────────────────────────
     p("-- Dive list simulations")
-    sim_athletes = random.sample(athletes, min(10, len(athletes)))
+    sim_athletes = random.sample(athletes, min(120, len(athletes)))
     for a in sim_athletes:
         a_id = a[0]
         dlid += 1

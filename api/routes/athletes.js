@@ -1,7 +1,6 @@
 const { Router } = require('express');
-const jwt = require('jsonwebtoken');
 const pool = require('../db');
-const { JWT_SECRET } = require('../middleware/auth');
+const { verifyToken } = require('../middleware/auth');
 
 const router = Router();
 
@@ -86,8 +85,7 @@ router.get('/:id/results', async (req, res) => {
        WHERE me.athlete_id = $1
        GROUP BY me.id, e.event_name, e.height, e.dives_required,
                 me.total_score, me.final_rank, me.points, m.name, m.meet_date
-       ORDER BY m.meet_date DESC, e.height
-       LIMIT 20`,
+       ORDER BY m.meet_date DESC, e.height`,
       [req.params.id]
     );
     res.json(rows);
@@ -142,13 +140,14 @@ router.get('/:id/personal-bests', async (req, res) => {
 router.get('/:id/progression', async (req, res) => {
   try {
     const { rows } = await pool.query(
-      `SELECT m.meet_date AS date, MAX(me.total_score) AS score
+      `SELECT me.total_score AS score, m.meet_date AS date,
+              m.name AS meet_name, e.height, e.dives_required, e.event_name,
+              me.final_rank
        FROM meet_entries me
        JOIN events e ON e.id = me.event_id
        JOIN meets m  ON m.id = e.meet_id
        WHERE me.athlete_id = $1 AND me.total_score IS NOT NULL
-       GROUP BY m.meet_date
-       ORDER BY m.meet_date`,
+       ORDER BY m.meet_date, e.height`,
       [req.params.id]
     );
     res.json(rows);
@@ -200,13 +199,29 @@ router.get('/:athleteId/media/videos', async (req, res) => {
   }
 });
 
+async function verifyAthleteOwner(req, res) {
+  const decoded = verifyToken(req.headers.authorization);
+  if (!decoded) {
+    res.status(401).json({ error: 'No token' });
+    return null;
+  }
+
+  const ar = await pool.query(
+    'SELECT id FROM athletes WHERE id = $1 AND user_id = $2',
+    [req.params.athleteId, decoded.id]
+  );
+  if (ar.rows.length === 0) {
+    res.status(403).json({ error: 'Not authorized for this athlete' });
+    return null;
+  }
+
+  return decoded;
+}
+
 router.post('/:athleteId/media/photos', async (req, res) => {
   try {
-    const header = req.headers.authorization;
-    if (!header || !header.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'No token' });
-    }
-    jwt.verify(header.slice(7), JWT_SECRET);
+    const decoded = await verifyAthleteOwner(req, res);
+    if (!decoded) return;
 
     const { title, url, meet_entry_id } = req.body;
     const { rows } = await pool.query(
@@ -217,6 +232,9 @@ router.post('/:athleteId/media/photos', async (req, res) => {
     );
     res.json(rows[0]);
   } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
     console.error('upload photo error:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -224,11 +242,8 @@ router.post('/:athleteId/media/photos', async (req, res) => {
 
 router.post('/:athleteId/media/videos', async (req, res) => {
   try {
-    const header = req.headers.authorization;
-    if (!header || !header.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'No token' });
-    }
-    jwt.verify(header.slice(7), JWT_SECRET);
+    const decoded = await verifyAthleteOwner(req, res);
+    if (!decoded) return;
 
     const { title, video_url, meet_entry_id } = req.body;
     const { rows } = await pool.query(
@@ -239,6 +254,9 @@ router.post('/:athleteId/media/videos', async (req, res) => {
     );
     res.json(rows[0]);
   } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
     console.error('upload video error:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -246,11 +264,8 @@ router.post('/:athleteId/media/videos', async (req, res) => {
 
 router.delete('/:athleteId/media/photos/:photoId', async (req, res) => {
   try {
-    const header = req.headers.authorization;
-    if (!header || !header.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'No token' });
-    }
-    jwt.verify(header.slice(7), JWT_SECRET);
+    const decoded = await verifyAthleteOwner(req, res);
+    if (!decoded) return;
 
     const { rows } = await pool.query(
       `DELETE FROM athlete_photos
@@ -265,6 +280,9 @@ router.delete('/:athleteId/media/photos/:photoId', async (req, res) => {
     
     res.json({ success: true });
   } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
     console.error('delete photo error:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -272,11 +290,8 @@ router.delete('/:athleteId/media/photos/:photoId', async (req, res) => {
 
 router.delete('/:athleteId/media/videos/:videoId', async (req, res) => {
   try {
-    const header = req.headers.authorization;
-    if (!header || !header.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'No token' });
-    }
-    jwt.verify(header.slice(7), JWT_SECRET);
+    const decoded = await verifyAthleteOwner(req, res);
+    if (!decoded) return;
 
     const { rows } = await pool.query(
       `DELETE FROM athlete_videos
@@ -291,6 +306,9 @@ router.delete('/:athleteId/media/videos/:videoId', async (req, res) => {
     
     res.json({ success: true });
   } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
     console.error('delete video error:', err);
     res.status(500).json({ error: 'Internal server error' });
   }

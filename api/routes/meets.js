@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const { name, sort, date, range } = req.query;
+    const { name, sort, date } = req.query;
     const conditions = [];
     const params = [];
     let idx = 1;
@@ -20,14 +20,6 @@ router.get('/', async (req, res) => {
       conditions.push(`m.status = 'completed'`);
     } else if (date === 'upcoming') {
       conditions.push(`m.status = 'upcoming'`);
-    }
-
-    if (range === 'week') {
-      conditions.push(`m.meet_date >= NOW() - INTERVAL '7 days'`);
-    } else if (range === 'month') {
-      conditions.push(`m.meet_date >= NOW() - INTERVAL '30 days'`);
-    } else if (range === 'year') {
-      conditions.push(`m.meet_date >= NOW() - INTERVAL '365 days'`);
     }
 
     const where = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : '';
@@ -48,7 +40,6 @@ router.get('/', async (req, res) => {
       ${where}
       GROUP BY m.id
       ${orderBy}
-      LIMIT 50
     `;
 
     const { rows } = await pool.query(query, params);
@@ -97,7 +88,7 @@ router.get('/:id/results', async (req, res) => {
   try {
     const gender = req.query.gender || 'men';
     const { rows } = await pool.query(
-      `SELECT me.id, a.first_name || ' ' || a.last_name AS name,
+      `SELECT me.id, a.id AS athlete_id, a.first_name || ' ' || a.last_name AS name,
               t.name AS team, e.height AS event,
               me.total_score AS score, me.points, me.final_rank
        FROM meet_entries me

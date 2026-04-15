@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import ProfileCard from '../components/profile/ProfileCard';
 import ProfileHomeTab from '../components/profile/tabs/profile-home-tab';
 import ProfileScoresTab from '../components/profile/tabs/profile-scores-tab';
@@ -23,11 +23,26 @@ interface AthleteProfile {
 
 export default function ProfilePage(): React.ReactElement {
   const { athleteId: paramId } = useParams<{ athleteId: string }>();
+  const [searchParams] = useSearchParams();
   const { user, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('Home');
+  const initialTab = searchParams.get('tab') || 'Home';
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [athlete, setAthlete] = useState<AthleteProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const initialScoresTab = searchParams.get('scoresTab') || undefined;
+  const focusEntryParam = searchParams.get('entryId');
+  const parsedFocusEntryId = focusEntryParam ? Number(focusEntryParam) : NaN;
+  const focusEntryId = Number.isFinite(parsedFocusEntryId)
+    ? parsedFocusEntryId
+    : undefined;
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
 
   const athleteId =
     paramId || (user?.athlete_id ? String(user.athlete_id) : null);
@@ -102,7 +117,13 @@ export default function ProfilePage(): React.ReactElement {
 
       {activeTab === 'Home' && <ProfileHomeTab athleteId={athlete.id} />}
       {activeTab === 'Meets' && <ProfileMeetsTab athleteId={athlete.id} />}
-      {activeTab === 'Scores' && <ProfileScoresTab athleteId={athlete.id} />}
+      {activeTab === 'Scores' && (
+        <ProfileScoresTab
+          athleteId={athlete.id}
+          initialTab={initialScoresTab}
+          focusEntryId={focusEntryId}
+        />
+      )}
     </div>
   );
 }

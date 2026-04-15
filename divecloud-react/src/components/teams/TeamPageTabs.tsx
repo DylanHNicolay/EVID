@@ -4,13 +4,15 @@ import './TeamPageTabs.css';
 interface TeamPageTabsProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  tabs?: string[];
 }
 
-const tabs = ['Home', 'Meets', 'Roster'];
+const defaultTabs = ['Home', 'Meets', 'Roster'];
 
 export default function TeamPageTabs({
   activeTab,
   onTabChange,
+  tabs = defaultTabs,
 }: TeamPageTabsProps): React.ReactElement {
   return (
     <div className="team-page-tabs">

@@ -43,7 +43,9 @@ const MeetResultsTable = ({
             results.map((result) => (
               <tr key={result.id} className="meet-results-row">
                 <td className="col-name">
-                  <Link to={`/profile/${result.athlete_id}`}>
+                  <Link
+                    to={`/profile/${result.athlete_id}?tab=Scores&scoresTab=Event%20History&entryId=${result.id}`}
+                  >
                     {result.name}
                   </Link>
                 </td>

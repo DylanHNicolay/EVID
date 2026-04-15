@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const bcrypt = require('bcryptjs');
 const pool = require('../db');
-const { BCRYPT_ROUNDS, signToken, userPayload, verifyToken } = require('../middleware/auth');
+const { BCRYPT_ROUNDS, signToken, userPayload, verifyToken, profilePayload } = require('../middleware/auth');
 
 const router = Router();
 
@@ -166,7 +166,7 @@ router.get('/auth/profile', async (req, res) => {
       }
     }
 
-    res.json({ ...user, ...athleteData });
+    res.json({ ...profilePayload(user), ...athleteData });
   } catch (err) {
     if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
       return res.status(401).json({ error: 'Invalid token' });
@@ -204,7 +204,7 @@ router.put('/auth/profile', async (req, res) => {
        WHERE id = $11
        RETURNING *`,
       [
-        first_name || undefined, last_name || undefined,
+        first_name || null, last_name || null,
         middle_initial || null, date_of_birth || null,
         gender || null, preferred_first_name || null, uss_number || null,
         avatar_url || null, banner_url || null, location || null,
@@ -253,7 +253,7 @@ router.put('/auth/profile', async (req, res) => {
       );
     }
 
-    res.json({ ...user, ...athleteData });
+    res.json({ ...profilePayload(user), ...athleteData });
   } catch (err) {
     if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
       return res.status(401).json({ error: 'Invalid token' });

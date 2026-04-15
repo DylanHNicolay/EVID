@@ -24,7 +24,7 @@ router.get('/home/top-events', async (_req, res) => {
     const today = new Date().toISOString().slice(0, 10);
     const query = `
       SELECT
-        me.id AS entry_id, a.first_name, a.last_name, a.gender,
+        me.id AS entry_id, a.id AS athlete_id, a.first_name, a.last_name, a.gender,
         t.accent_color AS team_color, t.name AS team_name,
         e.event_name, e.height, e.dives_required, me.total_score
       FROM meet_entries me
@@ -54,7 +54,7 @@ router.get('/home/top-events', async (_req, res) => {
 router.get('/home/commitments', async (_req, res) => {
   try {
     const { rows } = await pool.query(`
-      SELECT cc.id, a.first_name, a.last_name, a.hometown, a.avatar_url,
+      SELECT cc.id, a.id AS athlete_id, a.first_name, a.last_name, a.hometown, a.avatar_url,
              cc.school_name, cc.school_logo_url, cc.commitment_date, cc.quote
       FROM college_commitments cc
       JOIN athletes a ON a.id = cc.athlete_id

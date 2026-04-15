@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import TeamPageCard from '../components/teams/TeamPageCard';
 import TeamHomeTab from '../components/teams/tabs/team-home-tab';
 import TeamMeetsTab from '../components/teams/tabs/team-meets-tab';
 import TeamRosterTab from '../components/teams/tabs/team-roster-tab';
+import TeamResultsUploadTab from '../components/teams/tabs/team-results-upload-tab';
 import { useAuth } from '../context/AuthContext';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5050';
@@ -28,6 +29,20 @@ export default function TeamPage(): React.ReactElement {
   const [team, setTeam] = useState<TeamInfo | null>(null);
 
   const teamId = paramId;
+  const canUploadResults =
+    !!user &&
+    (user.role === 'admin' ||
+      (user.role === 'coach' &&
+        !!user.team_id &&
+        !!team &&
+        Number(user.team_id) === Number(team.id)));
+  const tabs = useMemo(
+    () =>
+      canUploadResults
+        ? ['Home', 'Meets', 'Roster', 'Upload Results']
+        : ['Home', 'Meets', 'Roster'],
+    [canUploadResults]
+  );
 
   useEffect(() => {
     if (!teamId) return;
@@ -45,6 +60,12 @@ export default function TeamPage(): React.ReactElement {
       controller.abort();
     };
   }, [teamId, user]);
+
+  useEffect(() => {
+    if (!tabs.includes(activeTab)) {
+      setActiveTab('Home');
+    }
+  }, [activeTab, tabs]);
 
   if (!teamId) {
     return (
@@ -66,11 +87,15 @@ export default function TeamPage(): React.ReactElement {
         logoUrl={team.logo_url || undefined}
         activeTab={activeTab}
         onTabChange={setActiveTab}
+        tabs={tabs}
       />
 
       {activeTab === 'Home' && <TeamHomeTab team={team} />}
       {activeTab === 'Meets' && <TeamMeetsTab teamId={team.id} />}
       {activeTab === 'Roster' && <TeamRosterTab teamId={team.id} />}
+      {activeTab === 'Upload Results' && canUploadResults && (
+        <TeamResultsUploadTab teamId={team.id} />
+      )}
     </>
   );
 }
