@@ -10,8 +10,7 @@ interface TeamScore {
 }
 
 interface MeetTeamsScoreProps {
-  homeTeam: TeamScore;
-  awayTeam: TeamScore;
+  teams: TeamScore[];
 }
 
 const TeamBlock = ({ team }: { team: TeamScore }): React.ReactElement => {
@@ -39,24 +38,33 @@ const TeamBlock = ({ team }: { team: TeamScore }): React.ReactElement => {
   );
 };
 
-const MeetTeamsScore = ({
-  homeTeam,
-  awayTeam,
-}: MeetTeamsScoreProps): React.ReactElement => {
+function formatTeamScore(score: number): string {
+  if (Number.isInteger(score)) return String(score);
+  return score.toFixed(2);
+}
+
+const MeetTeamsScore = ({ teams }: MeetTeamsScoreProps): React.ReactElement => {
   return (
     <div className="meet-teams-card">
       <h3 className="meet-teams-title">Teams</h3>
-      <div className="meet-teams-score-row">
-        <TeamBlock team={homeTeam} />
-
-        <div className="meet-score-display">
-          <span className="meet-score-value">{homeTeam.score}</span>
-          <span className="meet-score-separator">-</span>
-          <span className="meet-score-value">{awayTeam.score}</span>
-        </div>
-
-        <TeamBlock team={awayTeam} />
-      </div>
+      {teams.length === 0 ? (
+        <p className="meet-teams-empty">No team scores available.</p>
+      ) : (
+        <ul className="meet-teams-list">
+          {teams.map((team, index) => (
+            <li
+              key={`${team.teamId ?? team.name}-${index}`}
+              className="meet-teams-row"
+            >
+              <span className="meet-team-rank">#{index + 1}</span>
+              <TeamBlock team={team} />
+              <span className="meet-team-points">
+                {formatTeamScore(team.score)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

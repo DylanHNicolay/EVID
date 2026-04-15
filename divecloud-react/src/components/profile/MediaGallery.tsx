@@ -33,10 +33,16 @@ export default function MediaGallery({
         ]);
 
         const photos: MediaItem[] = photosRes.ok
-          ? (await photosRes.json()).map((p: MediaItem) => ({ ...p, type: 'photo' as const }))
+          ? (await photosRes.json()).map((p: MediaItem) => ({
+              ...p,
+              type: 'photo' as const,
+            }))
           : [];
         const videos: MediaItem[] = videosRes.ok
-          ? (await videosRes.json()).map((v: MediaItem) => ({ ...v, type: 'video' as const }))
+          ? (await videosRes.json()).map((v: MediaItem) => ({
+              ...v,
+              type: 'video' as const,
+            }))
           : [];
 
         const combined = [...photos, ...videos].sort(

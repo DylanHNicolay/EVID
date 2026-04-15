@@ -38,6 +38,12 @@ interface TeamResultsUploadTabProps {
   teamId: number;
 }
 
+interface TeamSearchOption {
+  id: number;
+  name: string;
+  school?: string | null;
+}
+
 interface ScheduleForm {
   name: string;
   meetDate: string;
@@ -48,6 +54,7 @@ interface ScheduleForm {
   season: string;
   gender: Category;
   logoUrl: string;
+  attendingTeamIds: number[];
 }
 
 function formatDate(raw: string): string {
@@ -89,6 +96,14 @@ export default function TeamResultsUploadTab({
   const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [loadingSchedule, setLoadingSchedule] = useState(false);
   const [loadingSample, setLoadingSample] = useState(false);
+  const [loadingTeamSearch, setLoadingTeamSearch] = useState(false);
+  const [teamSearch, setTeamSearch] = useState('');
+  const [teamSearchResults, setTeamSearchResults] = useState<
+    TeamSearchOption[]
+  >([]);
+  const [teamOptionsById, setTeamOptionsById] = useState<
+    Record<number, TeamSearchOption>
+  >({});
   const [scheduleForm, setScheduleForm] = useState<ScheduleForm>({
     name: '',
     meetDate: new Date().toISOString().slice(0, 10),
@@ -99,6 +114,7 @@ export default function TeamResultsUploadTab({
     season: '',
     gender: 'mixed',
     logoUrl: '',
+    attendingTeamIds: [],
   });
 
   useEffect(() => {
@@ -107,6 +123,48 @@ export default function TeamResultsUploadTab({
       .then((rows: MeetOption[]) => setMeets(rows))
       .catch((err) => console.error('load meets failed', err));
   }, [teamId]);
+
+  useEffect(() => {
+    if (panelMode !== 'schedule') return;
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => {
+      setLoadingTeamSearch(true);
+
+      const query = teamSearch.trim();
+      const params = new URLSearchParams();
+      if (query) params.set('q', query);
+
+      fetch(`${API_URL}/api/teams?${params.toString()}`, {
+        signal: controller.signal,
+      })
+        .then((r) => r.json())
+        .then((rows: TeamSearchOption[]) => {
+          const filteredRows = rows.filter((row) => Number(row.id) !== teamId);
+          setTeamSearchResults(filteredRows);
+
+          setTeamOptionsById((prev) => {
+            const next = { ...prev };
+            filteredRows.forEach((row) => {
+              next[row.id] = row;
+            });
+            return next;
+          });
+        })
+        .catch((err: unknown) => {
+          const message = err instanceof Error ? err.message : '';
+          if (!message.toLowerCase().includes('abort')) {
+            console.error('team search failed', err);
+          }
+        })
+        .finally(() => setLoadingTeamSearch(false));
+    }, 250);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [panelMode, teamId, teamSearch]);
 
   const canSubmit = useMemo(() => {
     if (!token) return false;
@@ -136,6 +194,32 @@ export default function TeamResultsUploadTab({
       scheduleForm.meetDate.trim().length > 0
     );
   }, [token, scheduleForm]);
+
+  const selectedAttendingTeams = useMemo(
+    () =>
+      scheduleForm.attendingTeamIds.map((id) => {
+        const existing = teamOptionsById[id];
+        if (existing) return existing;
+        return {
+          id,
+          name: `Team #${id}`,
+          school: null,
+        };
+      }),
+    [scheduleForm.attendingTeamIds, teamOptionsById]
+  );
+
+  const toggleAttendingTeam = (selectedTeamId: number): void => {
+    setScheduleForm((prev) => {
+      const alreadySelected = prev.attendingTeamIds.includes(selectedTeamId);
+      return {
+        ...prev,
+        attendingTeamIds: alreadySelected
+          ? prev.attendingTeamIds.filter((id) => id !== selectedTeamId)
+          : [...prev.attendingTeamIds, selectedTeamId],
+      };
+    });
+  };
 
   const previewResults = async (): Promise<void> => {
     if (!token) {
@@ -457,6 +541,69 @@ export default function TeamResultsUploadTab({
                 placeholder="https://..."
               />
             </label>
+
+            <div className="tur-grid-full">
+              <label htmlFor="tur-attending-teams-search">
+                Other Schools Attending (optional)
+              </label>
+              <input
+                id="tur-attending-teams-search"
+                value={teamSearch}
+                onChange={(e): void => setTeamSearch(e.target.value)}
+                placeholder="Search by school or team name"
+              />
+              <p className="tur-help tur-inline-help">
+                Select the schools that may attend this meet.
+              </p>
+
+              {selectedAttendingTeams.length > 0 && (
+                <div className="tur-selected-teams">
+                  {selectedAttendingTeams.map((team) => (
+                    <button
+                      key={team.id}
+                      type="button"
+                      className="tur-team-chip"
+                      onClick={(): void => toggleAttendingTeam(team.id)}
+                    >
+                      {team.name}
+                      {team.school ? ` (${team.school})` : ''} ×
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <div
+                className="tur-team-options"
+                role="listbox"
+                aria-multiselectable
+              >
+                {loadingTeamSearch ? (
+                  <p className="tur-help">Loading schools...</p>
+                ) : (
+                  teamSearchResults.map((team) => {
+                    const checked = scheduleForm.attendingTeamIds.includes(
+                      team.id
+                    );
+                    return (
+                      <label key={team.id} className="tur-team-option">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(): void => toggleAttendingTeam(team.id)}
+                        />
+                        <span>
+                          {team.name}
+                          {team.school ? ` (${team.school})` : ''}
+                        </span>
+                      </label>
+                    );
+                  })
+                )}
+                {!loadingTeamSearch && teamSearchResults.length === 0 && (
+                  <p className="tur-help">No schools found.</p>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="tur-actions">

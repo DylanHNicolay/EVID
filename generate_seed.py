@@ -472,14 +472,14 @@ FIRST_NAMES_M = [
     "Cole", "Garrett", "Adrian", "Hunter", "Chase", "Colton", "Brayden",
     "Landon", "Jaxon", "Elijah", "Grayson", "Dominic", "Austin",
     "Blake", "Gavin", "Parker", "Aiden", "Wyatt", "Tristan", "Max",
-    "Bryce", "Camden", "Kai", "Spencer", "Nolan", "Tanner", "Riley",
+    "Bryce", "Camden", "Kai", "Spencer", "Nolan", "Tanner"
 ]
 
 FIRST_NAMES_F = [
     "Emily", "Sarah", "Jessica", "Ashley", "Hannah", "Samantha",
     "Elizabeth", "Madison", "Alexis", "Abigail", "Olivia", "Emma",
     "Sophia", "Isabella", "Ava", "Mia", "Chloe", "Grace", "Lily",
-    "Ella", "Natalie", "Claire", "Hailey", "Savannah", "Riley",
+    "Ella", "Natalie", "Claire", "Hailey", "Savannah",
     "Paige", "Brooke", "Morgan", "Taylor", "Rachel", "Lauren",
     "Allison", "Megan", "Victoria", "Julia", "Kayla", "Anna",
     "Katherine", "Maya", "Zoe", "Mackenzie", "Leah", "Sydney",
@@ -579,6 +579,23 @@ SEASONS = ["2024-2025", "2025-2026"]
 ATHLETES_PER_TEAM_PER_GENDER = 12
 # How many coaches per team
 COACHES_PER_TEAM = 3
+
+# Meet generation volumes
+DUAL_MEETS_PER_SEASON = 60
+INVITATIONAL_MEETS_PER_SEASON = 20
+EXHIBITION_MEETS_PER_SEASON = 5
+
+# Multi-team meet sizing
+MIN_INVITATIONAL_TEAMS = 3
+MAX_INVITATIONAL_TEAMS = 6
+MIN_CHAMPIONSHIP_TEAMS = 4
+MAX_CHAMPIONSHIP_TEAMS = 6
+
+# Mixed category generation tuning
+MIXED_EVENT_PROB_DUAL = 0.2
+MIXED_EVENT_PROB_EXHIBITION = 0.4
+NON_MIXED_ENTRIES_PER_TEAM = [3, 4, 5]
+MIXED_ENTRIES_PER_TEAM = [2, 3, 4]
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -735,8 +752,8 @@ def generate():
         start, end = season_dates[season]
         total_days = (end - start).days
 
-        # 60 dual meets per season
-        for _ in range(60):
+        # Dual meets per season (always 1v1)
+        for _ in range(DUAL_MEETS_PER_SEASON):
             t1_idx, t2_idx = random.sample(range(len(TEAMS)), 2)
             meet_date = start + timedelta(days=random.randint(0, total_days))
             meet_name = f"{TEAMS[t1_idx]['school']} vs {TEAMS[t2_idx]['school']}"
@@ -751,16 +768,33 @@ def generate():
                 "status": "completed",
                 "logo_url": TEAMS[t1_idx]["logo_url"],
                 "team_indices": [t1_idx, t2_idx],
+                "include_mixed": random.random() < MIXED_EVENT_PROB_DUAL,
             })
 
-        # 20 invitationals per season (3-6 teams each)
-        for _ in range(20):
+        # Invitational-style multi-team meets (3-6 teams)
+        for _ in range(INVITATIONAL_MEETS_PER_SEASON):
             host_idx = random.randint(0, len(TEAMS) - 1)
             meet_date = start + timedelta(days=random.randint(0, total_days))
-            meet_name = f"{TEAMS[host_idx]['school']} Invitational"
-            num_guests = random.randint(2, 5)
+            total_teams = random.randint(MIN_INVITATIONAL_TEAMS, MAX_INVITATIONAL_TEAMS)
+            num_guests = total_teams - 1
             guest_pool = [i for i in range(len(TEAMS)) if i != host_idx]
             guest_indices = random.sample(guest_pool, min(num_guests, len(guest_pool)))
+
+            if total_teams == 3:
+                meet_name = f"{TEAMS[host_idx]['school']} Tri-Meet"
+            elif total_teams == 4:
+                meet_name = f"{TEAMS[host_idx]['school']} Quad Meet"
+            else:
+                meet_name = f"{TEAMS[host_idx]['school']} Invitational"
+
+            invitational_status = "completed"
+            if season == "2025-2026":
+                invitational_status = random.choices(
+                    ["completed", "upcoming"],
+                    weights=[2, 3],
+                    k=1,
+                )[0]
+
             meet_configs.append({
                 "name": meet_name,
                 "date": meet_date,
@@ -769,13 +803,14 @@ def generate():
                 "course": "SCY",
                 "meet_type": "invitational",
                 "season": season,
-                "status": "completed",
+                "status": invitational_status,
                 "logo_url": TEAMS[host_idx]["logo_url"],
                 "team_indices": [host_idx] + guest_indices,
+                "include_mixed": True,
             })
 
-        # 5 exhibition meets per season
-        for _ in range(5):
+        # Exhibition meets per season
+        for _ in range(EXHIBITION_MEETS_PER_SEASON):
             t1_idx, t2_idx = random.sample(range(len(TEAMS)), 2)
             meet_date = start + timedelta(days=random.randint(0, total_days // 3))
             meet_name = f"{TEAMS[t1_idx]['school']} Exhibition"
@@ -790,6 +825,7 @@ def generate():
                 "status": "completed",
                 "logo_url": TEAMS[t1_idx]["logo_url"],
                 "team_indices": [t1_idx, t2_idx],
+                "include_mixed": random.random() < MIXED_EVENT_PROB_EXHIBITION,
             })
 
         # Conference championships
@@ -800,8 +836,17 @@ def generate():
             conf_teams = [i for i, t in enumerate(TEAMS) if t["conference"] == conf_name]
             if len(conf_teams) < 2:
                 continue
-            # Pick up to 6 teams for conference championship
-            champ_teams = random.sample(conf_teams, min(6, len(conf_teams)))
+
+            # Pick a configurable conference field size for multi-team championships
+            if len(conf_teams) <= MIN_CHAMPIONSHIP_TEAMS:
+                champ_count = len(conf_teams)
+            else:
+                champ_count = random.randint(
+                    MIN_CHAMPIONSHIP_TEAMS,
+                    min(MAX_CHAMPIONSHIP_TEAMS, len(conf_teams)),
+                )
+            champ_teams = random.sample(conf_teams, champ_count)
+
             meet_date = start + timedelta(days=random.randint(total_days - 60, total_days))
             meet_configs.append({
                 "name": f"{conf_name} Diving Championships",
@@ -814,6 +859,7 @@ def generate():
                 "status": "completed" if season == "2024-2025" else "upcoming",
                 "logo_url": None,
                 "team_indices": champ_teams,
+                "include_mixed": True,
             })
 
     for mc in meet_configs:
@@ -830,9 +876,13 @@ def generate():
     p("-- Meet teams")
     meet_team_map = {}  # (meet_id, team_id, gender) -> mtid
     for meet_id, mc in meets:
+        meet_genders = ["men", "women"]
+        if mc.get("include_mixed"):
+            meet_genders.append("mixed")
+
         for ti in mc["team_indices"]:
             real_team_id = ti + 1
-            for gender in ["men", "women"]:
+            for gender in meet_genders:
                 mtid += 1
                 meet_teams_list.append((mtid, meet_id, real_team_id, gender, 0))
                 meet_team_map[(meet_id, real_team_id, gender)] = mtid
@@ -844,8 +894,12 @@ def generate():
     p("-- Events")
     for meet_id, mc in meets:
         heights = random.sample(["1m", "3m", "platform"], k=random.choice([2, 3]))
+        categories = ["men", "women"]
+        if mc.get("include_mixed"):
+            categories.append("mixed")
+
         for height in heights:
-            for cat in ["men", "women"]:
+            for cat in categories:
                 dives_req = 6 if height != "platform" else random.choice([6, 8])
                 eid += 1
                 if height == "platform":
@@ -885,11 +939,23 @@ def generate():
                 mc = m_cfg
                 break
 
+        if mc is None:
+            continue
+
         event_athletes = []
         for ti in mc["team_indices"]:
             real_team_id = ti + 1
-            pool = athletes_by_team_gender.get((real_team_id, ev_cat), [])
-            count = min(len(pool), random.choice([3, 4, 5]))
+
+            if ev_cat == "mixed":
+                pool = (
+                    athletes_by_team_gender.get((real_team_id, "men"), [])
+                    + athletes_by_team_gender.get((real_team_id, "women"), [])
+                )
+                count = min(len(pool), random.choice(MIXED_ENTRIES_PER_TEAM))
+            else:
+                pool = athletes_by_team_gender.get((real_team_id, ev_cat), [])
+                count = min(len(pool), random.choice(NON_MIXED_ENTRIES_PER_TEAM))
+
             chosen = random.sample(pool, count) if len(pool) >= count else pool
             for a in chosen:
                 event_athletes.append((a, real_team_id))

@@ -696,7 +696,11 @@ router.post('/:id/results/upload/confirm', async (req, res) => {
 
 router.post('/:id/meets/schedule', async (req, res) => {
   try {
-    const teamId = req.params.id;
+    const teamId = Number(req.params.id);
+    if (!Number.isInteger(teamId)) {
+      return res.status(400).json({ error: 'Invalid team id' });
+    }
+
     const user = await authorizeForTeam(req, res, teamId);
     if (!user || !user.id) return;
 
@@ -710,6 +714,7 @@ router.post('/:id/meets/schedule', async (req, res) => {
       season,
       gender,
       logoUrl,
+      attendingTeamIds,
     } = req.body || {};
 
     const trimmedName = String(name || '').trim();
@@ -734,6 +739,35 @@ router.post('/:id/meets/schedule', async (req, res) => {
     const finalMeetType = validMeetType.includes(meetType) ? meetType : 'invitational';
     const finalGender = validGender.includes(gender) ? gender : 'mixed';
 
+    const requestedAttendingTeams = Array.isArray(attendingTeamIds)
+      ? attendingTeamIds
+      : [];
+
+    const normalizedAttendingIds = [
+      ...new Set(
+        requestedAttendingTeams
+          .map((id) => Number(id))
+          .filter((id) => Number.isInteger(id))
+      ),
+    ].filter((id) => id !== teamId);
+
+    const allParticipantTeamIds = [teamId, ...normalizedAttendingIds];
+
+    const teamsCheck = await pool.query(
+      `SELECT id, name, school
+       FROM teams
+       WHERE id = ANY($1::bigint[])`,
+      [allParticipantTeamIds]
+    );
+
+    const validTeamIds = new Set(teamsCheck.rows.map((row) => Number(row.id)));
+    const missingTeamIds = allParticipantTeamIds.filter((id) => !validTeamIds.has(id));
+    if (missingTeamIds.length > 0) {
+      return res.status(400).json({
+        error: `Invalid team IDs: ${missingTeamIds.join(', ')}`,
+      });
+    }
+
     const insertedMeet = await pool.query(
       `INSERT INTO meets
          (name, meet_date, date_end, location, course, meet_type, season, status, logo_url, uploaded_by_user_id)
@@ -755,19 +789,32 @@ router.post('/:id/meets/schedule', async (req, res) => {
 
     const meet = insertedMeet.rows[0];
 
+    const insertValues = allParticipantTeamIds
+      .map((_, idx) => `($1, $${idx + 2}, $${allParticipantTeamIds.length + 2}, 0)`)
+      .join(', ');
+
     await pool.query(
       `INSERT INTO meet_teams (meet_id, team_id, gender, team_score)
-       VALUES ($1, $2, $3, 0)
+       VALUES ${insertValues}
        ON CONFLICT (meet_id, team_id, gender)
        DO NOTHING`,
-      [meet.id, teamId, finalGender]
+      [meet.id, ...allParticipantTeamIds, finalGender]
     );
+
+    const participantTeams = teamsCheck.rows
+      .filter((row) => allParticipantTeamIds.includes(Number(row.id)))
+      .map((row) => ({
+        id: Number(row.id),
+        name: row.name,
+        school: row.school,
+      }));
 
     res.status(201).json({
       success: true,
       message: 'Meet scheduled',
       meet,
       team_gender: finalGender,
+      participant_teams: participantTeams,
     });
   } catch (err) {
     console.error('schedule meet error:', err);

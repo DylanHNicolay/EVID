@@ -84,12 +84,19 @@ export default function ProfileEditForm({
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'athlete_graduation_year' ? (value ? parseInt(value, 10) : undefined) : value,
+      [name]:
+        name === 'athlete_graduation_year'
+          ? value
+            ? parseInt(value, 10)
+            : undefined
+          : value,
     }));
     if (errors[name]) {
       setErrors((prev) => {
@@ -187,7 +194,9 @@ export default function ProfileEditForm({
                   className={`profile-edit-input ${errors.first_name ? 'error' : ''}`}
                 />
                 {errors.first_name && (
-                  <span className="profile-edit-error-text">{errors.first_name}</span>
+                  <span className="profile-edit-error-text">
+                    {errors.first_name}
+                  </span>
                 )}
               </div>
 
@@ -205,7 +214,9 @@ export default function ProfileEditForm({
                   className={`profile-edit-input middle ${errors.middle_initial ? 'error' : ''}`}
                 />
                 {errors.middle_initial && (
-                  <span className="profile-edit-error-text">{errors.middle_initial}</span>
+                  <span className="profile-edit-error-text">
+                    {errors.middle_initial}
+                  </span>
                 )}
               </div>
 
@@ -222,7 +233,9 @@ export default function ProfileEditForm({
                   className={`profile-edit-input ${errors.last_name ? 'error' : ''}`}
                 />
                 {errors.last_name && (
-                  <span className="profile-edit-error-text">{errors.last_name}</span>
+                  <span className="profile-edit-error-text">
+                    {errors.last_name}
+                  </span>
                 )}
               </div>
 
@@ -243,7 +256,10 @@ export default function ProfileEditForm({
 
             <div className="profile-edit-row">
               <div className="profile-edit-group">
-                <label htmlFor="preferred_first_name" className="profile-edit-label">
+                <label
+                  htmlFor="preferred_first_name"
+                  className="profile-edit-label"
+                >
                   Preferred First Name
                 </label>
                 <input
@@ -269,7 +285,9 @@ export default function ProfileEditForm({
                   className={`profile-edit-input ${errors.date_of_birth ? 'error' : ''}`}
                 />
                 {errors.date_of_birth && (
-                  <span className="profile-edit-error-text">{errors.date_of_birth}</span>
+                  <span className="profile-edit-error-text">
+                    {errors.date_of_birth}
+                  </span>
                 )}
               </div>
 
@@ -316,7 +334,10 @@ export default function ProfileEditForm({
 
               <div className="profile-edit-row">
                 <div className="profile-edit-group">
-                  <label htmlFor="athlete_gender" className="profile-edit-label">
+                  <label
+                    htmlFor="athlete_gender"
+                    className="profile-edit-label"
+                  >
                     Competition Category
                   </label>
                   <select
@@ -333,7 +354,10 @@ export default function ProfileEditForm({
                 </div>
 
                 <div className="profile-edit-group">
-                  <label htmlFor="athlete_hometown" className="profile-edit-label">
+                  <label
+                    htmlFor="athlete_hometown"
+                    className="profile-edit-label"
+                  >
                     Hometown
                   </label>
                   <input
@@ -348,7 +372,10 @@ export default function ProfileEditForm({
                 </div>
 
                 <div className="profile-edit-group">
-                  <label htmlFor="athlete_graduation_year" className="profile-edit-label">
+                  <label
+                    htmlFor="athlete_graduation_year"
+                    className="profile-edit-label"
+                  >
                     Graduation Year
                   </label>
                   <input
@@ -362,7 +389,9 @@ export default function ProfileEditForm({
                     className={`profile-edit-input ${errors.athlete_graduation_year ? 'error' : ''}`}
                   />
                   {errors.athlete_graduation_year && (
-                    <span className="profile-edit-error-text">{errors.athlete_graduation_year}</span>
+                    <span className="profile-edit-error-text">
+                      {errors.athlete_graduation_year}
+                    </span>
                   )}
                 </div>
               </div>

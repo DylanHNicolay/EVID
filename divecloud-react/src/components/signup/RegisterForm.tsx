@@ -88,17 +88,24 @@ export default function RegisterForm({
         })
         .catch(() => {});
     }, 250);
-    return (): void => { clearTimeout(timeout); controller.abort(); };
+    return (): void => {
+      clearTimeout(timeout);
+      controller.abort();
+    };
   }, [teamQuery, role, selectedTeam]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent): void => {
-      if (teamDropdownRef.current && !teamDropdownRef.current.contains(e.target as Node)) {
+      if (
+        teamDropdownRef.current &&
+        !teamDropdownRef.current.contains(e.target as Node)
+      ) {
         setShowTeamDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return (): void => document.removeEventListener('mousedown', handleClickOutside);
+    return (): void =>
+      document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const clearError = (): void => setValidationError('');
@@ -113,7 +120,9 @@ export default function RegisterForm({
       !email.trim() ||
       !password.trim()
     ) {
-      setValidationError('First name, last name, email, and password are required');
+      setValidationError(
+        'First name, last name, email, and password are required'
+      );
       return;
     }
 
@@ -193,7 +202,10 @@ export default function RegisterForm({
               type="text"
               placeholder="First name"
               value={firstName}
-              onChange={(e): void => { setFirstName(e.target.value); clearError(); }}
+              onChange={(e): void => {
+                setFirstName(e.target.value);
+                clearError();
+              }}
               disabled={isSubmitting}
               required
             />
@@ -206,7 +218,10 @@ export default function RegisterForm({
               placeholder="M"
               maxLength={1}
               value={middleInitial}
-              onChange={(e): void => { setMiddleInitial(e.target.value); clearError(); }}
+              onChange={(e): void => {
+                setMiddleInitial(e.target.value);
+                clearError();
+              }}
               disabled={isSubmitting}
             />
           </div>
@@ -218,7 +233,10 @@ export default function RegisterForm({
           type="text"
           placeholder="Last name"
           value={lastName}
-          onChange={(e): void => { setLastName(e.target.value); clearError(); }}
+          onChange={(e): void => {
+            setLastName(e.target.value);
+            clearError();
+          }}
           disabled={isSubmitting}
           required
         />
@@ -231,7 +249,10 @@ export default function RegisterForm({
               type="text"
               placeholder="Nickname or preferred name"
               value={preferredFirstName}
-              onChange={(e): void => { setPreferredFirstName(e.target.value); clearError(); }}
+              onChange={(e): void => {
+                setPreferredFirstName(e.target.value);
+                clearError();
+              }}
               disabled={isSubmitting}
             />
           </>
@@ -245,7 +266,10 @@ export default function RegisterForm({
           type="email"
           placeholder="name@example.com"
           value={email}
-          onChange={(e): void => { setEmail(e.target.value); clearError(); }}
+          onChange={(e): void => {
+            setEmail(e.target.value);
+            clearError();
+          }}
           disabled={isSubmitting}
           required
         />
@@ -256,7 +280,10 @@ export default function RegisterForm({
           type="password"
           placeholder="Create a password (min. 6 characters)"
           value={password}
-          onChange={(e): void => { setPassword(e.target.value); clearError(); }}
+          onChange={(e): void => {
+            setPassword(e.target.value);
+            clearError();
+          }}
           disabled={isSubmitting}
           required
         />
@@ -267,7 +294,10 @@ export default function RegisterForm({
         <select
           id="register-gender"
           value={gender}
-          onChange={(e): void => { setGender(e.target.value); clearError(); }}
+          onChange={(e): void => {
+            setGender(e.target.value);
+            clearError();
+          }}
           disabled={isSubmitting}
           required
         >
@@ -281,7 +311,10 @@ export default function RegisterForm({
           id="register-dob"
           type="date"
           value={dateOfBirth}
-          onChange={(e): void => { setDateOfBirth(e.target.value); clearError(); }}
+          onChange={(e): void => {
+            setDateOfBirth(e.target.value);
+            clearError();
+          }}
           disabled={isSubmitting}
         />
 
@@ -295,7 +328,10 @@ export default function RegisterForm({
                   type="text"
                   placeholder="City, State"
                   value={hometown}
-                  onChange={(e): void => { setHometown(e.target.value); clearError(); }}
+                  onChange={(e): void => {
+                    setHometown(e.target.value);
+                    clearError();
+                  }}
                   disabled={isSubmitting}
                 />
               </div>
@@ -308,7 +344,10 @@ export default function RegisterForm({
                   min={1980}
                   max={2100}
                   value={graduationYear}
-                  onChange={(e): void => { setGraduationYear(e.target.value); clearError(); }}
+                  onChange={(e): void => {
+                    setGraduationYear(e.target.value);
+                    clearError();
+                  }}
                   disabled={isSubmitting}
                 />
               </div>
@@ -320,7 +359,10 @@ export default function RegisterForm({
               type="text"
               placeholder="USA Diving membership number"
               value={ussNumber}
-              onChange={(e): void => { setUssNumber(e.target.value); clearError(); }}
+              onChange={(e): void => {
+                setUssNumber(e.target.value);
+                clearError();
+              }}
               disabled={isSubmitting}
             />
           </>
@@ -334,11 +376,17 @@ export default function RegisterForm({
             <div className="auth-team-search" ref={teamDropdownRef}>
               {selectedTeam ? (
                 <div className="auth-team-selected">
-                  <span>{selectedTeam.name}{selectedTeam.school ? ` — ${selectedTeam.school}` : ''}</span>
+                  <span>
+                    {selectedTeam.name}
+                    {selectedTeam.school ? ` — ${selectedTeam.school}` : ''}
+                  </span>
                   <button
                     type="button"
                     className="auth-team-clear"
-                    onClick={(): void => { setSelectedTeam(null); setTeamQuery(''); }}
+                    onClick={(): void => {
+                      setSelectedTeam(null);
+                      setTeamQuery('');
+                    }}
                     disabled={isSubmitting}
                   >
                     ✕
@@ -350,8 +398,13 @@ export default function RegisterForm({
                   type="text"
                   placeholder="Search by team name or school…"
                   value={teamQuery}
-                  onChange={(e): void => { setTeamQuery(e.target.value); clearError(); }}
-                  onFocus={(): void => { if (teamResults.length) setShowTeamDropdown(true); }}
+                  onChange={(e): void => {
+                    setTeamQuery(e.target.value);
+                    clearError();
+                  }}
+                  onFocus={(): void => {
+                    if (teamResults.length) setShowTeamDropdown(true);
+                  }}
                   disabled={isSubmitting}
                   autoComplete="off"
                 />
@@ -370,16 +423,27 @@ export default function RegisterForm({
                         }}
                       >
                         <strong>{t.name}</strong>
-                        {t.school && <span className="auth-team-school">{t.school}</span>}
-                        {t.location && <span className="auth-team-location">{t.location}</span>}
+                        {t.school && (
+                          <span className="auth-team-school">{t.school}</span>
+                        )}
+                        {t.location && (
+                          <span className="auth-team-location">
+                            {t.location}
+                          </span>
+                        )}
                       </button>
                     </li>
                   ))}
                 </ul>
               )}
-              {showTeamDropdown && !selectedTeam && teamQuery && teamResults.length === 0 && (
-                <div className="auth-team-dropdown auth-team-empty">No teams found</div>
-              )}
+              {showTeamDropdown &&
+                !selectedTeam &&
+                teamQuery &&
+                teamResults.length === 0 && (
+                  <div className="auth-team-dropdown auth-team-empty">
+                    No teams found
+                  </div>
+                )}
             </div>
 
             <label htmlFor="register-title">Title</label>
@@ -388,7 +452,10 @@ export default function RegisterForm({
               type="text"
               placeholder="e.g. Head Coach, Assistant Coach, Diving Director"
               value={coachTitle}
-              onChange={(e): void => { setCoachTitle(e.target.value); clearError(); }}
+              onChange={(e): void => {
+                setCoachTitle(e.target.value);
+                clearError();
+              }}
               disabled={isSubmitting}
             />
             <p className="auth-form-hint">Defaults to "Coach" if left blank.</p>
@@ -406,7 +473,10 @@ export default function RegisterForm({
           type="url"
           placeholder="https://example.com/photo.jpg"
           value={avatarUrl}
-          onChange={(e): void => { setAvatarUrl(e.target.value); clearError(); }}
+          onChange={(e): void => {
+            setAvatarUrl(e.target.value);
+            clearError();
+          }}
           disabled={isSubmitting}
         />
 
@@ -418,7 +488,10 @@ export default function RegisterForm({
               type="url"
               placeholder="https://example.com/banner.jpg"
               value={bannerUrl}
-              onChange={(e): void => { setBannerUrl(e.target.value); clearError(); }}
+              onChange={(e): void => {
+                setBannerUrl(e.target.value);
+                clearError();
+              }}
               disabled={isSubmitting}
             />
           </>

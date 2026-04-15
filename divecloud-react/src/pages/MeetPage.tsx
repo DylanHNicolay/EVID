@@ -21,7 +21,7 @@ interface TeamRow {
   team_id: number;
   name: string;
   logo_url: string | null;
-  team_score: number;
+  team_score: number | null;
 }
 
 interface ResultRow {
@@ -33,6 +33,8 @@ interface ResultRow {
   score: number;
   points: number;
 }
+
+type MeetCategory = 'men' | 'women' | 'mixed';
 
 function formatDate(raw: string): string {
   const iso = raw.includes('T') ? raw.split('T')[0] : raw;
@@ -51,7 +53,7 @@ function statusLabel(s: string): 'Completed' | 'Upcoming' {
 
 export default function MeetPage(): React.ReactElement {
   const { meetId } = useParams<{ meetId: string }>();
-  const [gender, setGender] = useState<'men' | 'women'>('men');
+  const [gender, setGender] = useState<MeetCategory>('men');
 
   const [meet, setMeet] = useState<MeetInfo | null>(null);
   const [teams, setTeams] = useState<TeamRow[]>([]);
@@ -103,22 +105,12 @@ export default function MeetPage(): React.ReactElement {
     return <div className="meet-page" />;
   }
 
-  const homeTeam = teams[0]
-    ? {
-        teamId: teams[0].team_id,
-        name: teams[0].name,
-        score: Number(teams[0].team_score),
-        logoUrl: teams[0].logo_url ?? undefined,
-      }
-    : { name: '—', score: 0 };
-  const awayTeam = teams[1]
-    ? {
-        teamId: teams[1].team_id,
-        name: teams[1].name,
-        score: Number(teams[1].team_score),
-        logoUrl: teams[1].logo_url ?? undefined,
-      }
-    : { name: '—', score: 0 };
+  const teamScores = teams.map((team) => ({
+    teamId: team.team_id,
+    name: team.name,
+    score: Number(team.team_score ?? 0),
+    logoUrl: team.logo_url ?? undefined,
+  }));
 
   return (
     <div className="meet-page">
@@ -145,9 +137,15 @@ export default function MeetPage(): React.ReactElement {
           >
             Women
           </button>
+          <button
+            className={gender === 'mixed' ? 'active' : ''}
+            onClick={(): void => setGender('mixed')}
+          >
+            Mixed
+          </button>
         </div>
 
-        <MeetTeamsScore homeTeam={homeTeam} awayTeam={awayTeam} />
+        <MeetTeamsScore teams={teamScores} />
         <MeetResultsTable
           results={results.map((r) => ({
             ...r,
