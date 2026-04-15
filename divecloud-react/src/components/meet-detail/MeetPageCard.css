@@ -70,3 +70,10 @@
 .meet-page-location {
   color: #888;
 }
+
+.meet-page-id {
+  font-size: 0.8rem;
+  color: #aaa;
+  font-family: monospace;
+  user-select: all;
+}

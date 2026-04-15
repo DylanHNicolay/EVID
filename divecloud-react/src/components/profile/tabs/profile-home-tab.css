@@ -1,3 +1,9 @@
+.profile-home-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .teamAndProgression {
   display: flex;
   flex-direction: column;

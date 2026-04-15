@@ -161,6 +161,7 @@ CREATE TABLE dive_results (
 CREATE TABLE athlete_photos (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   athlete_id BIGINT NOT NULL REFERENCES athletes(id) ON DELETE CASCADE,
+  meet_entry_id BIGINT REFERENCES meet_entries(id) ON DELETE SET NULL,
   title TEXT NOT NULL,
   url TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -173,6 +174,7 @@ CREATE TABLE athlete_videos (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   athlete_id BIGINT NOT NULL REFERENCES athletes(id) ON DELETE CASCADE,
   dive_result_id BIGINT REFERENCES dive_results(id) ON DELETE SET NULL,
+  meet_entry_id BIGINT REFERENCES meet_entries(id) ON DELETE SET NULL,
   title TEXT,
   video_url TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()

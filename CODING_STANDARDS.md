@@ -79,9 +79,6 @@ test('renders user name', () => {
 
 ## 8. Git & Version Control
 
-- **Commit Messages**: Write clear, descriptive commit messages.
-  - Format: `type(scope): subject` (optional but recommended).
-  - Example: `feat(auth): add login validation logic`
 - **Branches**: Use feature branches. Do not commit directly to `main`.
 - **Hooks**:
   - `pre-commit`: Runs linter on staged files.

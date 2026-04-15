@@ -49,3 +49,159 @@
 .auth-secondary-btn:hover {
   background: #f4f4f4;
 }
+
+/* ── Register form layout ── */
+
+.auth-card--wide {
+  width: min(100%, 480px);
+}
+
+.auth-form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-form-group--grow {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.auth-form-group--narrow {
+  flex: 0 0 60px;
+}
+
+.auth-form-group--narrow-med {
+  flex: 0 0 110px;
+}
+
+.auth-form-section {
+  margin: 8px 0 0;
+  padding-bottom: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.auth-form-hint {
+  margin: 0;
+  font-size: 12px;
+  color: #999;
+  line-height: 1.4;
+}
+
+.auth-form select {
+  height: 44px;
+  border: 1px solid #d7d7d6;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333;
+  background: #fff;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.auth-form select:focus {
+  border-color: #1a7c8f;
+  box-shadow: 0 0 0 2px rgba(26, 124, 143, 0.15);
+}
+
+/* ── Team search autocomplete ── */
+
+.auth-team-search {
+  position: relative;
+}
+
+.auth-team-selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d7d7d6;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: #f9f9f9;
+  min-height: 44px;
+}
+
+.auth-team-clear {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+  padding: 0 0 0 8px;
+  line-height: 1;
+}
+
+.auth-team-clear:hover {
+  color: #333;
+}
+
+.auth-team-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #d7d7d6;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.auth-team-empty {
+  padding: 12px;
+  font-size: 13px;
+  color: #999;
+  text-align: center;
+}
+
+.auth-team-option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.auth-team-option:hover {
+  background: #f0f7f8;
+}
+
+.auth-team-option strong {
+  color: #333;
+}
+
+.auth-team-school {
+  font-size: 12px;
+  color: #666;
+}
+
+.auth-team-location {
+  font-size: 11px;
+  color: #999;
+}

@@ -45,9 +45,15 @@
   background: #fafafa;
 }
 
-.meet-results-row .col-name {
+.meet-results-row .col-name a {
   font-weight: 600;
   color: #1a1a1a;
+  text-decoration: none;
+}
+
+.meet-results-row .col-name a:hover {
+  text-decoration: underline;
+  color: #8b0000;
 }
 
 .meet-results-row .col-team {

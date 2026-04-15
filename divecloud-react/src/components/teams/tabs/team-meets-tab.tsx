@@ -24,17 +24,20 @@ export default function TeamMeetsTab({
         />
       </div>
 
-      <div className="meets-sidebar">
-        <div className="meets-filters">
-          <label>Name</label>
+      <aside className="meets-sidebar">
+        <div className="meets-filter-group">
+          <label className="meets-filter-label">Meet Name</label>
           <input
+            className="meets-filter-input"
             type="text"
             value={nameFilter}
             onChange={(e): void => setNameFilter(e.target.value)}
           />
-
-          <label>Meet Type</label>
+        </div>
+        <div className="meets-filter-group">
+          <label className="meets-filter-label">Meet Type</label>
           <select
+            className="meets-filter-input"
             value={typeFilter}
             onChange={(e): void => setTypeFilter(e.target.value)}
           >
@@ -43,16 +46,18 @@ export default function TeamMeetsTab({
             <option>invitational</option>
             <option>dual</option>
           </select>
-
-          <label>Season</label>
+        </div>
+        <div className="meets-filter-group">
+          <label className="meets-filter-label">Season</label>
           <input
+            className="meets-filter-input"
             type="text"
             placeholder="e.g. 2025-2026"
             value={seasonFilter}
             onChange={(e): void => setSeasonFilter(e.target.value)}
           />
         </div>
-      </div>
+      </aside>
     </div>
   );
 }

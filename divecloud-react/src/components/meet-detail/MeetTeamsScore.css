@@ -15,19 +15,58 @@
   margin: 0 0 20px 0;
 }
 
-.meet-teams-score-row {
+.meet-teams-empty {
+  margin: 0;
+  color: #888;
+}
+
+.meet-teams-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meet-teams-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
   align-items: center;
-  justify-content: center;
-  gap: 40px;
+  gap: 12px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.meet-team-rank {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #222;
+  text-align: center;
 }
 
 .meet-team {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 8px;
-  min-width: 100px;
+  gap: 12px;
+  min-width: 0;
+  border-radius: 8px;
+  padding: 8px;
+  transition: background 0.15s;
+}
+
+.meet-team--clickable {
+  cursor: pointer;
+}
+
+.meet-team--clickable:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.meet-team--clickable:hover .meet-team-name {
+  text-decoration: underline;
 }
 
 .meet-team-logo {
@@ -55,23 +94,35 @@
   font-size: 0.95rem;
   font-weight: 600;
   color: #8b0000;
-  text-align: center;
+  text-align: left;
 }
 
-.meet-score-display {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.meet-score-value {
-  font-size: 2.2rem;
+.meet-team-points {
+  font-size: 1.35rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #111;
 }
 
-.meet-score-separator {
-  font-size: 2.2rem;
-  font-weight: 400;
-  color: #1a1a1a;
+@media (max-width: 720px) {
+  .meet-teams-row {
+    grid-template-columns: 42px 1fr;
+    grid-template-areas:
+      'rank team'
+      'score score';
+    row-gap: 6px;
+  }
+
+  .meet-team-rank {
+    grid-area: rank;
+  }
+
+  .meet-teams-row .meet-team {
+    grid-area: team;
+    padding-left: 0;
+  }
+
+  .meet-team-points {
+    grid-area: score;
+    text-align: right;
+  }
 }

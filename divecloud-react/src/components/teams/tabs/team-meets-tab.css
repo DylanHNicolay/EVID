@@ -1,6 +1,6 @@
 .meets-layout {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   align-items: flex-start;
   padding: 16px;
   width: 80%;
@@ -9,33 +9,54 @@
 
 .meets-main {
   flex: 3;
+  min-width: 0;
 }
 
 .meets-sidebar {
-  flex: 1;
-}
-
-.meets-filters {
+  width: 220px;
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
+  align-self: flex-start;
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.meets-filters label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #555;
+.meets-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.meets-filters input,
-.meets-filters select {
-  padding: 8px;
+.meets-filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #888;
+}
+
+.meets-filter-input {
+  padding: 7px 10px;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s;
 }
+
+.meets-filter-input:focus {
+  border-color: #8b0000;
+  box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.1);
+}
+
 .submit-meet-btn {
   background-color: #8b0000;
   padding: 12px;
@@ -44,8 +65,20 @@
   border-radius: 6px;
   margin-bottom: 16px;
   font-size: 16px;
+  cursor: pointer;
 }
-.meets-sidebar {
-  display: flex;
-  flex-direction: column;
+
+.submit-meet-btn:hover {
+  background-color: #a00;
+}
+
+@media (max-width: 768px) {
+  .meets-layout {
+    flex-direction: column-reverse;
+    width: 95%;
+  }
+
+  .meets-sidebar {
+    width: 100%;
+  }
 }

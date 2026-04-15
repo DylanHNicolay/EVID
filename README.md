@@ -42,6 +42,7 @@ All scripts run from `divecloud-react/`:
 | `npm run format:check` | Check formatting without writing changes |
 | `npm run lint` | Run ESLint with zero warnings allowed |
 | `npm run lint:fix` | Run ESLint and auto-fix what it can |
+| `npm run typecheck` | Run strict TypeScript compile checks without emitting files |
 
 ### Git hooks
 
@@ -50,7 +51,7 @@ Hooks are installed automatically when you run `npm install` inside `divecloud-r
 | Hook | Trigger | What it runs |
 |------|---------|--------------|
 | `pre-commit` | Every `git commit` | Runs Prettier and ESLint (with auto-fix) via `lint-staged` on staged `.js`, `.jsx`, `.ts`, `.tsx`, `.json`, `.css`, `.md` files |
-| `pre-push` | Every `git push` | Runs `format:check` then `lint` across all source files |
+| `pre-push` | Every `git push` | Runs `format:check`, `lint`, then `typecheck` across all source files |
 
 If formatting or linting fails, the commit or push is **blocked** until the issues are fixed.
 
@@ -83,6 +84,7 @@ A **Lint** workflow (`.github/workflows/lint.yml`) runs on every push to `main` 
 3. Installs dependencies (`npm ci`)
 4. Checks Prettier formatting (`npm run format:check`)
 5. Runs ESLint (`npm run lint`)
+6. Runs TypeScript type checks (`npm run typecheck`)
 
 If either check fails, the workflow fails and the PR shows a red check. To make this a hard gate, enable **branch protection** on `main`:
 

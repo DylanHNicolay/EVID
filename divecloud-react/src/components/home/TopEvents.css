@@ -157,13 +157,13 @@
   width: 28px;
 }
 
-.top-events-name {
+.top-events-name a {
   color: #8b0000;
   font-weight: 500;
-  cursor: pointer;
+  text-decoration: none;
 }
 
-.top-events-name:hover {
+.top-events-name a:hover {
   text-decoration: underline;
 }
 

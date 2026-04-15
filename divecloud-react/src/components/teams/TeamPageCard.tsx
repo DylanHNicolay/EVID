@@ -10,6 +10,7 @@ interface TeamPageCardProps {
   bannerUrl?: string;
   activeTab: string;
   onTabChange: (tab: string) => void;
+  tabs?: string[];
 }
 
 const TeamPageCard = ({
@@ -20,6 +21,7 @@ const TeamPageCard = ({
   bannerUrl,
   activeTab,
   onTabChange,
+  tabs,
 }: TeamPageCardProps): React.ReactElement => {
   return (
     <div className="team-page-card">
@@ -46,7 +48,11 @@ const TeamPageCard = ({
       </div>
 
       {/* Tabs */}
-      <TeamPageTabs activeTab={activeTab} onTabChange={onTabChange} />
+      <TeamPageTabs
+        activeTab={activeTab}
+        onTabChange={onTabChange}
+        tabs={tabs}
+      />
     </div>
   );
 };

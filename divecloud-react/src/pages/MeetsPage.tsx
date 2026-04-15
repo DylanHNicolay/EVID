@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MeetsPage.css';
 
@@ -17,7 +17,6 @@ interface Meet {
 
 type SortMode = 'latest' | 'top';
 type DateMode = 'past' | 'upcoming';
-type RangeMode = 'week' | 'month' | 'year';
 
 function formatDate(raw: string): string {
   const iso = raw.includes('T') ? raw.split('T')[0] : raw;
@@ -37,24 +36,26 @@ export default function MeetsPage(): React.ReactElement {
   const [nameFilter, setNameFilter] = useState('');
   const [sort, setSort] = useState<SortMode>('latest');
   const [dateMode, setDateMode] = useState<DateMode>('past');
-  const [range, setRange] = useState<RangeMode>('month');
 
-  const fetchMeets = useCallback(() => {
+  useEffect(() => {
     const params = new URLSearchParams();
     if (nameFilter) params.set('name', nameFilter);
     params.set('sort', sort);
     params.set('date', dateMode);
-    params.set('range', range);
 
-    fetch(`${API_URL}/api/meets?${params.toString()}`)
+    const controller = new AbortController();
+    fetch(`${API_URL}/api/meets?${params.toString()}`, {
+      signal: controller.signal,
+    })
       .then((r) => r.json())
       .then(setMeets)
-      .catch(console.error);
-  }, [nameFilter, sort, dateMode, range]);
-
-  useEffect(() => {
-    fetchMeets();
-  }, [fetchMeets]);
+      .catch((err) => {
+        if (err.name !== 'AbortError') console.error(err);
+      });
+    return (): void => {
+      controller.abort();
+    };
+  }, [nameFilter, sort, dateMode]);
 
   return (
     <div className="meets-page">
@@ -134,21 +135,6 @@ export default function MeetsPage(): React.ReactElement {
             >
               Upcoming
             </button>
-          </div>
-
-          <div className="meets-radio-group">
-            {(['week', 'month', 'year'] as RangeMode[]).map((r) => (
-              <label key={r} className="meets-radio-label">
-                <input
-                  type="radio"
-                  name="range"
-                  checked={range === r}
-                  onChange={() => setRange(r)}
-                  className="meets-radio-input"
-                />
-                {r.charAt(0).toUpperCase() + r.slice(1)}
-              </label>
-            ))}
           </div>
         </aside>
       </div>

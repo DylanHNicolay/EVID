@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-cd "$(dirname -- "$0")/.." && npm run format:check && npm run lint
+cd "$(dirname -- "$0")/.." && npm run format:check && npm run lint && npm run typecheck

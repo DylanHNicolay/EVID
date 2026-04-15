@@ -1,0 +1,348 @@
+.team-upload-results {
+  width: 100%;
+  max-width: 80%;
+  box-sizing: border-box;
+  margin: 20px auto 28px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.tur-header h3 {
+  margin: 0 0 6px;
+  color: #1a1a1a;
+}
+
+.tur-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.tur-panel-toggle {
+  display: inline-flex;
+  margin-top: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tur-panel-toggle button {
+  border: none;
+  background: #fff;
+  color: #555;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.tur-panel-toggle button + button {
+  border-left: 1px solid #ddd;
+}
+
+.tur-panel-toggle button.active {
+  background: #8b0000;
+  color: #fff;
+}
+
+.tur-schedule-card {
+  margin-top: 16px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.tur-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+}
+
+.tur-grid-full {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tur-grid-full > label {
+  color: #444;
+  font-size: 0.88rem;
+}
+
+.tur-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #444;
+  font-size: 0.88rem;
+}
+
+.tur-controls {
+  display: flex;
+  gap: 14px;
+  align-items: end;
+  margin-top: 16px;
+}
+
+.tur-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 320px;
+  color: #444;
+  font-size: 0.88rem;
+}
+
+.tur-controls select,
+.tur-grid input,
+.tur-grid select,
+.tur-csv textarea,
+.tur-csv input,
+.tur-manual input,
+.tur-manual select {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font: inherit;
+  background: #fff;
+}
+
+.tur-controls select:focus,
+.tur-grid input:focus,
+.tur-grid select:focus,
+.tur-csv textarea:focus,
+.tur-csv input:focus,
+.tur-manual input:focus,
+.tur-manual select:focus {
+  border-color: #8b0000;
+  box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.1);
+  outline: none;
+}
+
+.tur-mode-toggle {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.tur-mode-toggle button {
+  border: none;
+  background: #fff;
+  color: #555;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.tur-mode-toggle button.active {
+  background: #8b0000;
+  color: #fff;
+}
+
+.tur-csv,
+.tur-manual {
+  margin-top: 16px;
+}
+
+.tur-help {
+  color: #888;
+  margin: 0 0 8px;
+  font-size: 0.86rem;
+}
+
+.tur-inline-help {
+  margin-bottom: 0;
+}
+
+.tur-selected-teams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tur-team-chip {
+  border: 1px solid #e5b3b3;
+  border-radius: 999px;
+  background: #fff5f5;
+  color: #8b0000;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.tur-team-chip:hover {
+  background: #ffe7e7;
+}
+
+.tur-team-options {
+  max-height: 190px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tur-team-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #444;
+  font-size: 0.85rem;
+}
+
+.tur-team-option input {
+  margin: 0;
+}
+
+.tur-help-list {
+  margin: 0 0 10px 18px;
+  padding: 0;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.tur-template-link {
+  display: inline-block;
+  border: none;
+  background: transparent;
+  margin-bottom: 10px;
+  color: #8b0000;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.tur-template-link:hover {
+  text-decoration: underline;
+}
+
+.tur-template-link:disabled {
+  color: #b38a8a;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.tur-file-input {
+  display: block;
+  margin-top: 10px;
+}
+
+.tur-file-name {
+  margin: 8px 0 0;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.tur-csv textarea {
+  width: 100%;
+  margin-top: 10px;
+  resize: vertical;
+  min-height: 190px;
+}
+
+.tur-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 1px solid #eee;
+}
+
+.tur-preview-table th,
+.tur-preview-table td {
+  border-bottom: 1px solid #eee;
+  padding: 8px;
+  text-align: left;
+}
+
+.tur-preview-table th {
+  color: #666;
+  background: #f9fafb;
+  font-size: 0.83rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.tur-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.tur-actions button,
+.tur-manual button {
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  background: #8b0000;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.tur-actions button:hover,
+.tur-manual button:hover {
+  background: #a00000;
+}
+
+.tur-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tur-error {
+  color: #b91c1c;
+  margin-top: 10px;
+}
+
+.tur-success {
+  color: #047857;
+  margin-top: 10px;
+}
+
+.tur-preview {
+  margin-top: 16px;
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+}
+
+.tur-preview h4 {
+  margin: 0 0 8px;
+}
+
+.tur-preview ul {
+  margin: 8px 0;
+  color: #b91c1c;
+}
+
+.tur-preview-table-wrap {
+  overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  .team-upload-results {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .tur-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tur-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tur-controls label {
+    min-width: auto;
+  }
+}

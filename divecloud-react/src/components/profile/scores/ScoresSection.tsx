@@ -33,6 +33,7 @@ interface ResultEntry {
   entry_id: number;
   event_name: string;
   height: string;
+  dives_required: number;
   total_score: number;
   meet_name: string;
   meet_date: string;
@@ -50,6 +51,8 @@ interface ResultEntry {
 
 interface ScoresSectionProps {
   athleteId: number;
+  initialTab?: string;
+  focusEntryId?: number;
 }
 
 interface ScoreTabsProps {
@@ -85,10 +88,32 @@ function formatDate(raw: string): string {
   });
 }
 
+function formatEventLabel(height: string, divesRequired: number): string {
+  const normalizedHeight = String(height || '')
+    .trim()
+    .toLowerCase();
+  let heightLabel = normalizedHeight;
+
+  if (normalizedHeight === '1m') {
+    heightLabel = '1 Meter';
+  } else if (normalizedHeight === '3m') {
+    heightLabel = '3 Meter';
+  } else if (normalizedHeight === 'platform') {
+    heightLabel = 'Platform';
+  }
+
+  const dives = Number.isFinite(Number(divesRequired))
+    ? Number(divesRequired)
+    : 6;
+  return `${heightLabel} ${dives} Dive`;
+}
+
 const ScoresSection: React.FC<ScoresSectionProps> = ({
   athleteId,
+  initialTab,
+  focusEntryId,
 }): React.ReactElement => {
-  const [activeTab, setActiveTab] = useState('Personal Bests');
+  const [activeTab, setActiveTab] = useState(initialTab || 'Personal Bests');
   const [pbs, setPbs] = useState<PersonalBest[]>([]);
   const [results, setResults] = useState<ResultEntry[]>([]);
   const [expandedPb, setExpandedPb] = useState<number[]>([]);
@@ -105,6 +130,29 @@ const ScoresSection: React.FC<ScoresSectionProps> = ({
       .then(setResults)
       .catch(console.error);
   }, [athleteId]);
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
+
+  useEffect(() => {
+    if (!focusEntryId || results.length === 0) return;
+    const idx = results.findIndex(
+      (r) => Number(r.entry_id) === Number(focusEntryId)
+    );
+    if (idx === -1) return;
+
+    setActiveTab('Event History');
+    setExpandedResult([idx]);
+
+    const targetEntryId = Number(results[idx].entry_id);
+    const row = document.getElementById(`event-history-entry-${targetEntryId}`);
+    if (row) {
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [focusEntryId, results]);
 
   const togglePb = (idx: number): void => {
     setExpandedPb((prev) =>
@@ -141,11 +189,9 @@ const ScoresSection: React.FC<ScoresSectionProps> = ({
               style={{ cursor: 'pointer' }}
             >
               <td>{expandedPb.includes(idx) ? '\u25BC' : '\u25B6'}</td>
-              <td>
-                {pb.height} {pb.dives_required} dive
-              </td>
+              <td>{formatEventLabel(pb.height, pb.dives_required)}</td>
               <td style={{ fontWeight: 600 }}>
-                {Number(pb.total_score).toFixed(1)}
+                {Number(pb.total_score).toFixed(2)}
               </td>
               <td>{pb.meet_name}</td>
               <td>{formatDate(pb.meet_date)}</td>
@@ -205,16 +251,15 @@ const ScoresSection: React.FC<ScoresSectionProps> = ({
         {results.map((r, idx) => (
           <React.Fragment key={idx}>
             <tr
+              id={`event-history-entry-${r.entry_id}`}
               className="result-row"
               onClick={(): void => toggleResult(idx)}
               style={{ cursor: 'pointer' }}
             >
               <td>{expandedResult.includes(idx) ? '\u25BC' : '\u25B6'}</td>
-              <td>
-                {r.height} {r.event_name}
-              </td>
+              <td>{formatEventLabel(r.height, r.dives_required)}</td>
               <td style={{ fontWeight: 600 }}>
-                {Number(r.total_score).toFixed(1)}
+                {Number(r.total_score).toFixed(2)}
               </td>
               <td>{r.meet_name}</td>
               <td>{formatDate(r.meet_date)}</td>

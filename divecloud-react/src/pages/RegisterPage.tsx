@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoleSelector from '../components/signup/RoleSelector';
 import RegisterForm from '../components/signup/RegisterForm';
@@ -13,11 +13,14 @@ export default function RegisterPage(): React.ReactElement {
   const [role, setRole] = useState<UserRole | null>(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, loading: authLoading, login } = useAuth();
+  const justRegistered = useRef(false);
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/', { replace: true });
-  }, [isAuthenticated, navigate]);
+    if (!authLoading && isAuthenticated && !justRegistered.current) {
+      navigate('/', { replace: true });
+    }
+  }, [authLoading, isAuthenticated, navigate]);
 
   const handleSubmit = async (data: RegisterPayload): Promise<void> => {
     setError('');
@@ -32,8 +35,13 @@ export default function RegisterPage(): React.ReactElement {
         setError(json.error || 'Registration failed');
         return;
       }
+      justRegistered.current = true;
       login(json.token, json.user);
-      navigate('/');
+      if (data.role === 'coach' && data.teamId) {
+        navigate(`/team/${data.teamId}`);
+      } else {
+        navigate('/profile');
+      }
     } catch {
       setError('Network error');
     }
@@ -41,7 +49,7 @@ export default function RegisterPage(): React.ReactElement {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
+      <div className="auth-card auth-card--wide">
         <h1>{role ? 'Register' : 'Register as'}</h1>
 
         {role ? (

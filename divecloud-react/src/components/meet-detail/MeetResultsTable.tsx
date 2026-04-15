@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './MeetResultsTable.css';
 
 interface MeetResult {
   id: number;
+  athlete_id: number;
   name: string;
   team: string;
   event: string;
@@ -40,7 +42,13 @@ const MeetResultsTable = ({
           ) : (
             results.map((result) => (
               <tr key={result.id} className="meet-results-row">
-                <td className="col-name">{result.name}</td>
+                <td className="col-name">
+                  <Link
+                    to={`/profile/${result.athlete_id}?tab=Scores&scoresTab=Event%20History&entryId=${result.id}`}
+                  >
+                    {result.name}
+                  </Link>
+                </td>
                 <td className="col-team">{result.team}</td>
                 <td className="col-event">{result.event}</td>
                 <td className="col-score">{result.score.toFixed(2)}</td>

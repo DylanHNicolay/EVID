@@ -1,0 +1,21 @@
+athlete_id,event_name,height,category,score,points,final_rank
+25,1 Meter 6 Dive,1m,men,371.740,16,1
+34,1 Meter 6 Dive,1m,men,328.560,11,3
+30,1 Meter 6 Dive,1m,men,297.600,7,5
+27,1 Meter 6 Dive,1m,men,284.180,4,7
+26,1 Meter 6 Dive,1m,men,265.500,3,8
+35,3 Meter 6 Dive,3m,men,355.470,16,1
+27,3 Meter 6 Dive,3m,men,314.790,11,3
+26,3 Meter 6 Dive,3m,men,296.920,7,5
+34,3 Meter 6 Dive,3m,men,265.200,5,6
+33,3 Meter 6 Dive,3m,men,262.000,4,7
+35,Platform 6 Dive,platform,men,371.990,16,1
+26,Platform 6 Dive,platform,men,330.380,11,3
+34,Platform 6 Dive,platform,men,302.120,7,5
+30,Platform 6 Dive,platform,men,300.400,5,6
+42,1 Meter 6 Dive,1m,women,360.970,16,1
+45,1 Meter 6 Dive,1m,women,317.270,13,2
+43,1 Meter 6 Dive,1m,women,316.450,11,3
+44,1 Meter 6 Dive,1m,women,272.980,7,5
+47,1 Meter 6 Dive,1m,women,237.810,4,7
+46,3 Meter 6 Dive,3m,women,301.330,9,4

@@ -46,7 +46,7 @@ export default function MeetCard({
           {score !== undefined && (
             <div className="detail-row">
               <span className="detail-label">Score</span>
-              <span className="detail-value">{score}</span>
+              <span className="detail-value">{score.toFixed(2)}</span>
             </div>
           )}
           {place && (

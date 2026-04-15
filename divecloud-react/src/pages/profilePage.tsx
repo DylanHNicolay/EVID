@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import ProfileCard from '../components/profile/ProfileCard';
 import ProfileHomeTab from '../components/profile/tabs/profile-home-tab';
 import ProfileScoresTab from '../components/profile/tabs/profile-scores-tab';
@@ -23,11 +23,26 @@ interface AthleteProfile {
 
 export default function ProfilePage(): React.ReactElement {
   const { athleteId: paramId } = useParams<{ athleteId: string }>();
-  const { user, isAuthenticated } = useAuth();
+  const [searchParams] = useSearchParams();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('Home');
+  const initialTab = searchParams.get('tab') || 'Home';
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [athlete, setAthlete] = useState<AthleteProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const initialScoresTab = searchParams.get('scoresTab') || undefined;
+  const focusEntryParam = searchParams.get('entryId');
+  const parsedFocusEntryId = focusEntryParam ? Number(focusEntryParam) : NaN;
+  const focusEntryId = Number.isFinite(parsedFocusEntryId)
+    ? parsedFocusEntryId
+    : undefined;
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
 
   const athleteId =
     paramId || (user?.athlete_id ? String(user.athlete_id) : null);
@@ -39,20 +54,20 @@ export default function ProfilePage(): React.ReactElement {
     user.athlete_id === athlete.id;
 
   useEffect(() => {
-    // If no athleteId param and not authenticated, redirect to login
+    if (authLoading) return;
+
     if (!paramId && !isAuthenticated) {
       navigate('/login', { replace: true });
       return;
     }
 
-    // If no athleteId and no user athlete_id, can't show profile
     if (!athleteId) {
       setLoading(false);
       return;
     }
 
-    // Fetch athlete data
-    fetch(`${API_URL}/api/athletes/${athleteId}`)
+    const controller = new AbortController();
+    fetch(`${API_URL}/api/athletes/${athleteId}`, { signal: controller.signal })
       .then((r) => {
         if (!r.ok) {
           throw new Error('Failed to fetch athlete');
@@ -64,12 +79,16 @@ export default function ProfilePage(): React.ReactElement {
         setLoading(false);
       })
       .catch((err) => {
+        if (err.name === 'AbortError') return;
         console.error('Error fetching athlete:', err);
         setLoading(false);
       });
-  }, [athleteId, paramId, isAuthenticated, navigate]);
+    return (): void => {
+      controller.abort();
+    };
+  }, [athleteId, paramId, isAuthenticated, authLoading, navigate]);
 
-  if (loading) {
+  if (authLoading || loading) {
     return <div className="profile-page-loading">Loading...</div>;
   }
 
@@ -98,7 +117,13 @@ export default function ProfilePage(): React.ReactElement {
 
       {activeTab === 'Home' && <ProfileHomeTab athleteId={athlete.id} />}
       {activeTab === 'Meets' && <ProfileMeetsTab athleteId={athlete.id} />}
-      {activeTab === 'Scores' && <ProfileScoresTab athleteId={athlete.id} />}
+      {activeTab === 'Scores' && (
+        <ProfileScoresTab
+          athleteId={athlete.id}
+          initialTab={initialScoresTab}
+          focusEntryId={focusEntryId}
+        />
+      )}
     </div>
   );
 }
