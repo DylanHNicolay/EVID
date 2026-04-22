@@ -99,13 +99,20 @@ router.post('/auth/login', async (req, res) => {
     }
 
     let athleteId = null;
+    let teamId = null;
     if (user.role === 'athlete') {
       const ar = await pool.query('SELECT id FROM athletes WHERE user_id = $1', [user.id]);
       if (ar.rows.length > 0) athleteId = ar.rows[0].id;
+    } else if (user.role === 'coach') {
+      const cr = await pool.query('SELECT team_id FROM coaches WHERE user_id = $1', [user.id]);
+      if (cr.rows.length > 0) teamId = cr.rows[0].team_id;
     }
 
     const token = signToken(user);
-    res.json({ token, user: { ...userPayload(user), athlete_id: athleteId } });
+    res.json({
+      token,
+      user: { ...userPayload(user), athlete_id: athleteId, team_id: teamId },
+    });
   } catch (err) {
     console.error('login error:', err);
     res.status(500).json({ error: 'Internal server error' });
