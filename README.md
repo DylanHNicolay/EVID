@@ -28,6 +28,10 @@ This starts:
 - **PostgreSQL** at `localhost:5432`
 - **pgAdmin** at [http://localhost:5050](http://localhost:5050)
 
+## Open source and third-party software
+
+Dependencies are declared in `divecloud-react/package.json`, `api/package.json`, and the root `package.json`. A summary of direct npm packages, container images, and how to list full **transitive** license information is in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). The client app was bootstrapped with [Create React App](https://github.com/facebook/create-react-app); see [`divecloud-react/README.md`](divecloud-react/README.md) for the upstream project’s own notice.
+
 ## Code Quality
 
 This project uses **Prettier** for formatting and **ESLint** for linting, enforced via **Husky** git hooks and **lint-staged**.
